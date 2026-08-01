@@ -1,0 +1,136 @@
+/*
+ * Layer 2 — marketing-only tokens (docs/05 §2.2, ADR 0002).
+ *
+ * Every token here is namespaced `--mk-*` and may never appear in apps/web. Layer 1 —
+ * colour, radius and the application type ramp — is imported from @akechi/ui/tokens.css
+ * and is NOT redeclared anywhere in this folder. If a product token is wrong, it is fixed
+ * in packages/ui and in Figma, in the same commit.
+ *
+ * Ink is the site's dark "assertion" surface. It deliberately holds the SAME value in dark
+ * mode: if ink tracked the theme, the page's five dark bands would dissolve into the
+ * background when the whole site is dark, and the act rhythm is what makes the scroll read.
+ */
+
+:root {
+  /*
+   * Faces. The two webfont families are self-hosted and loaded by next/font/local
+   * (src/app/fonts.ts), which sets --font-inter and --font-fraunces on <html> and emits a
+   * metric-matched fallback for each. The stacks below keep this file the single reference
+   * point, and degrade to a sensible system face if the class is ever missing.
+   *
+   * Mono is deliberately NOT a webfont — see src/app/fonts.ts.
+   */
+  --mk-font-sans: var(--font-inter), system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mk-font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+  --mk-font-mono: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Menlo, Consolas, monospace;
+
+  /* Ink surfaces */
+  --mk-ink-900: #0b0b11;
+  --mk-ink-800: #12121a;
+  --mk-ink-700: #1a1a24;
+  --mk-ink-border: rgb(255 255 255 / 0.09);
+  --mk-ink-border-strong: rgb(255 255 255 / 0.16);
+
+  /*
+   * Text on ink. Measured against --mk-ink-900:
+   *   default 17.4:1 · muted 7.1:1 · faint 3.6:1
+   * `faint` is DECORATIVE ONLY — hairline labels and dividers. It is below 4.5:1 and
+   * src/test/contrast.spec.ts asserts that fact so nobody promotes it to body copy.
+   */
+  --mk-on-ink: #f7f7fa;
+  --mk-on-ink-muted: #a8adbb;
+  --mk-on-ink-faint: #6d7382;
+
+  /*
+   * The accent, as TEXT.
+   *
+   * --accent-500 (#12a594) is a fill: 3.07:1 on white, which is fine behind a shape and a
+   * failure in front of words. This is the same distinction the product draws between
+   * --danger and --danger-text, and it is worth drawing again rather than reaching for the
+   * fill because it happened to be there. 5.0:1 on white, 4.7:1 on the 10% tint.
+   */
+  --mk-accent-text: #0d7268;
+
+  /*
+   * Links, as a token of their own.
+   *
+   * --brand-500 is the brand; it is not always a legible link. In dark mode it measures
+   * 4.21:1 on --surface-muted — under the floor, and --surface-muted is exactly where a link
+   * inside a recessed card sits. So the link colour is derived from the brand rather than
+   * equal to it: darker on paper, lighter on dark, and checked on every surface by
+   * src/test/contrast.spec.ts.
+   */
+  --mk-link: #4a4ac4;
+
+  /* Glass — only ever over ink or over a gradient. Never over paper. */
+  --mk-glass-bg: rgb(255 255 255 / 0.06);
+  --mk-glass-border: rgb(255 255 255 / 0.12);
+  --mk-glass-blur: 16px;
+
+  /* Aurora — the only gradient system. Two blobs, low alpha, on ink, behind no text. */
+  --mk-aurora-1: radial-gradient(60% 60% at 22% 18%, rgb(91 91 214 / 0.28), transparent 70%);
+  --mk-aurora-2: radial-gradient(52% 52% at 84% 62%, rgb(18 165 148 / 0.2), transparent 70%);
+
+  /* Brand gradient — 1px rules, icon strokes, the wordmark accent. Never behind text. */
+  --mk-grad-brand: linear-gradient(97deg, #5b5bd6 0%, #7b5be0 46%, #12a594 100%);
+
+  /* Categorical data-viz ramp, ordered by first use (docs/09 §5). */
+  --mk-viz-1: var(--brand-500);
+  --mk-viz-2: var(--accent-500);
+  --mk-viz-3: #8b5cf6;
+  --mk-viz-4: #b45309;
+  --mk-viz-5: #52606d;
+
+  /* Rhythm */
+  --mk-space-act: clamp(4.5rem, 3rem + 7vw, 10rem);
+  --mk-space-block: clamp(2rem, 1.5rem + 2.5vw, 4rem);
+  --mk-gutter: clamp(1.25rem, 0.9rem + 1.6vw, 2.5rem);
+
+  /* Radius (extends the product's 6 / 10 / 16) */
+  --mk-radius-xl: 24px;
+  --mk-radius-2xl: 32px;
+
+  /* Motion (docs/07 §1) */
+  --mk-dur-instant: 80ms;
+  --mk-dur-fast: 120ms;
+  --mk-dur: 200ms;
+  --mk-dur-slow: 320ms;
+  --mk-dur-scene: 560ms;
+  --mk-ease: cubic-bezier(0.2, 0, 0, 1);
+  --mk-ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --mk-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --mk-shift-sm: 8px;
+  --mk-shift: 14px;
+  --mk-stagger: 60ms;
+}
+
+/*
+ * Dark mode: ink is unchanged (see the header comment). Only the viz ramp shifts, because
+ * #b45309 and #52606d lose separation against a dark plot area.
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* On a dark surface the fill is already legible; a darker variant would not be. */
+    --mk-accent-text: #2cc0ae;
+    --mk-link: #a5a5f5;
+    --mk-viz-3: #a78bfa;
+    --mk-viz-4: #f0ba55;
+    --mk-viz-5: #9aa5b1;
+  }
+}
+
+:root[data-theme='dark'] {
+  --mk-accent-text: #2cc0ae;
+  --mk-link: #a5a5f5;
+  --mk-viz-3: #a78bfa;
+  --mk-viz-4: #f0ba55;
+  --mk-viz-5: #9aa5b1;
+}
+
+:root[data-theme='light'] {
+  --mk-accent-text: #0d7268;
+  --mk-link: #4a4ac4;
+  --mk-viz-3: #8b5cf6;
+  --mk-viz-4: #b45309;
+  --mk-viz-5: #52606d;
+}

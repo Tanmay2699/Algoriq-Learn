@@ -1,0 +1,170 @@
+/*
+ * Layer 1 — the product's design tokens.
+ *
+ * A vendored copy of `packages/ui/src/styles/tokens.css` in the product monorepo, which is
+ * where it is authored. This repository holds the marketing site alone, so the file is copied
+ * rather than imported across a workspace boundary that does not exist here. The copy has one
+ * danger — silent drift — so treat the product repo as upstream: when either side moves, bring
+ * this file across whole rather than editing it in place. `src/test/contrast.spec.ts` reads it
+ * and fails on any pair that drops below its WCAG ratio, which is the guard that a bad copy
+ * does not ship quietly.
+ *
+ * The original header follows.
+ *
+ * ---
+ *
+ * Design tokens — the single source for both apps and Storybook.
+ *
+ * These values mirror the Figma variable collections `Color` and `Scale` in
+ * "AkechiLMS — Wireframes & Prototype". When one side changes, the other must follow;
+ * that pairing is part of the definition of done for any token change.
+ *
+ * **Last reconciled with Figma: 2026-07-26.** It had drifted, silently and in the direction
+ * that matters: Figma's accessibility pass on 2026-07-23 darkened all three status colours and
+ * this file kept the originals for three days, so every error message in the product was
+ * rendered in a colour the design file had already rejected. Reconciling is not a formality —
+ * check both directions when either side moves.
+ *
+ * Per-tenant branding overwrites only --brand-*, --accent-* and --radius at runtime,
+ * injected into the server-rendered shell. There are no per-tenant builds.
+ */
+
+:root {
+  --brand-500: #5b5bd6;
+  --brand-600: #4a4ac4;
+  --brand-soft: #eef0fe;
+  --accent-500: #12a594;
+
+  /*
+   * Status colours, synced from the Figma Color collection 2026-07-26.
+   *
+   * These are the values the design file has held since its own accessibility pass on
+   * 2026-07-23 (`status/success`, `status/warning`, `status/danger`) — and which this file
+   * never picked up. The drift was not cosmetic: the old #e0a32e measured **2.1:1** on white
+   * and the old #dc3b3b measured 3.66:1 on a 12% danger tint, so every error message rendered
+   * in them failed WCAG 1.4.3. It surfaced when a page first rendered an error banner *on
+   * load* (reset-password with no token) instead of only after a submit, which is the only
+   * reason axe had never looked at one.
+   *
+   * Each is legible as text and still usable as a fill: danger is 4.6:1 on its own tint,
+   * 5.7:1 on white, and 5.7:1 against white text when used as a button background.
+   */
+  --success: #247a46;
+  --warning: #8d671d;
+  --danger: #bd3333;
+
+  /*
+   * The *text* variants of the three status colours.
+   *
+   * These existed in the app before they existed here: `text-danger-text` was written at 50
+   * call sites against a token that was defined nowhere and a Tailwind key that did not exist,
+   * so every one of those elements silently inherited its parent's colour. Mostly that only
+   * cost the semantic red on an error banner — but at two call sites the class was the *only*
+   * difference between states, so a failing grade band rendered identically to a passing one
+   * and a job queue with failures looked healthy. A token that does not resolve fails silently;
+   * that is exactly why `apps/web/src/lib/__tests__/tailwind-tokens.spec.ts` now fails CI on one.
+   * (It is a vitest spec rather than a standalone script on purpose: vitest already resolves
+   * TypeScript and already runs in CI, so the check needs no new dependency and no new pipeline
+   * step. This comment named a `scripts/*.mjs` path that never existed, which is its own small
+   * lesson — a comment citing a file is a claim, and claims rot.)
+   *
+   * Kept separate from --success/--warning/--danger rather than merged into them because the
+   * two jobs have different contrast floors: a fill only has to survive 3:1 against adjacent
+   * colour, while text has to clear 4.5:1 against every surface it can land on — here that is
+   * --surface, --surface-muted AND the 10% tint the banners use. These clear all three with
+   * headroom (light: danger 6.9:1 on white / 6.0:1 on tint; dark: 8.3:1 / 7.2:1).
+   */
+  --success-text: #1c6338;
+  --warning-text: #74551a;
+  --danger-text: #a82a2a;
+
+  --surface-bg: #fcfcfd;
+  --surface: #ffffff;
+  --surface-muted: #f5f6f8;
+  --border: #e4e6ea;
+  --text-primary: #1a1a21;
+  /*
+   * Muted text has to pass 4.5:1 on `--surface-muted`, not just on white — chips, table
+   * headers and stub badges all sit on the muted fill. The previous #6b7280 measured 4.83 on
+   * white and **4.47 on the muted surface**, so it passed everywhere axe happened to look and
+   * failed on the ModuleStub's "Planned:" badge. #646d7a is 5.24 on white and 4.84 on muted.
+   */
+  --text-muted: #646d7a;
+  --text-inverse: #ffffff;
+
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --brand-500: #7c7ce8;
+    --brand-600: #6a6adb;
+    --brand-soft: #26263a;
+    --accent-500: #2cc0ae;
+
+    --success: #3fbe73;
+    --warning: #f0ba55;
+    --danger: #f27777;
+
+    --success-text: #5ed48d;
+    --warning-text: #ffd27a;
+    --danger-text: #ff9d9d;
+
+    --surface-bg: #17171c;
+    --surface: #1e1e25;
+    --surface-muted: #26262f;
+    --border: #33333d;
+    --text-primary: #f5f5f7;
+    --text-muted: #9ca3af;
+    --text-inverse: #17171c;
+  }
+}
+
+/*
+ * An explicit theme choice must beat the OS preference in BOTH directions — a user
+ * who picks light on a dark-mode laptop gets light, and vice versa. Only overriding
+ * one direction is the classic half-implemented theme toggle.
+ */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --brand-500: #5b5bd6;
+  --brand-600: #4a4ac4;
+  --brand-soft: #eef0fe;
+  --accent-500: #12a594;
+  --success: #247a46;
+  --warning: #8d671d;
+  --danger: #bd3333;
+  --success-text: #1c6338;
+  --warning-text: #74551a;
+  --danger-text: #a82a2a;
+  --surface-bg: #fcfcfd;
+  --surface: #ffffff;
+  --surface-muted: #f5f6f8;
+  --border: #e4e6ea;
+  --text-primary: #1a1a21;
+  --text-muted: #646d7a;
+  --text-inverse: #ffffff;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --brand-500: #7c7ce8;
+  --brand-600: #6a6adb;
+  --brand-soft: #26263a;
+  --accent-500: #2cc0ae;
+  --success: #3fbe73;
+  --warning: #f0ba55;
+  --danger: #f27777;
+  --success-text: #5ed48d;
+  --warning-text: #ffd27a;
+  --danger-text: #ff9d9d;
+  --surface-bg: #17171c;
+  --surface: #1e1e25;
+  --surface-muted: #26262f;
+  --border: #33333d;
+  --text-primary: #f5f5f7;
+  --text-muted: #9ca3af;
+  --text-inverse: #17171c;
+}

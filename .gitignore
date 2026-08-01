@@ -1,0 +1,11 @@
+.next/
+node_modules/
+.env
+.env.local
+test-results/
+playwright-report/
+.turbo/
+*.tsbuildinfo
+.eslintcache
+.vercel
+.DS_Store

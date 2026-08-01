@@ -1,0 +1,147 @@
+/*
+ * Layer 1 first, then layer 2. Order matters: the marketing layer references product tokens
+ * (--brand-500, --accent-500) in the viz ramp, so they must already be defined.
+ */
+@import '../styles/tokens.product.css';
+@import '../styles/tokens.marketing.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Anchors must clear the sticky header — WCAG 2.2 SC 2.4.11 (focus not obscured). */
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    background: var(--surface-bg);
+    color: var(--text-primary);
+    font-family: var(--mk-font-sans);
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Visible focus everywhere. Inherited from the product; removing it is a WCAG failure. */
+  :focus-visible {
+    outline: 2px solid var(--brand-500);
+    outline-offset: 2px;
+  }
+
+  /* On ink the brand ring is too dark to clear 3:1; use the light on-ink colour instead. */
+  .on-ink :focus-visible,
+  .on-ink:focus-visible {
+    outline-color: var(--mk-on-ink);
+  }
+
+  ::selection {
+    background: var(--brand-soft);
+    color: var(--text-primary);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /*
+   * Reduced motion is a rendering, not a degradation (docs/07 §7). The blanket rule kills
+   * durations; each motion primitive additionally renders its final state, which is what
+   * keeps meaning out of the animation.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .container-mk {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: var(--mk-gutter);
+  }
+
+  .container-wide {
+    width: 100%;
+    max-width: 90rem;
+    margin-inline: auto;
+    padding-inline: var(--mk-gutter);
+  }
+
+  /* The ink surface. `on-ink` also re-points the focus ring (see base layer). */
+  /*
+   * Grid and flex children default to min-width: auto, which means they refuse to shrink
+   * below their own content — a long code line, a wide table, a product frame. On a 360-pixel
+   * screen that is what makes the whole page scroll sideways, and it is invisible on a laptop.
+   * Setting it to 0 inside our containers makes the intended behaviour the default and leaves
+   * the deliberate scroll regions (tables, code) to do their own scrolling.
+   */
+  .container-mk .grid > *,
+  .container-mk .flex > *,
+  .container-wide .grid > *,
+  .container-wide .flex > * {
+    min-width: 0;
+  }
+
+  .on-ink {
+    background: var(--mk-ink-900);
+    color: var(--mk-on-ink);
+  }
+
+  .aurora {
+    background-image: var(--mk-aurora-1), var(--mk-aurora-2);
+  }
+
+  .glass {
+    background: var(--mk-glass-bg);
+    border: 1px solid var(--mk-glass-border);
+    backdrop-filter: blur(var(--mk-glass-blur));
+  }
+
+  /*
+   * Reveal: the element is ALWAYS present and visible in the server-rendered HTML. JS adds
+   * `data-reveal="ready"` after mount and `data-reveal="in"` on intersection, so with JS off,
+   * before hydration, or under reduced motion the content is simply there (docs/07 §3.1).
+   */
+  [data-reveal='ready'] {
+    opacity: 0;
+    transform: translateY(var(--mk-shift));
+  }
+
+  [data-reveal='in'] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--mk-dur-slow) var(--mk-ease-entrance),
+      transform var(--mk-dur-slow) var(--mk-ease-entrance);
+    transition-delay: var(--mk-reveal-delay, 0ms);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal='ready'] {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

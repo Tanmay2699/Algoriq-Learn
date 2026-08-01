@@ -1,0 +1,1395 @@
+{
+  "source": "packages/authz/src/catalog.ts",
+  "syncedAt": "2026-07-31",
+  "count": 272,
+  "modules": [
+    "ai",
+    "analytics",
+    "assess",
+    "assign",
+    "audit",
+    "authz",
+    "cert",
+    "cms",
+    "content",
+    "course",
+    "crm",
+    "data",
+    "finance",
+    "grade",
+    "hr",
+    "identity",
+    "interview",
+    "learn",
+    "live",
+    "marketplace",
+    "notification",
+    "placement",
+    "platform",
+    "search",
+    "tenant",
+    "workflow"
+  ],
+  "permissions": [
+    {
+      "key": "identity.user.view",
+      "module": "identity",
+      "description": "See user accounts and their profile details"
+    },
+    {
+      "key": "identity.user.create",
+      "module": "identity",
+      "description": "Create user accounts directly"
+    },
+    {
+      "key": "identity.user.update",
+      "module": "identity",
+      "description": "Edit user accounts"
+    },
+    {
+      "key": "identity.user.delete",
+      "module": "identity",
+      "description": "Deactivate or delete user accounts"
+    },
+    {
+      "key": "identity.user.import",
+      "module": "identity",
+      "description": "Bulk import users from CSV or Excel"
+    },
+    {
+      "key": "identity.user.export",
+      "module": "identity",
+      "description": "Export user lists"
+    },
+    {
+      "key": "identity.user.impersonate",
+      "module": "identity",
+      "description": "Sign in as another user for support"
+    },
+    {
+      "key": "identity.invitation.view",
+      "module": "identity",
+      "description": "See pending invitations"
+    },
+    {
+      "key": "identity.invitation.create",
+      "module": "identity",
+      "description": "Invite people to this institute"
+    },
+    {
+      "key": "identity.invitation.delete",
+      "module": "identity",
+      "description": "Revoke an invitation"
+    },
+    {
+      "key": "identity.session.view",
+      "module": "identity",
+      "description": "See active sessions for a user"
+    },
+    {
+      "key": "identity.session.delete",
+      "module": "identity",
+      "description": "Sign another user out of their devices"
+    },
+    {
+      "key": "identity.sso.manage",
+      "module": "identity",
+      "description": "Configure single sign-on for this institute"
+    },
+    {
+      "key": "identity.guardian.view",
+      "module": "identity",
+      "description": "See who is recorded as a learner’s parent or guardian"
+    },
+    {
+      "key": "identity.guardian.manage",
+      "module": "identity",
+      "description": "Link or unlink a parent or guardian from a learner"
+    },
+    {
+      "key": "tenant.tenant.view",
+      "module": "tenant",
+      "description": "See institute settings"
+    },
+    {
+      "key": "tenant.tenant.create",
+      "module": "tenant",
+      "description": "Create a new institute on the platform"
+    },
+    {
+      "key": "tenant.tenant.update",
+      "module": "tenant",
+      "description": "Change institute details"
+    },
+    {
+      "key": "tenant.tenant.manage",
+      "module": "tenant",
+      "description": "Suspend, resume or archive an institute"
+    },
+    {
+      "key": "tenant.branding.view",
+      "module": "tenant",
+      "description": "See branding settings"
+    },
+    {
+      "key": "tenant.branding.update",
+      "module": "tenant",
+      "description": "Change logo, colours and email branding"
+    },
+    {
+      "key": "tenant.domain.manage",
+      "module": "tenant",
+      "description": "Add and verify custom domains"
+    },
+    {
+      "key": "tenant.settings.view",
+      "module": "tenant",
+      "description": "See locale, timezone, currency and academic year"
+    },
+    {
+      "key": "tenant.settings.update",
+      "module": "tenant",
+      "description": "Change locale, timezone, currency and academic year"
+    },
+    {
+      "key": "tenant.usage.view",
+      "module": "tenant",
+      "description": "See seat, storage and AI usage against the plan"
+    },
+    {
+      "key": "tenant.branch.view",
+      "module": "tenant",
+      "description": "See branches"
+    },
+    {
+      "key": "tenant.branch.create",
+      "module": "tenant",
+      "description": "Create a branch"
+    },
+    {
+      "key": "tenant.branch.update",
+      "module": "tenant",
+      "description": "Edit a branch"
+    },
+    {
+      "key": "tenant.branch.delete",
+      "module": "tenant",
+      "description": "Remove a branch"
+    },
+    {
+      "key": "authz.permission.view",
+      "module": "authz",
+      "description": "See the permission catalog"
+    },
+    {
+      "key": "authz.role.view",
+      "module": "authz",
+      "description": "See roles and what they grant"
+    },
+    {
+      "key": "authz.role.create",
+      "module": "authz",
+      "description": "Create or clone a role"
+    },
+    {
+      "key": "authz.role.update",
+      "module": "authz",
+      "description": "Change what a role can do"
+    },
+    {
+      "key": "authz.role.delete",
+      "module": "authz",
+      "description": "Delete a role"
+    },
+    {
+      "key": "authz.assignment.view",
+      "module": "authz",
+      "description": "See who holds which roles"
+    },
+    {
+      "key": "authz.assignment.create",
+      "module": "authz",
+      "description": "Assign a role to a user"
+    },
+    {
+      "key": "authz.assignment.delete",
+      "module": "authz",
+      "description": "Remove a role from a user"
+    },
+    {
+      "key": "authz.override.view",
+      "module": "authz",
+      "description": "See per-user permission overrides"
+    },
+    {
+      "key": "authz.override.create",
+      "module": "authz",
+      "description": "Grant or deny a permission for one user"
+    },
+    {
+      "key": "authz.override.delete",
+      "module": "authz",
+      "description": "Remove a per-user override"
+    },
+    {
+      "key": "authz.review.view",
+      "module": "authz",
+      "description": "Review effective permissions for any user"
+    },
+    {
+      "key": "authz.delegation.create",
+      "module": "authz",
+      "description": "Delegate permissions while someone is away"
+    },
+    {
+      "key": "authz.request.approve",
+      "module": "authz",
+      "description": "Approve or reject access requests"
+    },
+    {
+      "key": "audit.log.view",
+      "module": "audit",
+      "description": "See the audit trail"
+    },
+    {
+      "key": "audit.log.export",
+      "module": "audit",
+      "description": "Export audit records"
+    },
+    {
+      "key": "audit.log.restore",
+      "module": "audit",
+      "description": "Restore a record from an audit diff"
+    },
+    {
+      "key": "audit.compliance.view",
+      "module": "audit",
+      "description": "See retention policies and data requests"
+    },
+    {
+      "key": "audit.compliance.manage",
+      "module": "audit",
+      "description": "Manage retention, legal holds and erasure requests"
+    },
+    {
+      "key": "course.catalog.view",
+      "module": "course",
+      "description": "Browse the published course catalog"
+    },
+    {
+      "key": "course.category.view",
+      "module": "course",
+      "description": "See course categories"
+    },
+    {
+      "key": "course.category.create",
+      "module": "course",
+      "description": "Create a course category"
+    },
+    {
+      "key": "course.category.update",
+      "module": "course",
+      "description": "Edit or reorder course categories"
+    },
+    {
+      "key": "course.category.delete",
+      "module": "course",
+      "description": "Remove a course category"
+    },
+    {
+      "key": "course.course.view",
+      "module": "course",
+      "description": "See courses, including drafts"
+    },
+    {
+      "key": "course.course.create",
+      "module": "course",
+      "description": "Create a course"
+    },
+    {
+      "key": "course.course.update",
+      "module": "course",
+      "description": "Edit course content and settings"
+    },
+    {
+      "key": "course.course.delete",
+      "module": "course",
+      "description": "Delete a course"
+    },
+    {
+      "key": "course.course.submit",
+      "module": "course",
+      "description": "Submit a course for academic review"
+    },
+    {
+      "key": "course.course.approve",
+      "module": "course",
+      "description": "Approve or reject a course under review"
+    },
+    {
+      "key": "course.course.publish",
+      "module": "course",
+      "description": "Publish or unpublish a course"
+    },
+    {
+      "key": "course.course.archive",
+      "module": "course",
+      "description": "Archive a course"
+    },
+    {
+      "key": "course.module.create",
+      "module": "course",
+      "description": "Add modules to a course"
+    },
+    {
+      "key": "course.module.update",
+      "module": "course",
+      "description": "Edit or reorder modules"
+    },
+    {
+      "key": "course.module.delete",
+      "module": "course",
+      "description": "Remove modules"
+    },
+    {
+      "key": "course.unit.create",
+      "module": "course",
+      "description": "Add units"
+    },
+    {
+      "key": "course.unit.update",
+      "module": "course",
+      "description": "Edit or reorder units"
+    },
+    {
+      "key": "course.unit.delete",
+      "module": "course",
+      "description": "Remove units"
+    },
+    {
+      "key": "course.lesson.create",
+      "module": "course",
+      "description": "Add lessons"
+    },
+    {
+      "key": "course.lesson.update",
+      "module": "course",
+      "description": "Edit lessons, release and completion rules"
+    },
+    {
+      "key": "course.lesson.delete",
+      "module": "course",
+      "description": "Remove lessons"
+    },
+    {
+      "key": "content.media.view",
+      "module": "content",
+      "description": "See uploaded media and its processing status"
+    },
+    {
+      "key": "content.media.upload",
+      "module": "content",
+      "description": "Upload video, audio and documents"
+    },
+    {
+      "key": "content.media.update",
+      "module": "content",
+      "description": "Replace media or retry processing"
+    },
+    {
+      "key": "content.media.delete",
+      "module": "content",
+      "description": "Delete media"
+    },
+    {
+      "key": "content.media.play",
+      "module": "content",
+      "description": "Play protected media"
+    },
+    {
+      "key": "content.caption.update",
+      "module": "content",
+      "description": "Edit captions and transcripts"
+    },
+    {
+      "key": "content.chapter.update",
+      "module": "content",
+      "description": "Edit video chapters"
+    },
+    {
+      "key": "learn.enrollment.view",
+      "module": "learn",
+      "description": "See who is enrolled in a course"
+    },
+    {
+      "key": "learn.enrollment.create",
+      "module": "learn",
+      "description": "Enrol a learner in a course"
+    },
+    {
+      "key": "learn.enrollment.delete",
+      "module": "learn",
+      "description": "Remove a learner from a course"
+    },
+    {
+      "key": "learn.enrollment.self",
+      "module": "learn",
+      "description": "Join a course yourself using an invite code"
+    },
+    {
+      "key": "learn.invite.view",
+      "module": "learn",
+      "description": "See a course’s invite codes"
+    },
+    {
+      "key": "learn.invite.create",
+      "module": "learn",
+      "description": "Create an invite code for self-enrolment"
+    },
+    {
+      "key": "learn.invite.delete",
+      "module": "learn",
+      "description": "Revoke an invite code"
+    },
+    {
+      "key": "learn.batch.view",
+      "module": "learn",
+      "description": "See a course’s batches (sections) and their members"
+    },
+    {
+      "key": "learn.batch.create",
+      "module": "learn",
+      "description": "Create a batch (section) in a course"
+    },
+    {
+      "key": "learn.batch.update",
+      "module": "learn",
+      "description": "Rename, archive or resize a batch"
+    },
+    {
+      "key": "learn.batch.delete",
+      "module": "learn",
+      "description": "Delete a batch"
+    },
+    {
+      "key": "learn.batch.assign",
+      "module": "learn",
+      "description": "Add or remove learners from a batch"
+    },
+    {
+      "key": "learn.course.access",
+      "module": "learn",
+      "description": "Open an enrolled course"
+    },
+    {
+      "key": "learn.lesson.access",
+      "module": "learn",
+      "description": "Open a lesson"
+    },
+    {
+      "key": "learn.progress.write",
+      "module": "learn",
+      "description": "Record own learning progress"
+    },
+    {
+      "key": "learn.progress.view",
+      "module": "learn",
+      "description": "See learner progress"
+    },
+    {
+      "key": "learn.note.view",
+      "module": "learn",
+      "description": "Read own notes"
+    },
+    {
+      "key": "learn.note.create",
+      "module": "learn",
+      "description": "Take personal notes"
+    },
+    {
+      "key": "learn.note.update",
+      "module": "learn",
+      "description": "Edit own notes"
+    },
+    {
+      "key": "learn.note.delete",
+      "module": "learn",
+      "description": "Delete own notes"
+    },
+    {
+      "key": "learn.qa.view",
+      "module": "learn",
+      "description": "Read the questions and answers on a lesson"
+    },
+    {
+      "key": "learn.qa.ask",
+      "module": "learn",
+      "description": "Ask a question on a lesson"
+    },
+    {
+      "key": "learn.qa.answer",
+      "module": "learn",
+      "description": "Answer a question on a lesson"
+    },
+    {
+      "key": "learn.qa.moderate",
+      "module": "learn",
+      "description": "Resolve or remove any question or answer"
+    },
+    {
+      "key": "assess.question.view",
+      "module": "assess",
+      "description": "See question banks and their questions, including the answer key"
+    },
+    {
+      "key": "assess.question.create",
+      "module": "assess",
+      "description": "Create question banks and questions"
+    },
+    {
+      "key": "assess.question.update",
+      "module": "assess",
+      "description": "Edit question banks and questions"
+    },
+    {
+      "key": "assess.question.delete",
+      "module": "assess",
+      "description": "Delete question banks and questions"
+    },
+    {
+      "key": "assess.assessment.view",
+      "module": "assess",
+      "description": "See assessments (papers) and how they are built"
+    },
+    {
+      "key": "assess.assessment.create",
+      "module": "assess",
+      "description": "Create an assessment"
+    },
+    {
+      "key": "assess.assessment.update",
+      "module": "assess",
+      "description": "Edit an assessment, its sections, questions and targeting"
+    },
+    {
+      "key": "assess.assessment.delete",
+      "module": "assess",
+      "description": "Delete an assessment"
+    },
+    {
+      "key": "assess.assessment.publish",
+      "module": "assess",
+      "description": "Publish or close an assessment"
+    },
+    {
+      "key": "assess.attempt.create",
+      "module": "assess",
+      "description": "Start an attempt at an assessment set for you"
+    },
+    {
+      "key": "assess.attempt.own",
+      "module": "assess",
+      "description": "See and work on your own attempts"
+    },
+    {
+      "key": "assess.attempt.view",
+      "module": "assess",
+      "description": "See learners’ attempts at an assessment"
+    },
+    {
+      "key": "assess.attempt.evaluate",
+      "module": "assess",
+      "description": "Mark the answers a machine cannot mark"
+    },
+    {
+      "key": "assess.result.view",
+      "module": "assess",
+      "description": "See assessment results"
+    },
+    {
+      "key": "assess.result.release",
+      "module": "assess",
+      "description": "Release results to learners"
+    },
+    {
+      "key": "assess.result.regrade",
+      "module": "assess",
+      "description": "Re-mark a question across every sitting of a paper"
+    },
+    {
+      "key": "assign.assignment.view",
+      "module": "assign",
+      "description": "See assignments, including drafts"
+    },
+    {
+      "key": "assign.assignment.create",
+      "module": "assign",
+      "description": "Create an assignment"
+    },
+    {
+      "key": "assign.assignment.update",
+      "module": "assign",
+      "description": "Edit an assignment"
+    },
+    {
+      "key": "assign.assignment.delete",
+      "module": "assign",
+      "description": "Delete an assignment"
+    },
+    {
+      "key": "assign.assignment.publish",
+      "module": "assign",
+      "description": "Publish or close an assignment"
+    },
+    {
+      "key": "assign.submission.create",
+      "module": "assign",
+      "description": "Hand in your own work"
+    },
+    {
+      "key": "assign.submission.view",
+      "module": "assign",
+      "description": "See submissions"
+    },
+    {
+      "key": "assign.submission.grade",
+      "module": "assign",
+      "description": "Mark a submission and return it"
+    },
+    {
+      "key": "live.session.view",
+      "module": "live",
+      "description": "See scheduled live classes"
+    },
+    {
+      "key": "live.session.create",
+      "module": "live",
+      "description": "Schedule a live class"
+    },
+    {
+      "key": "live.session.update",
+      "module": "live",
+      "description": "Reschedule or cancel a live class"
+    },
+    {
+      "key": "live.session.delete",
+      "module": "live",
+      "description": "Delete a live class"
+    },
+    {
+      "key": "live.session.join",
+      "module": "live",
+      "description": "Join a live class you are enrolled for"
+    },
+    {
+      "key": "live.attendance.view",
+      "module": "live",
+      "description": "See who attended a class"
+    },
+    {
+      "key": "live.attendance.update",
+      "module": "live",
+      "description": "Mark attendance"
+    },
+    {
+      "key": "live.attendance.manage",
+      "module": "live",
+      "description": "Set a course’s minimum-attendance rule"
+    },
+    {
+      "key": "live.regularization.request",
+      "module": "live",
+      "description": "Ask for a class’s attendance mark to be corrected"
+    },
+    {
+      "key": "live.regularization.decide",
+      "module": "live",
+      "description": "Approve or reject an attendance correction"
+    },
+    {
+      "key": "grade.grade.view",
+      "module": "grade",
+      "description": "See the gradebook for a course"
+    },
+    {
+      "key": "grade.grade.update",
+      "module": "grade",
+      "description": "Override a mark in the gradebook"
+    },
+    {
+      "key": "grade.grade.manage",
+      "module": "grade",
+      "description": "Define the institute’s letter and GPA scales"
+    },
+    {
+      "key": "grade.grade.own",
+      "module": "grade",
+      "description": "See your own grades"
+    },
+    {
+      "key": "cert.template.view",
+      "module": "cert",
+      "description": "See certificate templates"
+    },
+    {
+      "key": "cert.template.manage",
+      "module": "cert",
+      "description": "Create and edit certificate templates"
+    },
+    {
+      "key": "cert.certificate.view",
+      "module": "cert",
+      "description": "See issued certificates"
+    },
+    {
+      "key": "cert.certificate.issue",
+      "module": "cert",
+      "description": "Issue a certificate to a learner who has completed a course"
+    },
+    {
+      "key": "cert.certificate.revoke",
+      "module": "cert",
+      "description": "Revoke an issued certificate"
+    },
+    {
+      "key": "cert.certificate.own",
+      "module": "cert",
+      "description": "See your own certificates"
+    },
+    {
+      "key": "finance.feeplan.view",
+      "module": "finance",
+      "description": "See fee plans"
+    },
+    {
+      "key": "finance.feeplan.manage",
+      "module": "finance",
+      "description": "Create and edit fee plans"
+    },
+    {
+      "key": "finance.invoice.view",
+      "module": "finance",
+      "description": "See invoices"
+    },
+    {
+      "key": "finance.invoice.create",
+      "module": "finance",
+      "description": "Raise an invoice"
+    },
+    {
+      "key": "finance.invoice.issue",
+      "module": "finance",
+      "description": "Issue an invoice to a learner"
+    },
+    {
+      "key": "finance.invoice.void",
+      "module": "finance",
+      "description": "Void an invoice"
+    },
+    {
+      "key": "finance.invoice.refund",
+      "module": "finance",
+      "description": "Refund an invoice as a credit note"
+    },
+    {
+      "key": "finance.invoice.own",
+      "module": "finance",
+      "description": "See your own invoices"
+    },
+    {
+      "key": "finance.payment.record",
+      "module": "finance",
+      "description": "Record a payment against an invoice"
+    },
+    {
+      "key": "finance.pricing.manage",
+      "module": "finance",
+      "description": "Set tax rates, coupons and scholarships"
+    },
+    {
+      "key": "crm.pipeline.view",
+      "module": "crm",
+      "description": "See admission pipelines and their stages"
+    },
+    {
+      "key": "crm.pipeline.manage",
+      "module": "crm",
+      "description": "Create and edit pipelines and their stages"
+    },
+    {
+      "key": "crm.lead.view",
+      "module": "crm",
+      "description": "See enquiries and the admissions board"
+    },
+    {
+      "key": "crm.lead.create",
+      "module": "crm",
+      "description": "Add an enquiry"
+    },
+    {
+      "key": "crm.lead.update",
+      "module": "crm",
+      "description": "Edit an enquiry and move it across the board"
+    },
+    {
+      "key": "crm.lead.delete",
+      "module": "crm",
+      "description": "Delete an enquiry"
+    },
+    {
+      "key": "crm.lead.assign",
+      "module": "crm",
+      "description": "Assign an enquiry to a counsellor, and set the assignment rules"
+    },
+    {
+      "key": "crm.lead.import",
+      "module": "crm",
+      "description": "Import enquiries from CSV"
+    },
+    {
+      "key": "crm.lead.export",
+      "module": "crm",
+      "description": "Export enquiries"
+    },
+    {
+      "key": "crm.lead.merge",
+      "module": "crm",
+      "description": "Merge duplicate enquiries"
+    },
+    {
+      "key": "crm.activity.view",
+      "module": "crm",
+      "description": "See an enquiry’s call and note history"
+    },
+    {
+      "key": "crm.activity.create",
+      "module": "crm",
+      "description": "Log a call, note or meeting on an enquiry"
+    },
+    {
+      "key": "crm.task.view",
+      "module": "crm",
+      "description": "See follow-up tasks"
+    },
+    {
+      "key": "crm.task.create",
+      "module": "crm",
+      "description": "Schedule a follow-up"
+    },
+    {
+      "key": "crm.task.update",
+      "module": "crm",
+      "description": "Reschedule, reassign or complete a follow-up"
+    },
+    {
+      "key": "crm.application.view",
+      "module": "crm",
+      "description": "See applications"
+    },
+    {
+      "key": "crm.application.create",
+      "module": "crm",
+      "description": "Take an application from an enquiry"
+    },
+    {
+      "key": "crm.application.update",
+      "module": "crm",
+      "description": "Edit an application"
+    },
+    {
+      "key": "crm.application.decide",
+      "module": "crm",
+      "description": "Accept, reject or withdraw an application"
+    },
+    {
+      "key": "crm.application.convert",
+      "module": "crm",
+      "description": "Turn an accepted application into an invitation and an enrolment"
+    },
+    {
+      "key": "search.global.query",
+      "module": "search",
+      "description": "Search across courses and lessons"
+    },
+    {
+      "key": "search.index.manage",
+      "module": "search",
+      "description": "Rebuild the search index for this institute"
+    },
+    {
+      "key": "search.saved.view",
+      "module": "search",
+      "description": "See your saved searches and any shared with you"
+    },
+    {
+      "key": "search.saved.create",
+      "module": "search",
+      "description": "Save a search to re-run later"
+    },
+    {
+      "key": "search.saved.update",
+      "module": "search",
+      "description": "Rename, re-target or share one of your saved searches"
+    },
+    {
+      "key": "search.saved.delete",
+      "module": "search",
+      "description": "Delete one of your saved searches"
+    },
+    {
+      "key": "ai.generate.course",
+      "module": "ai",
+      "description": "Generate a draft course outline with AI"
+    },
+    {
+      "key": "ai.generate.content",
+      "module": "ai",
+      "description": "Generate draft written content for a lesson with AI"
+    },
+    {
+      "key": "ai.generate.question",
+      "module": "ai",
+      "description": "Generate draft assessment questions with AI"
+    },
+    {
+      "key": "ai.usage.view",
+      "module": "ai",
+      "description": "See this institute’s AI usage and budget"
+    },
+    {
+      "key": "notification.delivery.view",
+      "module": "notification",
+      "description": "See the email delivery log for this institute"
+    },
+    {
+      "key": "notification.delivery.retry",
+      "module": "notification",
+      "description": "Re-queue a failed email delivery"
+    },
+    {
+      "key": "analytics.dashboard.view",
+      "module": "analytics",
+      "description": "See the analytics dashboard"
+    },
+    {
+      "key": "analytics.report.view",
+      "module": "analytics",
+      "description": "See saved reports"
+    },
+    {
+      "key": "analytics.report.create",
+      "module": "analytics",
+      "description": "Build a report"
+    },
+    {
+      "key": "analytics.report.update",
+      "module": "analytics",
+      "description": "Edit a report"
+    },
+    {
+      "key": "analytics.report.delete",
+      "module": "analytics",
+      "description": "Delete a report"
+    },
+    {
+      "key": "analytics.report.run",
+      "module": "analytics",
+      "description": "Run a report and read its rows"
+    },
+    {
+      "key": "analytics.report.export",
+      "module": "analytics",
+      "description": "Download a report as a file"
+    },
+    {
+      "key": "analytics.report.schedule",
+      "module": "analytics",
+      "description": "Have a report emailed on a schedule"
+    },
+    {
+      "key": "cms.site.view",
+      "module": "cms",
+      "description": "See the public website’s settings"
+    },
+    {
+      "key": "cms.site.manage",
+      "module": "cms",
+      "description": "Change the public website’s settings, and put it online or offline"
+    },
+    {
+      "key": "cms.page.view",
+      "module": "cms",
+      "description": "See website pages, including drafts"
+    },
+    {
+      "key": "cms.page.create",
+      "module": "cms",
+      "description": "Add a website page"
+    },
+    {
+      "key": "cms.page.update",
+      "module": "cms",
+      "description": "Edit a website page"
+    },
+    {
+      "key": "cms.page.delete",
+      "module": "cms",
+      "description": "Delete a website page"
+    },
+    {
+      "key": "cms.page.publish",
+      "module": "cms",
+      "description": "Publish or unpublish a website page"
+    },
+    {
+      "key": "cms.post.view",
+      "module": "cms",
+      "description": "See posts, news and events, including drafts"
+    },
+    {
+      "key": "cms.post.create",
+      "module": "cms",
+      "description": "Write a post, news item or event"
+    },
+    {
+      "key": "cms.post.update",
+      "module": "cms",
+      "description": "Edit a post, news item or event"
+    },
+    {
+      "key": "cms.post.delete",
+      "module": "cms",
+      "description": "Delete a post, news item or event"
+    },
+    {
+      "key": "cms.post.publish",
+      "module": "cms",
+      "description": "Publish or unpublish a post, news item or event"
+    },
+    {
+      "key": "placement.job.view",
+      "module": "placement",
+      "description": "See job openings"
+    },
+    {
+      "key": "placement.job.create",
+      "module": "placement",
+      "description": "Post a job opening"
+    },
+    {
+      "key": "placement.job.update",
+      "module": "placement",
+      "description": "Edit a job opening, and open or close it"
+    },
+    {
+      "key": "placement.job.delete",
+      "module": "placement",
+      "description": "Delete a job opening"
+    },
+    {
+      "key": "placement.drive.view",
+      "module": "placement",
+      "description": "See placement drives"
+    },
+    {
+      "key": "placement.drive.manage",
+      "module": "placement",
+      "description": "Create and edit placement drives"
+    },
+    {
+      "key": "placement.application.view",
+      "module": "placement",
+      "description": "See who has applied for a job"
+    },
+    {
+      "key": "placement.application.own",
+      "module": "placement",
+      "description": "See your own job applications"
+    },
+    {
+      "key": "placement.application.apply",
+      "module": "placement",
+      "description": "Apply for a job opening"
+    },
+    {
+      "key": "placement.application.update",
+      "module": "placement",
+      "description": "Move an application through the placement funnel"
+    },
+    {
+      "key": "placement.report.view",
+      "module": "placement",
+      "description": "See the placement funnel report"
+    },
+    {
+      "key": "interview.interview.view",
+      "module": "interview",
+      "description": "See scheduled interviews"
+    },
+    {
+      "key": "interview.interview.schedule",
+      "module": "interview",
+      "description": "Schedule an interview and name its panel"
+    },
+    {
+      "key": "interview.interview.update",
+      "module": "interview",
+      "description": "Reschedule, complete or cancel an interview"
+    },
+    {
+      "key": "interview.scorecard.view",
+      "module": "interview",
+      "description": "See interview scorecards and the panel’s aggregate"
+    },
+    {
+      "key": "interview.scorecard.submit",
+      "module": "interview",
+      "description": "Submit your own scorecard for an interview you are on"
+    },
+    {
+      "key": "platform.flag.view",
+      "module": "platform",
+      "description": "See feature flags"
+    },
+    {
+      "key": "platform.flag.update",
+      "module": "platform",
+      "description": "Turn features on or off"
+    },
+    {
+      "key": "platform.job.view",
+      "module": "platform",
+      "description": "See background jobs"
+    },
+    {
+      "key": "platform.job.update",
+      "module": "platform",
+      "description": "Retry or cancel background jobs"
+    },
+    {
+      "key": "platform.apikey.view",
+      "module": "platform",
+      "description": "See API keys"
+    },
+    {
+      "key": "platform.apikey.create",
+      "module": "platform",
+      "description": "Create an API key"
+    },
+    {
+      "key": "platform.apikey.delete",
+      "module": "platform",
+      "description": "Revoke an API key"
+    },
+    {
+      "key": "platform.webhook.view",
+      "module": "platform",
+      "description": "See webhook endpoints and their delivery history"
+    },
+    {
+      "key": "platform.webhook.create",
+      "module": "platform",
+      "description": "Add a webhook endpoint"
+    },
+    {
+      "key": "platform.webhook.update",
+      "module": "platform",
+      "description": "Edit a webhook endpoint"
+    },
+    {
+      "key": "platform.webhook.delete",
+      "module": "platform",
+      "description": "Delete a webhook endpoint"
+    },
+    {
+      "key": "platform.webhook.retry",
+      "module": "platform",
+      "description": "Re-send a failed webhook delivery"
+    },
+    {
+      "key": "data.view.view",
+      "module": "data",
+      "description": "See saved views on list screens"
+    },
+    {
+      "key": "data.view.create",
+      "module": "data",
+      "description": "Save the current filters as a view"
+    },
+    {
+      "key": "data.view.update",
+      "module": "data",
+      "description": "Rename, re-target or share one of your saved views"
+    },
+    {
+      "key": "data.view.delete",
+      "module": "data",
+      "description": "Delete one of your saved views"
+    },
+    {
+      "key": "data.export.create",
+      "module": "data",
+      "description": "Export a list to a file"
+    },
+    {
+      "key": "data.export.view",
+      "module": "data",
+      "description": "See and download your exports"
+    },
+    {
+      "key": "hr.staff.view",
+      "module": "hr",
+      "description": "See staff records for the whole institute"
+    },
+    {
+      "key": "hr.staff.own",
+      "module": "hr",
+      "description": "See your own staff record"
+    },
+    {
+      "key": "hr.staff.create",
+      "module": "hr",
+      "description": "Add a staff record for someone who already has an account"
+    },
+    {
+      "key": "hr.staff.update",
+      "module": "hr",
+      "description": "Edit a staff record, including exits"
+    },
+    {
+      "key": "hr.staff.delete",
+      "module": "hr",
+      "description": "Remove a staff record"
+    },
+    {
+      "key": "hr.leavetype.view",
+      "module": "hr",
+      "description": "See the kinds of leave this institute grants"
+    },
+    {
+      "key": "hr.leavetype.manage",
+      "module": "hr",
+      "description": "Add, edit or retire a kind of leave"
+    },
+    {
+      "key": "hr.leave.own",
+      "module": "hr",
+      "description": "See your own leave, your balance, and anything waiting on your decision"
+    },
+    {
+      "key": "hr.leave.request",
+      "module": "hr",
+      "description": "Apply for leave"
+    },
+    {
+      "key": "hr.leave.view",
+      "module": "hr",
+      "description": "See leave across the institute"
+    },
+    {
+      "key": "hr.leave.approve",
+      "module": "hr",
+      "description": "Approve or decline a leave request"
+    },
+    {
+      "key": "hr.balance.manage",
+      "module": "hr",
+      "description": "Set how much leave a colleague is entitled to"
+    },
+    {
+      "key": "hr.attendance.view",
+      "module": "hr",
+      "description": "See the staff register"
+    },
+    {
+      "key": "hr.attendance.own",
+      "module": "hr",
+      "description": "See your own attendance"
+    },
+    {
+      "key": "hr.attendance.mark",
+      "module": "hr",
+      "description": "Mark the staff register"
+    },
+    {
+      "key": "hr.holiday.view",
+      "module": "hr",
+      "description": "See the holiday calendar"
+    },
+    {
+      "key": "hr.holiday.manage",
+      "module": "hr",
+      "description": "Add or remove a holiday"
+    },
+    {
+      "key": "hr.settings.view",
+      "module": "hr",
+      "description": "See the institute’s working week"
+    },
+    {
+      "key": "hr.settings.manage",
+      "module": "hr",
+      "description": "Change the institute’s working week"
+    },
+    {
+      "key": "analytics.risk.view",
+      "module": "analytics",
+      "description": "See which learners may be falling behind, and why"
+    },
+    {
+      "key": "analytics.risk.intervene",
+      "module": "analytics",
+      "description": "Record that you have followed something up with a learner"
+    },
+    {
+      "key": "learn.path.own",
+      "module": "learn",
+      "description": "See what you should study next, and where you are weak"
+    },
+    {
+      "key": "ai.interview.practice",
+      "module": "ai",
+      "description": "Practise an interview with the AI coach"
+    },
+    {
+      "key": "platform.fields.view",
+      "module": "platform",
+      "description": "See what extra fields this institute has added"
+    },
+    {
+      "key": "platform.fields.manage",
+      "module": "platform",
+      "description": "Add, edit or archive an extra field"
+    },
+    {
+      "key": "workflow.rule.view",
+      "module": "workflow",
+      "description": "See the approval chains this institute has configured"
+    },
+    {
+      "key": "workflow.rule.manage",
+      "module": "workflow",
+      "description": "Configure an approval chain"
+    },
+    {
+      "key": "assess.attempt.integrity",
+      "module": "assess",
+      "description": "See what a candidate’s browser reported during a sitting"
+    },
+    {
+      "key": "marketplace.listing.view",
+      "module": "marketplace",
+      "description": "Browse courses other institutes have shared"
+    },
+    {
+      "key": "marketplace.listing.publish",
+      "module": "marketplace",
+      "description": "Offer one of this institute’s courses to others"
+    },
+    {
+      "key": "marketplace.listing.import",
+      "module": "marketplace",
+      "description": "Take a copy of a course another institute has shared"
+    }
+  ]
+}
