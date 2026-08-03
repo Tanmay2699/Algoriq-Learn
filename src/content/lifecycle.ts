@@ -72,91 +72,91 @@ export const spine: SpineStop[] = [
  * (`docs/01-BRD.md` §1). It is not a strawman — it is what institutes in this market
  * actually run today.
  */
-export const toolStack: { job: string; today: string; cost: string; withAkechi: string; href: string }[] = [
+export const toolStack: { job: string; today: string; cost: string; withAlgoryq: string; href: string }[] = [
   {
     job: 'Host course content',
     today: 'Drive, unlisted YouTube',
     cost: 'No progress, no access control',
-    withAkechi: 'Courses & media, with signed playback',
+    withAlgoryq: 'Courses & media, with signed playback',
     href: '/product/modules/media-and-content',
   },
   {
     job: 'Deliver live classes',
     today: 'Zoom, scheduled over WhatsApp',
     cost: 'Attendance reconciled by hand',
-    withAkechi: 'Sessions on the timetable, with a register',
+    withAlgoryq: 'Sessions on the timetable, with a register',
     href: '/product/modules/live-classes-and-attendance',
   },
   {
     job: 'Assess',
     today: 'Google Forms, printed papers',
     cost: 'No item analytics, manual grading',
-    withAkechi: 'Question banks, marking queue, item analysis',
+    withAlgoryq: 'Question banks, marking queue, item analysis',
     href: '/product/modules/assessments',
   },
   {
     job: 'Attendance and marks',
     today: 'Excel',
     cost: 'Error-prone, invisible to parents',
-    withAkechi: 'Register and gradebook, visible to guardians',
+    withAlgoryq: 'Register and gradebook, visible to guardians',
     href: '/product/modules/assignments-and-grading',
   },
   {
     job: 'Collect fees',
     today: 'A payment link and a spreadsheet',
     cost: 'Manual reconciliation, no chasing',
-    withAkechi: 'Fee plans, invoices, payments, aging',
+    withAlgoryq: 'Fee plans, invoices, payments, aging',
     href: '/product/modules/fees-and-finance',
   },
   {
     job: 'Admissions',
     today: 'Phone and a notebook',
     cost: 'Enquiries leak, no attribution',
-    withAkechi: 'A board with owners and follow-ups',
+    withAlgoryq: 'A board with owners and follow-ups',
     href: '/product/modules/admissions-crm',
   },
   {
     job: 'Certificates',
     today: 'Canva and email',
     cost: 'Unverifiable, forgeable',
-    withAkechi: 'Issued, revocable, publicly verifiable',
+    withAlgoryq: 'Issued, revocable, publicly verifiable',
     href: '/product/modules/certificates',
   },
   {
     job: 'Report to management',
     today: 'Compiled by hand, monthly',
     cost: 'Decisions run 30 days late',
-    withAkechi: 'Dashboards and a report builder',
+    withAlgoryq: 'Dashboards and a report builder',
     href: '/product/intelligence',
   },
 ];
 
 /** Six rows on the homepage; the rest live on the comparison pages. */
-export const quickComparison: { capability: string; akechi: string; moodle: string; classroom: string }[] = [
+export const quickComparison: { capability: string; algoryq: string; moodle: string; classroom: string }[] = [
   {
     capability: 'Admissions and enquiries',
-    akechi: 'Built in, same database',
+    algoryq: 'Built in, same database',
     moodle: 'No',
     classroom: 'No',
   },
-  { capability: 'Fees and invoices', akechi: 'Built in (no card payments yet)', moodle: 'Plugin', classroom: 'No' },
+  { capability: 'Fees and invoices', algoryq: 'Built in (no card payments yet)', moodle: 'Plugin', classroom: 'No' },
   {
     capability: 'Permission model you can reshape',
-    akechi: '272 keys, 11 editable role templates',
+    algoryq: '272 keys, 11 editable role templates',
     moodle: 'Roles and capabilities — yes',
     classroom: 'Fixed roles',
   },
   {
     capability: 'Tenant isolation you can inspect',
-    akechi: 'Postgres row-level security, forced',
+    algoryq: 'Postgres row-level security, forced',
     moodle: 'Separate instance per tenant',
     classroom: 'Google-managed',
   },
   {
     capability: 'Accessibility conformance published',
-    akechi: 'Yes, with open items listed',
+    algoryq: 'Yes, with open items listed',
     moodle: 'Yes',
     classroom: 'Yes',
   },
-  { capability: 'Self-hostable', akechi: 'Yes — docker compose up', moodle: 'Yes', classroom: 'No' },
+  { capability: 'Self-hostable', algoryq: 'Yes — docker compose up', moodle: 'Yes', classroom: 'No' },
 ];

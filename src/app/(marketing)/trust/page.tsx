@@ -76,7 +76,7 @@ export default function TrustPage() {
           </Heading>
           <div className="mt-6 space-y-4 text-mk-body text-on-ink-muted">
             <p>
-              Akechi has not shipped to a paying customer. Putting up six grey logos, or a
+              Algoryq Learn has not shipped to a paying customer. Putting up six grey logos, or a
               testimonial from a persona, or a &ldquo;trusted by 10,000 institutes&rdquo; line
               would be discovered in the first serious conversation — enterprise buyers call
               references — and it would poison every other claim on the site, including the true,

@@ -19,6 +19,30 @@
  * "AkechiLMS — Wireframes & Prototype". When one side changes, the other must follow;
  * that pairing is part of the definition of done for any token change.
  *
+ * ---
+ *
+ * **⚠ The brand ramp below is AHEAD of the product, deliberately.**
+ *
+ * The 2026-08-01 rebrand to Algoryq Learn re-authored `--brand-500`, `--brand-600`,
+ * `--brand-soft` and `--accent-500` from the Algoryq Technologies identity (the logo's own
+ * gradient stops, algoryq.com). Nothing else on this file moved: the neutral ramp, the status
+ * colours and the radii are still the product's, byte for byte, because a rebrand is a brand
+ * change and not a licence to redraw a palette that has already passed an accessibility pass.
+ *
+ * This is the one edit-in-place this file has ever taken, and it is a debt, not a precedent.
+ * Until `packages/ui/src/styles/tokens.css` and the Figma `Color` collection carry the same
+ * four values, the product and this site render two different blues. The debt is listed here
+ * rather than in a ticket because this file is what the next person reads:
+ *
+ *   token           was (Akechi)   now (Algoryq Learn)   source
+ *   --brand-500     #5b5bd6        #1b5cd4               logo gradient, mid
+ *   --brand-600     #4a4ac4        #1450b8               logo gradient, dark stop
+ *   --brand-soft    #eef0fe        #e8f0fd               10% tint of brand-500
+ *   --accent-500    #12a594        #5f76fc               Algoryq "pulse", oklch(62% .2 272)
+ *
+ * Per-tenant branding already overwrites exactly these keys at runtime, which is the reason
+ * the blast radius is four lines and not four hundred.
+ *
  * **Last reconciled with Figma: 2026-07-26.** It had drifted, silently and in the direction
  * that matters: Figma's accessibility pass on 2026-07-23 darkened all three status colours and
  * this file kept the originals for three days, so every error message in the product was
@@ -30,10 +54,26 @@
  */
 
 :root {
-  --brand-500: #5b5bd6;
-  --brand-600: #4a4ac4;
-  --brand-soft: #eef0fe;
-  --accent-500: #12a594;
+  /*
+   * Brand: the Algoryq blue, taken off the mark itself.
+   *
+   * --brand-500 is the one token on this file that has to survive both jobs — it is the link
+   * colour AND the primary button fill under white text — so both readings are the same
+   * number and both are measured: 5.95:1 on --surface, 5.81:1 on --surface-bg, 5.5:1 on
+   * --surface-muted. The logo's own mid stop (#2E7BE8) measures 4.09:1 and was rejected for
+   * exactly that reason; #1b5cd4 is the same hue two steps down, and it clears the floor on
+   * every surface a link can land on. src/test/contrast.spec.ts holds all of this.
+   */
+  --brand-500: #1b5cd4;
+  --brand-600: #1450b8;
+  --brand-soft: #e8f0fd;
+  /*
+   * The accent is a FILL and only a fill — 3.83:1 on white. That is not an oversight; the
+   * contrast spec asserts it fails, so that nobody reaches for it to set words. The legible
+   * sibling is --mk-accent-text in the marketing layer, the same distinction the status
+   * colours draw below.
+   */
+  --accent-500: #5f76fc;
 
   /*
    * Status colours, synced from the Figma Color collection 2026-07-26.
@@ -99,10 +139,15 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --brand-500: #7c7ce8;
-    --brand-600: #6a6adb;
-    --brand-soft: #26263a;
-    --accent-500: #2cc0ae;
+    /*
+     * On dark the ramp inverts: --brand-500 becomes the logo gradient's LIGHT stop, because
+     * here it is light-on-dark as a link and dark-on-light as a button fill (--text-inverse
+     * is #17171c in this theme). #7fb3f0 is the literal top stop of the mark's gradient.
+     */
+    --brand-500: #7fb3f0;
+    --brand-600: #5f9ae8;
+    --brand-soft: #16233a;
+    --accent-500: #8fa2ff;
 
     --success: #3fbe73;
     --warning: #f0ba55;
@@ -129,10 +174,10 @@
  */
 :root[data-theme='light'] {
   color-scheme: light;
-  --brand-500: #5b5bd6;
-  --brand-600: #4a4ac4;
-  --brand-soft: #eef0fe;
-  --accent-500: #12a594;
+  --brand-500: #1b5cd4;
+  --brand-600: #1450b8;
+  --brand-soft: #e8f0fd;
+  --accent-500: #5f76fc;
   --success: #247a46;
   --warning: #8d671d;
   --danger: #bd3333;
@@ -150,10 +195,10 @@
 
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --brand-500: #7c7ce8;
-  --brand-600: #6a6adb;
-  --brand-soft: #26263a;
-  --accent-500: #2cc0ae;
+  --brand-500: #7fb3f0;
+  --brand-600: #5f9ae8;
+  --brand-soft: #16233a;
+  --accent-500: #8fa2ff;
   --success: #3fbe73;
   --warning: #f0ba55;
   --danger: #f27777;

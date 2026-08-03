@@ -7,13 +7,13 @@
 The site needs one form. The usual options are a form service (Formspree, HubSpot), an email
 handoff, or a small database on the marketing side.
 
-Akechi's CRM module already ships a hardened public capture endpoint:
+Algoryq Learn's CRM module already ships a hardened public capture endpoint:
 `POST /public/institutes/:slug/enquiries` — the module's only unauthenticated write, deliberately
 scoped to what a stranger may decide.
 
 ## Decision
 
-`/api/lead` on the website forwards to that endpoint against our own tenant (`AKECHI_TENANT_SLUG`).
+`/api/lead` on the website forwards to that endpoint against our own tenant (`ALGORYQ_TENANT_SLUG`).
 **Our marketing leads land on our own product's admissions board.** Nothing is stored on the
 website.
 

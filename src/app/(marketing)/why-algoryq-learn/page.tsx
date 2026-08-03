@@ -11,9 +11,9 @@ import { pageMeta } from '../../../config/seo';
 import { quickComparison, toolStack } from '../../../content/lifecycle';
 import { breadcrumbJsonLd, jsonLd } from '../../../lib/json-ld';
 
-export const metadata: Metadata = pageMeta('/why-akechi');
+export const metadata: Metadata = pageMeta('/why-algoryq-learn');
 
-const TRAIL = [{ href: '/why-akechi', label: 'Why Akechi' }];
+const TRAIL = [{ href: '/why-algoryq-learn', label: 'Why Algoryq Learn' }];
 
 export default function WhyPage() {
   return (
@@ -63,8 +63,8 @@ export default function WhyPage() {
           </Lead>
           <div className="mt-8">
             <Table
-              caption="Each job an institute does, and where it lives with Akechi"
-              head={['The job', 'Today', 'With Akechi']}
+              caption="Each job an institute does, and where it lives with Algoryq Learn"
+              head={['The job', 'Today', 'With Algoryq Learn']}
             >
               {toolStack.map((row) => (
                 <Tr key={row.job}>
@@ -72,7 +72,7 @@ export default function WhyPage() {
                   <Td>{row.today}</Td>
                   <Td>
                     <Link href={row.href as Route} className="text-link underline underline-offset-4">
-                      {row.withAkechi}
+                      {row.withAlgoryq}
                     </Link>
                   </Td>
                 </Tr>
@@ -106,13 +106,13 @@ export default function WhyPage() {
           </Heading>
           <div className="mt-8">
             <Table
-              caption="Akechi compared with Moodle and Google Classroom on six capabilities"
-              head={['Capability', 'Akechi', 'Moodle', 'Google Classroom']}
+              caption="Algoryq Learn compared with Moodle and Google Classroom on six capabilities"
+              head={['Capability', 'Algoryq Learn', 'Moodle', 'Google Classroom']}
             >
               {quickComparison.map((row) => (
                 <Tr key={row.capability}>
                   <Td header>{row.capability}</Td>
-                  <Td className="text-fg">{row.akechi}</Td>
+                  <Td className="text-fg">{row.algoryq}</Td>
                   <Td>{row.moodle}</Td>
                   <Td>{row.classroom}</Td>
                 </Tr>

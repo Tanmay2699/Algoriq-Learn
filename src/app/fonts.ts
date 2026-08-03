@@ -1,8 +1,11 @@
 import localFont from 'next/font/local';
 
 /**
- * Self-hosted, variable, latin-subset. Two files, 115 KB, served from our own origin —
- * a font CDN would be a third-party origin and the CSP forbids one (ADR 0007).
+ * Self-hosted, variable, latin-subset. Two files, 70 KB, served from our own origin —
+ * a font CDN would be a third-party origin and the CSP forbids one (ADR 0007). The woff2s
+ * were fetched once, at author time, and are committed here; nothing resolves a font host
+ * at build time or at runtime, which is what makes the CSP claim checkable rather than
+ * aspirational.
  *
  * `next/font/local` is used rather than a hand-written @font-face for one specific reason:
  * `adjustFontFallback` reads the real metrics out of the woff2 and emits a metric-matched
@@ -24,19 +27,25 @@ export const inter = localFont({
 });
 
 /**
- * Fraunces, display only (≥40px — docs/05 §3.1, ADR 0003).
+ * Space Grotesk, display only (≥40px — docs/05 §3.1, ADR 0010).
  *
- * The file is the `opsz,wght@9..144,300..700` cut, so SOFT and WONK sit at their defaults of
- * 0: this is the clean high-contrast Scotch Roman, not the wonky specimen. `font-optical-sizing`
- * is left at `auto`, which is what makes large type look drawn rather than scaled.
+ * The face the parent brand sets its own display type in, which is the whole reason it is
+ * here: a visitor arriving from algoryq.com should not have to be told the two sites are the
+ * same company. The `wght@300..700` variable cut, latin subset, 22 KB — 45 KB less than the
+ * Fraunces it replaced, so the rebrand paid for itself against the font budget in docs/13 §2.
+ *
+ * Its quirks are the point at display size: the flat-sided `o`, the squared bowls and the
+ * single-storey `a` are what stop a geometric grotesque from reading as Helvetica at 6.5rem.
+ * At body size they would read as noise, which is why this is a display face and Inter still
+ * sets everything under 40px.
  */
-export const fraunces = localFont({
-  src: './fonts/fraunces-latin.woff2',
-  variable: '--font-fraunces',
+export const grotesk = localFont({
+  src: './fonts/space-grotesk-latin.woff2',
+  variable: '--font-grotesk',
   display: 'swap',
   weight: '300 700',
   style: 'normal',
-  adjustFontFallback: 'Times New Roman',
+  adjustFontFallback: 'Arial',
   preload: true,
 });
 
@@ -46,4 +55,4 @@ export const fraunces = localFont({
  * everywhere and costs zero bytes. Shipping a 31 KB JetBrains Mono to set a dozen labels
  * would have put the font budget 25% over for no legibility gain.
  */
-export const fontVariables = `${inter.variable} ${fraunces.variable}`;
+export const fontVariables = `${inter.variable} ${grotesk.variable}`;

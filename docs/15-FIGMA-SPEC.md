@@ -10,7 +10,7 @@ developer annotations — and how it stays in sync with both the code and the pr
 | File | Key | Contains | Owner |
 |---|---|---|---|
 | **AkechiLMS (Community)** | `VYhP6sBZKcJkjJvtMuvNAQ` | The **product**: foundations, ~28 desktop + ~13 mobile screens, component library, states, accessibility, prototype | Product design |
-| **Akechi — Website** | *(to be created, W1.9)* | This site | Marketing design |
+| **Algoryq Learn — Website** | *(to be created, W1.9)* | This site | Marketing design |
 
 A **separate file**, with the product file **linked as a library**. Two reasons:
 
@@ -87,14 +87,14 @@ a handoff conversation is unambiguous:
 `Eyebrow` · `Mono` · plus the product's inherited `Heading/*` and `Body/*` for anything rendered
 inside a product frame.
 
-**Fraunces must be installed** (Google Fonts) with the `opsz`, `wght`, `SOFT` and `WONK` axes.
-Pin `SOFT: 0` and `WONK: 0` on every style — the wonky axis is charming and wrong for an
-institutional buyer. `opsz` is set to match the rendered size on each display style; this is the
-axis that makes large type look drawn rather than scaled, and forgetting it is the most common way
-a Fraunces headline looks slightly off.
+**Space Grotesk must be installed** (Google Fonts), variable, `wght 300–700`. It has one axis, so
+there is nothing to pin — which is a simplification over the Fraunces setup this replaced, where
+four axes had to be set correctly on every style. Every `Display/*` style is `wght 400`; the
+wordmark lockup is the one place it is used below 40px, at `wght 600`.
 
-If Fraunces is unavailable to a collaborator, the file's fallback is Georgia — visibly different, so
-the substitution is obvious rather than silent.
+If Space Grotesk is unavailable to a collaborator, the file's fallback is Arial — the same fallback
+`next/font/local` metric-matches against in code, so what Figma shows during a substitution is what
+a visitor sees during the font swap.
 
 ---
 

@@ -45,7 +45,7 @@ export const articles: Article[] = [
       { kind: 'h2', text: 'Move people first, and only people', id: 'people' },
       {
         kind: 'p',
-        text: 'People are the only thing everything else references. Import them before courses, before fees, before anything. Akechi imports people from CSV with a per-row error report rather than an all-or-nothing failure, so a bad phone number in row 400 does not lose you the other 399.',
+        text: 'People are the only thing everything else references. Import them before courses, before fees, before anything. Algoryq Learn imports people from CSV with a per-row error report rather than an all-or-nothing failure, so a bad phone number in row 400 does not lose you the other 399.',
       },
       {
         kind: 'p',
@@ -94,7 +94,7 @@ export const articles: Article[] = [
       { kind: 'h2', text: 'A permission is an act, not a person', id: 'permission' },
       {
         kind: 'p',
-        text: 'In Akechi a permission is a key like course.course.publish or finance.invoice.refund: module, resource, action. There are 272 of them, and each one has a description written for a school administrator rather than for an engineer, because the person choosing them is not a developer.',
+        text: 'In Algoryq Learn a permission is a key like course.course.publish or finance.invoice.refund: module, resource, action. There are 272 of them, and each one has a description written for a school administrator rather than for an engineer, because the person choosing them is not a developer.',
       },
       { kind: 'h2', text: 'A role is a named bundle of keys', id: 'role' },
       {
@@ -218,8 +218,8 @@ export const articles: Article[] = [
     ],
   },
   {
-    slug: 'self-hosting-akechi',
-    title: 'Self-hosting Akechi in an afternoon',
+    slug: 'self-hosting-algoryq-learn',
+    title: 'Self-hosting Algoryq Learn in an afternoon',
     description:
       'One compose file, three commands, no cloud account — and what you take on when you run it yourself.',
     tags: ['operations', 'security'],
@@ -275,7 +275,7 @@ pnpm --filter @akechi/api worker:dev`,
     body: [
       {
         kind: 'p',
-        text: 'No — Akechi installs to a home screen as a progressive web app. That is a trade, and here is both sides of it.',
+        text: 'No — Algoryq Learn installs to a home screen as a progressive web app. That is a trade, and here is both sides of it.',
       },
       { kind: 'h2', text: 'What we give up', id: 'lose' },
       {

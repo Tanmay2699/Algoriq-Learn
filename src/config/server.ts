@@ -20,5 +20,5 @@ export const server = {
   /** The product API. 127.0.0.1 rather than localhost — IPv6 resolution breaks container access. */
   apiUrl: process.env.API_URL ?? 'http://127.0.0.1:4000',
   /** Our own institute, on our own product: where an enquiry from /demo lands. */
-  tenantSlug: process.env.AKECHI_TENANT_SLUG ?? 'akechi',
+  tenantSlug: process.env.ALGORYQ_TENANT_SLUG ?? 'algoryq-learn',
 } as const;

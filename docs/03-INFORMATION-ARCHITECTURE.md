@@ -8,12 +8,12 @@ Every URL, the navigation that reaches it, and the crawl graph that ranks it.
 
 | Host | What it serves | Owned by |
 |---|---|---|
-| `akechi.com` | **This site.** Marketing, docs, trust, pricing. | `website/` |
-| `www.akechi.com` | 301 → apex | DNS |
-| `app.akechi.com` | The product. Sign-in and everything behind it. | `apps/web` |
-| `<slug>.akechi.com` | A tenant's product instance (resolution order: custom domain → subdomain → JWT claim) | `apps/web` |
-| `api.akechi.com` | The API. | `apps/api` |
-| `sandbox.akechi.com` | The public read-only demo institute | `apps/web`, seeded tenant |
+| `learn.algoryq.com` | **This site.** Marketing, docs, trust, pricing. | `website/` |
+| `www.learn.algoryq.com` | 301 → apex | DNS |
+| `app.learn.algoryq.com` | The product. Sign-in and everything behind it. | `apps/web` |
+| `<slug>.learn.algoryq.com` | A tenant's product instance (resolution order: custom domain → subdomain → JWT claim) | `apps/web` |
+| `api.learn.algoryq.com` | The API. | `apps/api` |
+| `sandbox.learn.algoryq.com` | The public read-only demo institute | `apps/web`, seeded tenant |
 | `<institute-domain>` | A tenant's own public CMS site (`/s/[slug]`) | `apps/web` |
 
 **Never blur these.** The most common IA mistake on a multi-tenant product's site is a marketing
@@ -60,7 +60,7 @@ opens in a new tab and looks like the product, because it *is* the product.
   /compare/google-classroom
   /compare/canvas
   /compare/spreadsheets-and-whatsapp
-/why-akechi                              Before / after, the tool-stack table, ROI
+/why-algoryq-learn                              Before / after, the tool-stack table, ROI
 /customers                               Renders "no case studies yet" until there are. Not linked in nav until non-empty.
 /resources                               Index
   /resources/[slug]                      6 articles at launch
@@ -74,7 +74,7 @@ opens in a new tab and looks like the product, because it *is* the product.
 /legal/acceptable-use
 /legal/security-policy
 /404  /500  /sitemap.xml  /robots.txt  /opensearch.xml
-/api/lead      (POST, node runtime)      → POST /public/institutes/akechi/enquiries
+/api/lead      (POST, node runtime)      → POST /public/institutes/algoryq-learn/enquiries
 /api/plans     (GET, cached 1h)          → GET  /public/plans
 /api/og/[...]  (GET, edge)               dynamic Open Graph images
 ```
@@ -104,7 +104,7 @@ are thirty).
 Sticky header, 64px desktop / 56px mobile, translucent over the hero, solid after 64px of scroll.
 
 ```
-[Akechi]  Product ▾   Solutions ▾   Pricing   Security   Developers   Resources ▾
+[Algoryq Learn]  Product ▾   Solutions ▾   Pricing   Security   Developers   Resources ▾
                                               [ Open sandbox ]  [ Book a walkthrough ]
 ```
 
@@ -196,7 +196,7 @@ cannot.
 | Pricing | Skilling academies | Self-hosting | Resources | Sub-processors |
 | Comparisons | Corporate L&D | Status *(v1.1)* | | DPA · Terms · Privacy |
 
-Base bar: wordmark · "© 2026 Akechi" · locale switcher (disabled with a tooltip until the second
+Base bar: wordmark · "© 2026 Algoryq Learn" · locale switcher (disabled with a tooltip until the second
 locale ships — a switcher with one option is a lie) · theme toggle · "This site sets no cookies"
 linking `/legal/cookies`.
 

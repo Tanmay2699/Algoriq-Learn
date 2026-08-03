@@ -1,6 +1,18 @@
 # ADR 0002 — Two-layer tokens: inherit the product's, add a marketing-only layer
 
-**Date:** 2026-07-31 · **Status:** Accepted
+**Date:** 2026-07-31 · **Status:** Accepted · **Amended by [ADR 0010](0010-algoryq-learn-brand-alignment.md) on 2026-08-01**
+
+> **Amendment: layer 1 is no longer byte-identical to upstream, and that is a tracked debt.**
+> This ADR says `tokens.product.css` is a vendored copy edited only in `packages/ui`. Four brand
+> tokens — `--brand-500`, `--brand-600`, `--brand-soft` and `--accent-500` — are now authored
+> *here*, because the rebrand originated on the marketing side and this repository cannot write to
+> the product monorepo. Until the product carries the same values, the two render different blues.
+> (The navy ink the rebrand also introduced is `--mk-ink-*`, layer 2, and carries no such debt.)
+>
+> The rest of the decision stands unchanged: neutrals and status tokens are still upstream's byte
+> for byte, layer 2 is still `--mk-*`-only, and the direction of authority is still product → site.
+> The four exceptions are listed in the header of `src/styles/tokens.product.css` and tracked in
+> `19-PROGRESS-TRACKER.md` §E.
 
 ## Context
 

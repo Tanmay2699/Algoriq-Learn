@@ -12,23 +12,23 @@ export const metadata: Metadata = pageMeta('/developers');
 const TRAIL = [{ href: '/developers', label: 'Developers' }];
 
 const CODE = {
-  auth: `curl https://api.akechi.com/v1/courses \\
-  -H "Authorization: Bearer $AKECHI_API_KEY" \\
+  auth: `curl https://api.learn.algoryq.com/v1/courses \\
+  -H "Authorization: Bearer $ALGORYQ_API_KEY" \\
   -H "X-Correlation-Id: $(uuidgen)"`,
   envelope: `{
   "data": [ { "id": "…", "title": "Data Structures" } ],
   "meta": { "page": 1, "pageSize": 20, "total": 43 }
 }`,
   error: `{
-  "type": "https://akechi.com/errors/forbidden",
+  "type": "https://learn.algoryq.com/errors/forbidden",
   "title": "You do not hold course.course.publish",
   "status": 403,
   "instance": "/v1/courses/42/publish"
 }`,
-  webhook: `POST https://your-endpoint.example.com/akechi
-X-Akechi-Signature: sha256=<hmac of the raw body>
-X-Akechi-Delivery: 01J2…
-X-Akechi-Event: enrollment.created`,
+  webhook: `POST https://your-endpoint.example.com/algoryq-learn
+X-Algoryq Learn-Signature: sha256=<hmac of the raw body>
+X-Algoryq Learn-Delivery: 01J2…
+X-Algoryq Learn-Event: enrollment.created`,
   selfhost: `docker compose up -d
 pnpm db:migrate && pnpm db:rls && pnpm db:seed
 pnpm --filter @akechi/api worker:dev`,
@@ -216,7 +216,7 @@ export default function DevelopersPage() {
             </div>
             <p className="mt-6">
               <Link
-                href="/resources/self-hosting-akechi"
+                href="/resources/self-hosting-algoryq-learn"
                 className="text-mk-body text-link underline underline-offset-4"
               >
                 The full self-hosting guide

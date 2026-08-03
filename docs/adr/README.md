@@ -1,4 +1,4 @@
-# Architecture Decision Records — Akechi Website
+# Architecture Decision Records — Algoryq Learn Website
 
 Decisions that would otherwise surprise a new engineer or designer, and that someone will
 otherwise re-litigate under launch pressure.
@@ -6,14 +6,15 @@ otherwise re-litigate under launch pressure.
 | # | Decision | Status |
 |---|---|---|
 | [0001](0001-separate-static-marketing-app.md) | The marketing site is a separate static app, not a route group in `apps/web` | Accepted |
-| [0002](0002-two-layer-token-system.md) | Two-layer tokens: inherit the product's, add a marketing-only `--mk-*` layer | Accepted |
-| [0003](0003-serif-display-typeface.md) | Fraunces for display ≥40px, Inter for everything else | Accepted, with a kill criterion |
+| [0002](0002-two-layer-token-system.md) | Two-layer tokens: inherit the product's, add a marketing-only `--mk-*` layer | Accepted — amended by 0010 |
+| [0003](0003-serif-display-typeface.md) | Fraunces for display ≥40px, Inter for everything else | **Superseded by 0010** |
 | [0004](0004-no-unearned-social-proof.md) | No unearned social proof; "Verifiable by" replaces "Trusted by" | Accepted |
 | [0005](0005-mdx-in-repo-not-a-cms.md) | Content is MDX in the repository, not a headless CMS | Accepted |
 | [0006](0006-lead-form-posts-to-the-products-crm.md) | The demo form posts to the product's own web-to-lead endpoint | Accepted |
 | [0007](0007-zero-third-party-origins.md) | Zero third-party origins; cookieless self-hosted analytics | Accepted |
 | [0008](0008-dom-recreations-not-screenshots.md) | Product surfaces are DOM recreations, not screenshots | Accepted — supersedes `09` §2 |
 | [0009](0009-csp-allows-inline-script.md) | The CSP allows inline script, and says so | Accepted — amends 0007 |
+| [0010](0010-algoryq-learn-brand-alignment.md) | Algoryq Learn is a child brand of Algoryq Technologies: parent mark, Space Grotesk, navy ink | Accepted — supersedes 0003, amends 0002 |
 
 ## Writing a new one
 

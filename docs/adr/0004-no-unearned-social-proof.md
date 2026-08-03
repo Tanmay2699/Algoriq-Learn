@@ -5,7 +5,7 @@
 ## Context
 
 The originating brief asks for customer logos, testimonials, awards, case studies, success metrics
-and compliance badges. Akechi has **none of them**: the product is feature-complete against its
+and compliance badges. Algoryq Learn has **none of them**: the product is feature-complete against its
 roadmap but has not been deployed to a paying customer.
 
 The product's own first working rule is *no fabricated data, ever*, and its UI ships an honest

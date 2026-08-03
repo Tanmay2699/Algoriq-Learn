@@ -106,12 +106,23 @@ export function SiteHeader() {
         <Link
           href="/"
           className="shrink-0 rounded focus-visible:outline-2 focus-visible:outline-offset-4"
-          aria-label="Akechi — home"
+          aria-label="Algoryq Learn — home"
         >
           <Wordmark />
         </Link>
 
-        <div ref={navRef} className="hidden flex-1 items-center gap-1 lg:flex">
+        {/*
+          The desktop nav appears at `xl` (1280), not `lg` (1024) — measured, not preferred.
+
+          The bar wants 1212px: a 175px wordmark, a 583px six-item nav and 226px of controls,
+          plus 48px of gaps. `.container-mk`'s gutter is fluid, so the content box is 964px at
+          1024 and 1212px at 1280. At `lg` the row is therefore ~248px over budget, and because
+          `globals.css` sets `min-width: 0` on flex children inside the container, nothing
+          announces that: the `flex-1` nav simply shrinks and its links slide under the CTAs.
+          A collision that renders is worse than a hamburger that works, so below 1280 the nav
+          goes in the sheet. docs/06 §3.1 records the number.
+        */}
+        <div ref={navRef} className="hidden flex-1 items-center gap-1 xl:flex">
           {headerNav.map((item) =>
             item.menu !== undefined ? (
               <MenuTrigger
@@ -137,10 +148,22 @@ export function SiteHeader() {
 
         <div className="ms-auto flex items-center gap-2">
           <ThemeToggle />
-          <CTA href={site.sandboxUrl} variant="secondary" external className="hidden sm:inline-flex">
-            Open the sandbox
+          {/*
+            "Sandbox", not "Open the sandbox" — this is the one place on the site that abbreviates
+            it. The full label is 173px against this one's 102px, and those 71px are the whole
+            difference between the nav clearing the CTAs at 1280 and colliding with them. The
+            verb survives everywhere it has room to: the hero, the Product mega-menu and the
+            mobile sheet all still say "Open the sandbox". The accessible name is not abbreviated
+            either — `external` appends "(opens in a new tab)".
+
+            Both CTAs wait for `md` rather than `sm`: at 640 the wordmark, the controls and the
+            Menu button come to 612px inside a 592px box, which is the same overflow one
+            breakpoint down.
+          */}
+          <CTA href={site.sandboxUrl} variant="secondary" external className="hidden md:inline-flex">
+            Sandbox
           </CTA>
-          <CTA href="/demo" className="hidden sm:inline-flex">
+          <CTA href="/demo" className="hidden md:inline-flex">
             Book a walkthrough
           </CTA>
 
@@ -149,7 +172,7 @@ export function SiteHeader() {
             aria-expanded={sheet}
             aria-controls="mobile-nav"
             onClick={() => setSheet(!sheet)}
-            className="inline-flex h-11 min-w-[44px] items-center justify-center rounded-[--radius] border border-border px-3 text-mk-body-sm lg:hidden"
+            className="inline-flex h-11 min-w-[44px] items-center justify-center rounded-[--radius] border border-border px-3 text-mk-body-sm xl:hidden"
           >
             {sheet ? 'Close' : 'Menu'}
           </button>
@@ -160,7 +183,7 @@ export function SiteHeader() {
         <div
           onMouseEnter={() => closeTimer.current && clearTimeout(closeTimer.current)}
           onMouseLeave={closeWithIntent}
-          className="hidden border-t border-border bg-surface lg:block"
+          className="hidden border-t border-border bg-surface xl:block"
         >
           <MegaMenu menuKey={open} />
         </div>
@@ -337,7 +360,7 @@ function MobileSheet({ onClose }: { onClose: () => void }) {
     <div
       ref={ref}
       id="mobile-nav"
-      className="fixed inset-x-0 bottom-0 top-16 z-50 overflow-y-auto overscroll-contain bg-surface lg:hidden"
+      className="fixed inset-x-0 bottom-0 top-16 z-50 overflow-y-auto overscroll-contain bg-surface xl:hidden"
     >
       <nav aria-label="Site" className="container-mk py-6">
         {groups.map((group) => (

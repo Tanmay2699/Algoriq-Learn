@@ -41,7 +41,7 @@ before anyone is under pressure.
 - [ ] Lighthouse median-of-5 on 10 routes: perf ≥ 98, a11y 100, best practices 100, SEO 100
 - [ ] **Zero third-party requests** — Playwright assertion green
 - [ ] First-load JS: homepage ≤ 90 KB, others ≤ 70 KB
-- [ ] Fonts: 3 files, ≤ 118 KB, self-hosted, metric-matched, CLS from swap = 0
+- [ ] Fonts: 2 files, 70 KB (budget ≤ 118 KB), self-hosted, metric-matched, CLS from swap = 0
 - [ ] CLS ≤ 0.02 on every route in the lab; 0.00 on the homepage
 - [ ] LCP element is the H1 text node, verified in a trace
 - [ ] No long task > 50ms during a full-page scroll on the reference device (`13` §8)

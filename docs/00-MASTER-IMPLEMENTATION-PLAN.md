@@ -1,6 +1,6 @@
-# 00 — MASTER IMPLEMENTATION PLAN · Akechi Website
+# 00 — MASTER IMPLEMENTATION PLAN · Algoryq Learn Website
 
-**The single source of truth for building `akechi.com`.** Every other document in `docs/`
+**The single source of truth for building `learn.algoryq.com`.** Every other document in `docs/`
 expands one section of this file.
 Version 1.0 · written 2026-07-31 · Status: **specified, not built**
 
@@ -36,7 +36,7 @@ so that the site and the software are visibly the same object.
 
 ### Why it is different from every other LMS website
 
-| Everyone else | Akechi |
+| Everyone else | Algoryq Learn |
 |---|---|
 | Stock photography of smiling students | The actual product, captured from a running instance, dated |
 | "Trusted by 10,000+ institutions" | A **Verifiable by** band: things the visitor can check *right now* — the API reference, a live sandbox, a public certificate verifier, the accessibility statement, `docker compose up` |
@@ -48,7 +48,7 @@ so that the site and the software are visibly the same object.
 ### The three things the homepage must prove
 
 1. **It is one system, not five.** The institute currently runs Moodle + Zoom + Google Forms +
-   Excel + WhatsApp + a payment link (`docs/01-BRD.md` §1 in the product repo). Akechi is the
+   Excel + WhatsApp + a payment link (`docs/01-BRD.md` §1 in the product repo). Algoryq Learn is the
    system of record that replaces the set.
 2. **It is safe to buy.** Tenant isolation is in the database, not in a `WHERE` clause somebody
    remembered. Authorization is deny-by-default and CI-enforced. Every mutation is audited on a
@@ -121,7 +121,7 @@ Extracted from the codebase on 2026-07-31. Full detail in `01-PRODUCT-TRUTH.md`.
 ## 4. Architecture of the site
 
 ```
-akechi.com  ──────────────────────────────────────────────┐
+learn.algoryq.com  ──────────────────────────────────────────────┐
   Next.js 15 App Router · TypeScript strict · Tailwind    │
   Static (SSG) for 48 of 51 routes                        │
                                                           │
@@ -134,7 +134,7 @@ akechi.com  ──────────────────────�
   ├─ /compare/*        sourced, dated, factual             │
   ├─ /resources/*      MDX articles                        │
   └─ /demo             the only form on the site           │──► POST /public/institutes/
-                                                          │      akechi/enquiries  (exists)
+                                                          │      algoryq-learn/enquiries  (exists)
   3 server routes: /api/lead · /api/plans · /api/og        │
   0 third-party origins. CSP: default-src 'self'.          │
 └──────────────────────────────────────────────────────────┘
@@ -200,9 +200,9 @@ the reason most SaaS sites drift is that page 3 invents a card style.
 
 | # | Task | Output | Doc |
 |---|---|---|---|
-| W1.1 | Add `- 'website'` to `pnpm-workspace.yaml`; scaffold `@akechi/website` | app boots on :3001, imports `@akechi/ui` | 14 §2 |
+| W1.1 | Add `- 'website'` to `pnpm-workspace.yaml`; scaffold `@algoryq/learn-website` | app boots on :3001, imports `@akechi/ui` | 14 §2 |
 | W1.2 | Token layer 2 (`--mk-*`): display type, section rhythm, gradients, glass, wide grid | `tokens.marketing.css` + Tailwind extension | 05 §2–4 |
-| W1.3 | Self-host and subset fonts (Inter var, Fraunces var display, JetBrains Mono) | 3 woff2, ≤ 120 KB total, 2 preloaded | 05 §3, 13 §4 |
+| W1.3 | Self-host and subset fonts (Inter var, Space Grotesk var display) | 2 woff2, 70 KB total, both preloaded | 05 §3, 13 §4 |
 | W1.4 | Primitives: Button, Link, Eyebrow, Heading, Prose, Card, Badge, Reveal, Marquee, Tabs, Accordion, Dialog, Field, Table | 14 components, Storybook, axe-clean | 06 §2 |
 | W1.5 | Layout shell: header + mega-menu, footer, skip link, theme toggle, sticky CTA | shell renders at 360→1920 | 06 §3 |
 | W1.6 | Motion primitives: `Reveal`, `Stagger`, `Parallax`, `Counter`, `useReducedMotion` | all four have a reduced-motion rendering | 07 |
@@ -256,7 +256,7 @@ date.
 | # | Task | Output | Doc |
 |---|---|---|---|
 | W4.1 | ROI calculator — visitor's own inputs, every assumption visible and editable, formula shown | interactive, no defaults that flatter | 10 §6 |
-| W4.2 | Before/After — the real tool-stack table from the product BRD | section + `/why-akechi` | 04 §14 |
+| W4.2 | Before/After — the real tool-stack table from the product BRD | section + `/why-algoryq-learn` | 04 §14 |
 | W4.3 | `/resources` + first 6 articles (migration, RBAC for schools, assessment integrity, accessibility procurement, self-hosting, admissions funnel) | index + 6 MDX | 11 §6 |
 | W4.4 | Motion pass: scroll choreography, section transitions, sticky CTA, progress rail | within motion budget | 07 §6 |
 | W4.5 | Dark mode pass across every page | parity, contrast re-measured | 05 §5 |
@@ -325,7 +325,7 @@ Nothing on the site changes to accommodate these; the slots are already there an
 | Pressure to add fake logos "just for the launch" | High | Fatal to credibility | The components cannot render them; `claims:check` fails CI; this is written down here so the decision is visible |
 | Captures go stale as the product ships | High | Medium | `captures.json` carries a date; a capture older than 90 days fails `claims:check` with a warning, 180 days with an error |
 | The hero role-switcher becomes the LCP element | Medium | High | The headline is the LCP element by construction; the frame is `content-visibility: auto` and loads after first paint (`07` §5) |
-| Serif display face reads as "old" to a coaching-institute buyer | Medium | Medium | Display face is used ≥40px only; A/B the hero lockup in W4; ADR 0003 records the fallback |
+| Display face reads as generic against competitors also set in a grotesque | Medium | Low | Retired as a risk by ADR 0010: the face is the parent brand's, so matching the category matters less than matching `algoryq.com`. Display stays ≥40px only, where Space Grotesk's own quirks separate it from a neutral sans |
 | Fluid type breaks at 320px or at 4K | Medium | Medium | Every clamp has tested bounds; the device matrix includes 320 and 2560 |
 | Copy over-claims because the writer read the design docs, not the code | High | High | `01-PRODUCT-TRUTH.md` is the only permitted source for capability claims; `17` §2 makes it a review step |
 | Product changes `POST /public/institutes/:slug/enquiries` | Low | High | The contract is in `@akechi/contracts`; the site's e2e hits the real endpoint nightly |

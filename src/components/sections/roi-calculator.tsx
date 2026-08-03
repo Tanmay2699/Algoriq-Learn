@@ -150,13 +150,13 @@ export function RoiCalculator() {
                   sub={`per year ≈ ${formatMoney(result.reconcileCostMinor, 'INR')}`}
                 />
                 <Row
-                  label={`Akechi at ${parsed.learners.toLocaleString('en-IN')} learners`}
+                  label={`Algoryq Learn at ${parsed.learners.toLocaleString('en-IN')} learners`}
                   value={
                     result.plan && result.plan.priceMinor === 0 && result.plan.key === 'starter'
                       ? 'Free'
                       : result.plan?.maxSeats === null
                         ? 'Negotiated'
-                        : formatMoney(result.akechiAnnualMinor, 'INR')
+                        : formatMoney(result.algoryqAnnualMinor, 'INR')
                   }
                   sub={result.plan ? `${result.plan.name} plan, per year` : ''}
                 />

@@ -28,7 +28,7 @@ export default function CustomersPage() {
       <PageHero
         eyebrow="Customers"
         title="We have none yet."
-        lead="Akechi is feature-complete against its roadmap and has not shipped to a paying customer. This page will fill in when there is something real to put on it — and not before."
+        lead="Algoryq Learn is feature-complete against its roadmap and has not shipped to a paying customer. This page will fill in when there is something real to put on it — and not before."
         trail={TRAIL}
       />
 
@@ -85,7 +85,7 @@ export default function CustomersPage() {
               , with its open items dated.
             </li>
             <li>
-              <Link href="/resources/self-hosting-akechi" className="text-link underline underline-offset-4">
+              <Link href="/resources/self-hosting-algoryq-learn" className="text-link underline underline-offset-4">
                 How to run the whole platform yourself
               </Link>
               , with no account of any kind.

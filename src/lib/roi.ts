@@ -25,7 +25,7 @@ export interface RoiResult {
   hoursAnnual: number;
   reconcileCostMinor: number;
   plan: Plan | undefined;
-  akechiAnnualMinor: number;
+  algoryqAnnualMinor: number;
   /** Undefined when the plan is negotiated — there is no honest number to show. */
   netMinor: number | undefined;
 }
@@ -43,7 +43,7 @@ export function computeRoi(inputs: RoiInputs): RoiResult {
   const reconcileCostMinor = Math.round(hoursAnnual * inputs.hourlyCost) * 100;
 
   const plan = planFor(inputs.learners);
-  const akechiAnnualMinor = plan ? plan.priceMinor * (plan.interval === 'MONTHLY' ? 12 : 1) : 0;
+  const algoryqAnnualMinor = plan ? plan.priceMinor * (plan.interval === 'MONTHLY' ? 12 : 1) : 0;
 
   // A negotiated plan has no published price, so there is nothing to subtract and we say so
   // rather than printing a number that looks derived and is not.
@@ -54,8 +54,8 @@ export function computeRoi(inputs: RoiInputs): RoiResult {
     hoursAnnual,
     reconcileCostMinor,
     plan,
-    akechiAnnualMinor,
-    netMinor: negotiated ? undefined : toolsAnnualMinor + reconcileCostMinor - akechiAnnualMinor,
+    algoryqAnnualMinor,
+    netMinor: negotiated ? undefined : toolsAnnualMinor + reconcileCostMinor - algoryqAnnualMinor,
   };
 }
 
@@ -68,5 +68,5 @@ export function roiIsReady(inputs: RoiInputs): boolean {
 export const ROI_FORMULA = `toolsAnnual      = monthlyToolSpend × 12
 hoursAnnual      = hoursPerWeek × 52
 reconcileCost    = hoursAnnual × loadedHourlyCost
-akechiAnnual     = plan(learners).price × 12      (Starter is ₹0)
-difference       = toolsAnnual + reconcileCost − akechiAnnual`;
+algoryqAnnual     = plan(learners).price × 12      (Starter is ₹0)
+difference       = toolsAnnual + reconcileCost − algoryqAnnual`;

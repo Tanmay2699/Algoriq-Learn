@@ -45,7 +45,7 @@ that needs room appears compressed here and in full on the linked page.
 |---:|---|:--:|---|---|
 | 1 | Hero | I | Full | — |
 | 2 | Trusted by | I | **Verifiable by** band — 6 checkable proofs (§4.6) | `/trust` |
-| 3 | Pain points | II | Full | `/why-akechi` |
+| 3 | Pain points | II | Full | `/why-algoryq-learn` |
 | 4 | Why current CRMs/LMSs fail | II | Full | `/compare/*` |
 | 5 | Why our product exists | III | Full | `/about` |
 | 6 | Product introduction | III | Full | `/product` |
@@ -73,8 +73,8 @@ that needs room appears compressed here and in full on the linked page.
 | 28 | Case studies | XI | **Slot, empty at launch** — renders nothing | `/customers` |
 | 29 | Success stories | XI | Same slot | `/customers` |
 | 30 | Testimonials | XI | **Slot, empty at launch** — renders nothing | — |
-| 31 | ROI calculator | XI | Full, interactive, formula visible | `/why-akechi#roi` |
-| 32 | Before vs after | XI | Full — the real tool-stack table | `/why-akechi` |
+| 31 | ROI calculator | XI | Full, interactive, formula visible | `/why-algoryq-learn#roi` |
+| 32 | Before vs after | XI | Full — the real tool-stack table | `/why-algoryq-learn` |
 | 33 | Feature comparison | XI | Compressed — 6 rows | `/compare/*` |
 | 34 | Pricing preview | XII | Full — 3 real plans | `/pricing` |
 | 35 | FAQ | XII | 8 questions | Everywhere |
@@ -155,11 +155,11 @@ eyebrow    The institute operating system
 H1         From the first enquiry
            to the final certificate.
 
-lead       Akechi is the system of record for an institute — admissions, teaching,
+lead       Algoryq Learn is the system of record for an institute — admissions, teaching,
            assessment, fees, staff and outcomes in one platform, where every action
            carries a permission and an audit trail.
 
-CTA-1      Open the live sandbox            → sandbox.akechi.com (new tab)
+CTA-1      Open the live sandbox            → sandbox.learn.algoryq.com (new tab)
 CTA-2      Book a 20-minute walkthrough     → /demo
 
 micro      No signup for the sandbox. It is a real institute with seeded data,
@@ -168,7 +168,7 @@ micro      No signup for the sandbox. It is a real institute with seeded data,
 switcher   I am a…  [ Owner ] [ Teacher ] [ Student ] [ Parent ]
 ```
 
-**H1 typography:** `--mk-display-1`, Fraunces variable, `opsz 96`, weight 400, tracking `-0.03em`,
+**H1 typography:** `--mk-display-1`, Space Grotesk variable, weight 400, tracking `-0.03em`,
 leading `0.95`. Line breaks are hard-set at ≥1024px via `<span class="block">` so the ragging is
 designed, not accidental; below that, natural wrap with `text-wrap: balance`.
 
@@ -298,7 +298,7 @@ H2         One database.
            One login.
            One version of the truth.
 
-body       Akechi is a single backend, a single PostgreSQL database and a single
+body       Algoryq Learn is a single backend, a single PostgreSQL database and a single
            frontend. Thirty-one modules share one tenant boundary, one permission
            catalog and one audit log. A learner's enquiry, enrolment, attendance,
            marks, fees and certificate are rows that can see each other.
@@ -489,7 +489,7 @@ the dataviz colour ramp.
 A device cluster — desktop, tablet, phone — each showing a real capture at that breakpoint, not one
 image scaled three ways. Under it:
 
-> **Installable, not downloadable.** Akechi is a PWA: it installs to a home screen without an app
+> **Installable, not downloadable.** Algoryq Learn is a PWA: it installs to a home screen without an app
 > store, updates without a review queue, and is designed at 360 pixels first. Progress captured
 > without a connection is queued on the device and replayed in order when the signal returns —
 > idempotently, so a double-replay changes nothing.
@@ -620,7 +620,7 @@ one honest band — **not** a "coming soon" (which is a promise), but a standing
 ```
 H3    We have no case studies yet.
 
-body  Akechi has not shipped to a paying customer. We are taking three design
+body  Algoryq Learn has not shipped to a paying customer. We are taking three design
       partners: the Growth plan free for twelve months, direct access to the
       people who built it, and a named case study at ninety days — yours to
       approve, or to refuse.
@@ -637,7 +637,7 @@ layout was designed to work either way — that is a build requirement, not an a
 The tool-stack table from Act II, re-rendered with the right-hand column replaced: *"What it costs
 you"* becomes *"Where it lives now"*, each pointing at a module. Same rows, same order — the visual
 rhyme is the argument. On desktop the two states cross-fade under a two-state toggle
-(`Today` / `With Akechi`); on mobile they stack as two tables.
+(`Today` / `With Algoryq Learn`); on mobile they stack as two tables.
 
 ### 14.3 ROI calculator (beat 31)
 
@@ -655,7 +655,7 @@ rhyme is the argument. On desktop the two states cross-fade under a two-state to
 Inputs   learners · staff · branches · monthly spend on the tools you would retire
          · hours/week spent reconciling · loaded hourly cost of the person doing it
 Output   Tools replaced: ₹X / year   ·   Reconciliation time: Y hours / year (≈ ₹Z)
-         Akechi at your size: <plan> — ₹P / year
+         Algoryq Learn at your size: <plan> — ₹P / year
          Net: ₹(X + Z − P)
 Footnote The formula, printed. And: "This is arithmetic on your numbers, not a study."
 ```

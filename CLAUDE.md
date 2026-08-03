@@ -1,11 +1,11 @@
-# CLAUDE.md — Akechi Website
+# CLAUDE.md — Algoryq Learn Website
 
 Instructions for any AI agent (or new engineer) working in this repository.
 **Read `docs/00-MASTER-IMPLEMENTATION-PLAN.md` first**, then this file for working rules.
 
-> ⚠️ **Scope boundary.** This repository is the **public marketing website** for the Akechi
-> product (`akechi.com`). It is *not* the product (`apps/web` in the product monorepo,
-> `app.akechi.com`) and *not* a tenant's own public site (`/s/[slug]`, the CMS module E21).
+> ⚠️ **Scope boundary.** This repository is the **public marketing website** for the Algoryq Learn
+> product (`learn.algoryq.com`). It is *not* the product (`apps/web` in the product monorepo,
+> `app.learn.algoryq.com`) and *not* a tenant's own public site (`/s/[slug]`, the CMS module E21).
 > Three different things that all render HTML. Know which one you are in before you touch a file.
 >
 > **It is also a split-out of a folder that used to live inside the product monorepo**, at
@@ -19,14 +19,14 @@ Instructions for any AI agent (or new engineer) working in this repository.
 
 ## The site in one paragraph
 
-A statically-rendered Next.js 15 marketing site that sells **Akechi** — a multi-tenant,
+A statically-rendered Next.js 15 marketing site that sells **Algoryq Learn** — a multi-tenant,
 AI-first enterprise Learning Management System — to institute owners, academic heads, IT/security
 reviewers and procurement, without a sales call. It is built from the *same design tokens as the
 product*, so what a visitor sees is what they get. Every claim on it is traceable to a file in
-this repository; nothing on it is invented. Target: a decision-maker understands what Akechi is,
+this repository; nothing on it is invented. Target: a decision-maker understands what Algoryq Learn is,
 whether it fits, whether it is safe, and what it costs — in one scroll.
 
-**A note on the brief.** The originating brief was written for a CRM. Akechi is an LMS that
+**A note on the brief.** The originating brief was written for a CRM. Algoryq Learn is an LMS that
 *contains* a CRM & Admissions module (`apps/api/src/modules/crm`, 32 routes, 20 permission keys).
 Every requirement in that brief has been mapped onto the real product — see
 [`docs/04-HOMEPAGE-NARRATIVE.md` §2](docs/04-HOMEPAGE-NARRATIVE.md) for the 37-beat coverage
@@ -46,7 +46,7 @@ know the custom font scale and silently deletes it (see `docs/19` §D.1).
 **Motion** CSS + the Web Animations API + IntersectionObserver. No animation library in v1.
 **Analytics** self-hosted, cookieless (ADR 0007) — no third-party script anywhere
 **Quality** Vitest (unit) · Playwright + axe (e2e + a11y) · Lighthouse CI · ESLint + Prettier
-**Hosting** Vercel (the org already has `akechi-lms`); Azure Static Web Apps is the documented swap
+**Hosting** Vercel (the org already has `algoryq-learn`); Azure Static Web Apps is the documented swap
 
 Explicitly **not** used: Framer Motion, GSAP, three.js, Lottie runtime, any CDN-hosted font or
 script, any CSS-in-JS runtime. Each has an entry in `docs/13-PERFORMANCE.md` §7 explaining what
@@ -108,6 +108,13 @@ website/
    has been violated once before, in the 2026-07-23 → 07-26 status-colour drift) — then bring the
    file across whole. `src/test/contrast.spec.ts` reads the copy and fails on any pair below its
    WCAG ratio, so a bad copy does not ship quietly; it cannot, however, detect a *stale* one.
+
+   > **One standing exception, and do not "fix" it.** Four brand tokens — `--brand-500`,
+   > `--brand-600`, `--brand-soft`, `--accent-500` — are currently authored *here* and are ahead
+   > of the product, because the 2026-08-01 rebrand (ADR 0010) originated on this side. Re-copying
+   > `tokens.product.css` from upstream today would silently revert the rebrand to the old purple.
+   > The four values, and the condition that closes the debt, are in `19` §E.1 and in the header of
+   > the file itself. Read both before touching it.
 6. **Layer 2 tokens are marketing-only and namespaced `--mk-*`.** Display type, section rhythm,
    gradients, glass and the wide grid live in `src/styles/tokens.marketing.css`. A `--mk-*` token
    may never leak into `apps/web`.
@@ -173,7 +180,7 @@ has been built. Building first makes the run mean the same thing every time.
 
 `pnpm sync:catalog` re-copies the product's permission catalogue into
 `src/content/permission-catalog.json`. It reads the product monorepo, which is not part of this
-repository, so point it at a checkout: `AKECHI_CATALOG=../AkechiLMS/packages/authz/src/catalog.ts
+repository, so point it at a checkout: `ALGORYQ_CATALOG=../AkechiLMS/packages/authz/src/catalog.ts
 pnpm sync:catalog`. The committed JSON is what the site renders; the script only refreshes it.
 
 ---

@@ -9,13 +9,13 @@ CAPTCHA, an error-tracking SDK, a calendar embed and a video player. That is typ
 of third-party JavaScript, four DNS lookups, several long tasks, a cookie-consent obligation and
 between six and nine sub-processors.
 
-Akechi sells to institutions that ask about sub-processors, and its own security posture — no cloud
+Algoryq Learn sells to institutions that ask about sub-processors, and its own security posture — no cloud
 SDK in feature code, ports not vendors, `docker compose up` as an exit strategy — is a headline
 argument on `/security`.
 
 ## Decision
 
-**No request may leave `akechi.com` at runtime.** The CSP is
+**No request may leave `learn.algoryq.com` at runtime.** The CSP is
 `default-src 'self'` and a Playwright test fails the build on any request to another host.
 
 Concretely: fonts self-hosted · analytics self-hosted and cookieless (Plausible CE or Umami on our

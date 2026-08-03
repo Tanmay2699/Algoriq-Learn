@@ -156,7 +156,7 @@ export const solutionPages: Solution[] = [
       {
         title: 'Self-hosting, if that is the requirement',
         body: 'The whole platform boots from one compose file with no cloud account. The exit is documented before the entrance.',
-        href: '/resources/self-hosting-akechi',
+        href: '/resources/self-hosting-algoryq-learn',
       },
     ],
     disqualifier:

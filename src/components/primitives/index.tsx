@@ -18,8 +18,15 @@ export interface CtaProps {
   className?: string;
 }
 
+/**
+ * `whitespace-nowrap` is load-bearing, not tidiness. Every CTA here has a fixed height
+ * (`h-11`/`h-13`, for the 44px touch target), so a label that wraps does not grow the button —
+ * it overflows it, and "Book a / walkthrough" renders as two lines bleeding out of a 44px box.
+ * It showed up in the header the moment the wordmark got wider; it was always one long label
+ * away in any tight flex row. A button label is a phrase and belongs on one line.
+ */
 const CTA_BASE =
-  'inline-flex items-center justify-center gap-2 rounded-[--radius] font-medium ' +
+  'inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-[--radius] font-medium ' +
   'transition-[background-color,color,border-color,transform] duration-fast ease-mk ' +
   'focus-visible:outline-2 focus-visible:outline-offset-2 hover:-translate-y-px active:translate-y-0';
 

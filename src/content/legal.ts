@@ -28,7 +28,7 @@ export const legalDocs: LegalDoc[] = [
       { kind: 'h2', text: 'The one thing we do store', id: 'theme' },
       {
         kind: 'p',
-        text: 'If you use the light/dark toggle in the header, your choice is saved in your browser’s local storage under the key akechi-theme. It never leaves your device, it is not a cookie, it is not sent with any request, and clearing your browser data removes it. If you never touch the toggle, nothing is stored at all.',
+        text: 'If you use the light/dark toggle in the header, your choice is saved in your browser’s local storage under the key algoryq-learn-theme. It never leaves your device, it is not a cookie, it is not sent with any request, and clearing your browser data removes it. If you never touch the toggle, nothing is stored at all.',
       },
       { kind: 'h2', text: 'No third parties', id: 'third-parties' },
       {
@@ -43,7 +43,7 @@ export const legalDocs: LegalDoc[] = [
       { kind: 'h2', text: 'The product', id: 'product' },
       {
         kind: 'p',
-        text: 'The product at app.akechi.com does set a session cookie, because it has to: it is an httpOnly cookie that keeps you signed in and is never readable by JavaScript in your browser. That is a different application from this website.',
+        text: 'The product at app.learn.algoryq.com does set a session cookie, because it has to: it is an httpOnly cookie that keeps you signed in and is never readable by JavaScript in your browser. That is a different application from this website.',
       },
     ],
   },
@@ -51,7 +51,7 @@ export const legalDocs: LegalDoc[] = [
     slug: 'privacy',
     title: 'Privacy',
     description:
-      'What this website collects (almost nothing), what happens to a demo request, what rights you have over it, and who the controller is when an institute runs Akechi.',
+      'What this website collects (almost nothing), what happens to a demo request, what rights you have over it, and who the controller is when an institute runs Algoryq Learn.',
     updatedAt: '2026-07-31',
     body: [
       { kind: 'h2', text: 'This website', id: 'website' },
@@ -62,7 +62,7 @@ export const legalDocs: LegalDoc[] = [
       { kind: 'h2', text: 'If you fill in the form', id: 'form' },
       {
         kind: 'p',
-        text: 'The demo form sends your name, email, institute, role, an approximate size, an optional phone number and your message to our own instance of Akechi, where it becomes an enquiry on our admissions board. Nothing is stored on this website. We use it to answer your enquiry. We do not sell it, and we do not add you to a mailing list you did not ask for.',
+        text: 'The demo form sends your name, email, institute, role, an approximate size, an optional phone number and your message to our own instance of Algoryq Learn, where it becomes an enquiry on our admissions board. Nothing is stored on this website. We use it to answer your enquiry. We do not sell it, and we do not add you to a mailing list you did not ask for.',
       },
       { kind: 'h2', text: 'Your rights', id: 'rights' },
       {
@@ -77,7 +77,7 @@ export const legalDocs: LegalDoc[] = [
       { kind: 'h2', text: 'The product', id: 'product' },
       {
         kind: 'p',
-        text: 'When an institute runs Akechi, that institute is the data controller for its learners’ data and we are a processor. If they self-host, we are neither — we never see it. The data-processing page covers this properly.',
+        text: 'When an institute runs Algoryq Learn, that institute is the data controller for its learners’ data and we are a processor. If they self-host, we are neither — we never see it. The data-processing page covers this properly.',
       },
     ],
   },
@@ -119,7 +119,7 @@ export const legalDocs: LegalDoc[] = [
     slug: 'acceptable-use',
     title: 'Acceptable use',
     description:
-      'What Akechi may not be used for — the five things we ask of every institute, including what to do if you find a way to reach somebody else’s data.',
+      'What Algoryq Learn may not be used for — the five things we ask of every institute, including what to do if you find a way to reach somebody else’s data.',
     updatedAt: '2026-07-31',
     body: [
       { kind: 'p', text: 'Short, because it needs to be.' },

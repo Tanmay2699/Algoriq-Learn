@@ -20,7 +20,7 @@ export default function ComparisonsPage() {
       {jsonLd([
         breadcrumbJsonLd(TRAIL),
         itemListJsonLd(
-          'Akechi comparisons',
+          'Algoryq Learn comparisons',
           comparisons.map((comparison) => ({ href: `/compare/${comparison.slug}`, label: comparison.name })),
         ),
       ])}
@@ -39,7 +39,7 @@ export default function ComparisonsPage() {
           </h2>
           <Stagger className="grid gap-6 md:grid-cols-2">
             {comparisons.map((comparison) => {
-              const wins = comparison.rows.filter((row) => row.verdict === 'akechi').length;
+              const wins = comparison.rows.filter((row) => row.verdict === 'algoryq').length;
               const losses = comparison.rows.filter((row) => row.verdict === 'them').length;
               const evens = comparison.rows.filter((row) => row.verdict === 'even').length;
 
@@ -52,7 +52,7 @@ export default function ComparisonsPage() {
                   <h3 className="text-mk-title font-semibold text-fg">{comparison.h1}</h3>
                   <p className="mt-2 text-mk-body-sm text-fg-muted">{comparison.lead}</p>
                   <p className="mt-4 text-caption text-fg-muted">
-                    {comparison.rows.length} rows · {wins} favour Akechi · {losses} favour{' '}
+                    {comparison.rows.length} rows · {wins} favour Algoryq Learn · {losses} favour{' '}
                     {comparison.name} · {evens} even
                   </p>
                 </Link>

@@ -13,7 +13,7 @@
  * This site used to be a folder inside that repository, so `..` found it. Split out, it does
  * not, and a check that cannot see its evidence must say so rather than pass:
  *
- *   AKECHI_PRODUCT_ROOT=../AkechiLMS pnpm claims:check
+ *   ALGORYQ_PRODUCT_ROOT=../AkechiLMS pnpm claims:check
  *
  * Without it, sections 2–4 still run in full and section 1 reports how many claims went
  * unverified. It exits 0 in that state — a repository that cannot reach the product must still
@@ -24,7 +24,7 @@ import { join, resolve } from 'node:path';
 import { claims, type Claim } from '../src/lib/claims';
 
 const ROOT = process.cwd();
-const PRODUCT_ROOT = resolve(process.env.AKECHI_PRODUCT_ROOT ?? join(ROOT, '..'));
+const PRODUCT_ROOT = resolve(process.env.ALGORYQ_PRODUCT_ROOT ?? join(ROOT, '..'));
 /** `apps/api` is the product's backend and exists in no other checkout. */
 const productRepoPresent = existsSync(join(PRODUCT_ROOT, 'apps', 'api'));
 const failures: string[] = [];
@@ -148,7 +148,7 @@ if (unverifiedPaths > 0) {
   console.warn(
     `\n  NOT VERIFIED  ${unverifiedPaths} claim(s) point at a file in the product monorepo, which is not\n` +
       `                reachable from here. Their existence was not checked. Re-run with\n` +
-      `                AKECHI_PRODUCT_ROOT=<path to the product checkout> to close this gap.\n`,
+      `                ALGORYQ_PRODUCT_ROOT=<path to the product checkout> to close this gap.\n`,
   );
 }
 

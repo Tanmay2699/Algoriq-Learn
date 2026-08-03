@@ -140,7 +140,7 @@ delayed by a single millisecond of it.**
 | t | Event |
 |---:|---|
 | 0 | HTML paints. Eyebrow, H1, lead, CTAs are **already visible** — no opacity-0 start. |
-| 0 | Critical CSS inlined; Inter and Fraunces preloaded; H1 is the LCP element. |
+| 0 | Critical CSS inlined; Inter and Space Grotesk preloaded; H1 is the LCP element. |
 | ~120ms | Hydration. The entrance class is added: the *already-visible* elements get a 14px→0 settle with opacity 0.85→1. A reader who never sees this loses nothing. |
 | 180ms | Frame fades in and scales 0.985→1 over 560ms. |
 | 240ms | Floating KPI card and toast fade in, 60ms apart. |

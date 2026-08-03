@@ -19,7 +19,7 @@ export default function SolutionsPage() {
       {jsonLd([
         breadcrumbJsonLd(TRAIL),
         itemListJsonLd(
-          'Akechi solutions',
+          'Algoryq Learn solutions',
           solutionPages.map((solution) => ({ href: `/solutions/${solution.slug}`, label: solution.name })),
         ),
       ])}

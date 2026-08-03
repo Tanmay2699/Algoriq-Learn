@@ -114,7 +114,7 @@ export const solutions: NavLink[] = [
 export const resources: NavLink[] = [
   { href: '/resources', label: 'Guides' },
   { href: '/compare', label: 'Comparisons' },
-  { href: '/why-akechi', label: 'Why Akechi' },
+  { href: '/why-algoryq-learn', label: 'Why Algoryq Learn' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
@@ -157,7 +157,7 @@ export const footer: NavGroup[] = [
       { href: '/developers', label: 'API reference' },
       { href: '/developers/webhooks', label: 'Webhooks' },
       { href: '/integrations', label: 'Integrations' },
-      { href: '/resources/self-hosting-akechi', label: 'Self-hosting' },
+      { href: '/resources/self-hosting-algoryq-learn', label: 'Self-hosting' },
     ],
   },
   {
@@ -167,7 +167,7 @@ export const footer: NavGroup[] = [
       { href: '/about', label: 'About' },
       { href: '/contact', label: 'Contact' },
       { href: '/resources', label: 'Resources' },
-      { href: '/why-akechi', label: 'Why Akechi' },
+      { href: '/why-algoryq-learn', label: 'Why Algoryq Learn' },
       { href: '/demo', label: 'Book a walkthrough' },
     ],
   },
@@ -191,8 +191,8 @@ export const footer: NavGroup[] = [
 ];
 
 export const comparisons: NavLink[] = [
-  { href: '/compare/moodle', label: 'Akechi vs Moodle' },
-  { href: '/compare/google-classroom', label: 'Akechi vs Google Classroom' },
-  { href: '/compare/canvas', label: 'Akechi vs Canvas' },
-  { href: '/compare/spreadsheets-and-whatsapp', label: 'Akechi vs spreadsheets and WhatsApp' },
+  { href: '/compare/moodle', label: 'Algoryq Learn vs Moodle' },
+  { href: '/compare/google-classroom', label: 'Algoryq Learn vs Google Classroom' },
+  { href: '/compare/canvas', label: 'Algoryq Learn vs Canvas' },
+  { href: '/compare/spreadsheets-and-whatsapp', label: 'Algoryq Learn vs spreadsheets and WhatsApp' },
 ];

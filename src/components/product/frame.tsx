@@ -46,7 +46,7 @@ export function ProductFrame({
               <span className="h-2 w-2 rounded-full bg-fg-muted/25" />
             </div>
             <p className="truncate rounded-full bg-surface px-3 py-1 font-mono text-caption text-fg-muted">
-              app.akechi.com<span className="text-fg">{route}</span>
+              app.learn.algoryq.com<span className="text-fg">{route}</span>
             </p>
           </div>
         )}

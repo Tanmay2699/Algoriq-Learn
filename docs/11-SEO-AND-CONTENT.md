@@ -32,7 +32,7 @@ build** — metadata is not something to remember at the end.
 ```ts
 export const seo: Record<Route, SeoEntry> = {
   '/': {
-    title: 'Akechi — the multi-tenant LMS for institutes | Admissions to certificates',
+    title: 'Algoryq Learn — the multi-tenant LMS for institutes | Admissions to certificates',
     description:
       'One system of record for schools, colleges and coaching institutes: admissions, courses, '
       + 'live classes, assessments, fees, staff and outcomes. Permission-checked and audited on '
@@ -120,7 +120,7 @@ readingTime: auto
 related: [rbac-for-schools]
 ```
 
-Rules: no author block unless a real person wrote it. No "by the Akechi team" byline on a piece
+Rules: no author block unless a real person wrote it. No "by the Algoryq Learn team" byline on a piece
 someone specific wrote. `updatedAt` renders on the page when it differs from `publishedAt`.
 
 ### 5.3 Data files (not content types)
@@ -143,7 +143,7 @@ do not publish.
 | **RBAC for schools: what a permission actually is** | "role based access control school software" | "Can I control who sees what?" |
 | **Assessment integrity without a camera** | "online exam proctoring alternative" | "How do you stop cheating?" — and our answer is unusual enough to earn links |
 | **Buying accessible software: what to ask a vendor** | "wcag 2.2 vpat education procurement" | The procurement gate, and it ranks for a query with almost no good content behind it |
-| **Self-hosting Akechi in an afternoon** | "self hosted lms docker" | "Where is my data?" |
+| **Self-hosting Algoryq Learn in an afternoon** | "self hosted lms docker" | "Where is my data?" |
 | **Why we built a PWA instead of two native apps** | "lms mobile app vs pwa" | "Do you have a mobile app?" |
 
 Length: 1,200–2,200 words. Real code, real screenshots, real numbers. No listicles, no "10 best",

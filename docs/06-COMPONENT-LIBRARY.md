@@ -251,7 +251,7 @@ under reduced motion.
 ### 5.5 `<DemoForm>`
 The only form on the site. Fields: name, email, phone (optional), institute, role, learners
 (select), message, and a hidden `intent`. Posts to `/api/lead` → the product's
-`POST /public/institutes/akechi/enquiries`.
+`POST /public/institutes/algoryq-learn/enquiries`.
 
 - Validation is a Zod schema shared with the API route; errors render inline, associated with
   `aria-describedby`, and focus moves to the first invalid field on submit.

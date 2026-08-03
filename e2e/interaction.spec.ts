@@ -87,7 +87,7 @@ test.describe('the permission catalogue', () => {
 
 test.describe('the ROI calculator', () => {
   test('starts empty and prints its own formula', async ({ page }) => {
-    await page.goto('/why-akechi');
+    await page.goto('/why-algoryq-learn');
     await expect(page.getByText(/We have not pre-filled anything/)).toBeVisible();
 
     await page.getByLabel('Learners you would put on it').fill('400');

@@ -36,7 +36,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        display: ['var(--mk-font-display)', 'Georgia', 'Times New Roman', 'serif'],
+        display: ['var(--mk-font-display)', 'Space Grotesk', 'ui-sans-serif', 'sans-serif'],
         sans: ['var(--mk-font-sans)', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['var(--mk-font-mono)', 'ui-monospace', 'monospace'],
       },

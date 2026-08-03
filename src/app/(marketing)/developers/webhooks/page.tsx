@@ -43,7 +43,7 @@ export default function WebhooksPage() {
           <Prose>
             <h2 id="verify-heading">Verify the signature before you parse</h2>
             <p>
-              Every delivery carries <code>X-Akechi-Signature</code>, an HMAC-SHA256 over the{' '}
+              Every delivery carries <code>X-Algoryq Learn-Signature</code>, an HMAC-SHA256 over the{' '}
               <strong>raw request body</strong> using the endpoint&apos;s secret. Compute it over
               the bytes you received, not over a re-serialised object — a JSON round-trip can
               reorder keys and change whitespace, and then the signature will never match.
@@ -53,7 +53,7 @@ export default function WebhooksPage() {
               is a small thing until somebody is patient.
             </p>
             <p>
-              <code>X-Akechi-Delivery</code> is a unique id for the attempt. Store it and ignore a
+              <code>X-Algoryq Learn-Delivery</code> is a unique id for the attempt. Store it and ignore a
               repeat: retries are at-least-once by design, so your handler must be idempotent.
             </p>
 

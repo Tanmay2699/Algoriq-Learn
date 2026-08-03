@@ -1,5 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-  <rect width="24" height="24" rx="5" fill="#5b5bd6"/>
-  <rect x="4" y="7.5" width="10.5" height="9" rx="2.6" stroke="#ffffff" stroke-width="1.5"/>
-  <rect x="9.5" y="7.5" width="10.5" height="9" rx="2.6" stroke="#ffffff" stroke-width="1.5" opacity="0.55"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!--
+    The Algoryq mark on its navy plate — the parent company's favicon geometry, unchanged.
+    Algoryq Learn is a product of Algoryq Technologies, so it flies the same flag in a tab.
+    Unlike the inline <Mark>, this is served as its own document, so the gradient IDs cannot
+    collide with anything and the three stops are large enough to actually read.
+  -->
+  <defs>
+    <linearGradient id="bar" x1="41.5" y1="75" x2="95" y2="75" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1450B8"/>
+      <stop offset="0.72" stop-color="#2E7BE8"/>
+      <stop offset="1" stop-color="#7FB3F0"/>
+    </linearGradient>
+    <linearGradient id="foot" x1="68.5" y1="82.5" x2="92" y2="94" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#BFD9F6"/>
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="22" fill="#101A33"/>
+  <g transform="translate(10 10) scale(0.8)" stroke-linejoin="round" paint-order="stroke" stroke-width="4">
+    <path fill="#FFFFFF" stroke="#FFFFFF" d="M50 8 L76.4 63.5 L59.75 63.5 L50 44 L26 92 L10 92 Z"/>
+    <path fill="url(#bar)" stroke="url(#bar)" d="M42.55 69 L87.05 69 L93.65 81 L46.15 81 Z"/>
+    <path fill="url(#foot)" stroke="url(#foot)" d="M72 86.5 L86 86.5 L90 92 L76 92 Z"/>
+  </g>
 </svg>

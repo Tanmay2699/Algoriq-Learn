@@ -55,7 +55,7 @@ and Lighthouse becomes a regression detector.
 | First-load JS | **≤ 90 KB** | ≤ 70 KB |
 | Site-authored JS (excluding framework) | ≤ 60 KB | ≤ 40 KB |
 | CSS | ≤ 22 KB | ≤ 18 KB |
-| Fonts | ≤ 118 KB (3 files, cached forever) | same, cached |
+| Fonts | ≤ 118 KB (currently 70 KB in 2 files, cached forever) | same, cached |
 | Images above the fold | ≤ 210 KB | ≤ 160 KB |
 | Total page weight | ≤ 900 KB | ≤ 700 KB |
 | Requests before onload | ≤ 18 | ≤ 14 |
@@ -93,15 +93,25 @@ The single largest lever on a type-led site.
 |---|---|
 | Hosting | Self-hosted. No `fonts.googleapis.com` — it is a third-party origin, a render-blocking stylesheet, an extra connection, and (in some jurisdictions) a privacy question we do not need to answer. |
 | Format | `woff2` variable |
-| Subset | `latin` + `latin-ext`. Fraunces is subset further to the display glyph set (no small caps, no alternates, WONK/SOFT axes pinned at 0). |
-| Files | 3 — Inter var (≈ 48 KB), Fraunces var display subset (≈ 42 KB), JetBrains Mono (≈ 26 KB). **≤ 118 KB total.** |
-| Preload | Inter and Fraunces only. JetBrains is below the fold everywhere. |
+| Subset | `latin`, both faces. |
+| Files | **2 — Inter var (48 KB) and Space Grotesk var (22 KB). 70 KB total**, against a budget of ≤ 118 KB. |
+| Preload | Both. There is no third file: the mono role uses the platform stack, so JetBrains Mono's 31 KB is never paid. |
 | `font-display` | `swap` |
 | CLS from swap | **0**, via metric-matched fallbacks with `size-adjust`, `ascent-override` and `descent-override` measured per face and checked in a test |
 | Caching | `immutable`, 1 year, content-hashed filenames |
 
 Metric matching is not optional. A 6.5rem display headline swapping from a fallback with different
 metrics is a visible reflow at the exact moment the page is being judged.
+
+**The budget has 48 KB of headroom, and it was not always this comfortable.** The three-file plan
+above budgeted ≈ 116 KB against 118 — no room at all. Two things bought it back. Dropping JetBrains
+Mono for the platform stack removed a file, which mattered more than it looks: the Fraunces subset
+shipped at 67 KB rather than the 42 KB estimated here, so the two-file build was still 115 KB. Then
+the 2026-08-01 rebrand (ADR 0010) replaced Fraunces with Space Grotesk at 22 KB, and the whole
+payload fell to 70.
+
+The headroom is spare capacity, not an invitation. A third face would spend all of it, and the
+reason there are two faces is unchanged by the fact that they now fit more easily.
 
 ---
 

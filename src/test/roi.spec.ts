@@ -23,7 +23,7 @@ describe('computeRoi', () => {
     const result = computeRoi(base);
     expect(Number.isInteger(result.toolsAnnualMinor)).toBe(true);
     expect(Number.isInteger(result.reconcileCostMinor)).toBe(true);
-    expect(Number.isInteger(result.akechiAnnualMinor)).toBe(true);
+    expect(Number.isInteger(result.algoryqAnnualMinor)).toBe(true);
   });
 
   it('computes exactly what the printed formula says', () => {
@@ -32,8 +32,8 @@ describe('computeRoi', () => {
     expect(result.hoursAnnual).toBe(6 * 52);
     expect(result.reconcileCostMinor).toBe(6 * 52 * 500 * 100);
     expect(result.plan?.key).toBe('growth');
-    expect(result.akechiAnnualMinor).toBe(1_499_900 * 12);
-    expect(result.netMinor).toBe(result.toolsAnnualMinor + result.reconcileCostMinor - result.akechiAnnualMinor);
+    expect(result.algoryqAnnualMinor).toBe(1_499_900 * 12);
+    expect(result.netMinor).toBe(result.toolsAnnualMinor + result.reconcileCostMinor - result.algoryqAnnualMinor);
   });
 
   it('produces no net figure on a negotiated plan, because there is no honest one', () => {
@@ -50,7 +50,7 @@ describe('computeRoi', () => {
   it('charges nothing on the free tier', () => {
     const result = computeRoi({ ...base, learners: 80 });
     expect(result.plan?.key).toBe('starter');
-    expect(result.akechiAnnualMinor).toBe(0);
+    expect(result.algoryqAnnualMinor).toBe(0);
   });
 
   it('treats an empty form as nothing to say', () => {

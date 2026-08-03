@@ -74,7 +74,7 @@ export default function HomePage() {
                 <span className="block">to the final certificate.</span>
               </Heading>
               <Lead surface="ink" className="mt-6">
-                Akechi is the system of record for an institute — admissions, teaching,
+                Algoryq Learn is the system of record for an institute — admissions, teaching,
                 assessment, fees, staff and outcomes in one platform, where every action
                 carries a permission and an audit trail.
               </Lead>
@@ -174,7 +174,7 @@ export default function HomePage() {
             One database. One login. One version of the truth.
           </Heading>
           <Lead surface="ink" className="mt-6">
-            Akechi is a single backend, a single PostgreSQL database and a single frontend.
+            Algoryq Learn is a single backend, a single PostgreSQL database and a single frontend.
             Thirty-one modules share one tenant boundary, one permission catalogue and one
             audit log. A learner&apos;s enquiry, enrolment, attendance, marks, fees and
             certificate are rows that can see each other.
@@ -404,7 +404,7 @@ export default function HomePage() {
             <Card>
               <h3 className="text-mk-title font-semibold text-fg">Installable, not downloadable</h3>
               <p className="mt-3 text-mk-body-sm text-fg-muted">
-                Akechi is a PWA: it installs to a home screen without an app store, updates
+                Algoryq Learn is a PWA: it installs to a home screen without an app store, updates
                 without a review queue, and is designed at 360 pixels first. There is no native
                 iOS or Android app, and for these learners that is the right trade.
               </p>
@@ -680,8 +680,8 @@ Content-Type: application/json
           </Heading>
           <div className="mt-6">
             <Table
-              caption="Each job an institute does, where it lives today, and where it lives with Akechi"
-              head={['The job', 'Today', 'With Akechi']}
+              caption="Each job an institute does, where it lives today, and where it lives with Algoryq Learn"
+              head={['The job', 'Today', 'With Algoryq Learn']}
             >
               {toolStack.map((row) => (
                 <Tr key={row.job}>
@@ -689,7 +689,7 @@ Content-Type: application/json
                   <Td>{row.today}</Td>
                   <Td>
                     <Link href={row.href as Route} className="text-link underline underline-offset-4">
-                      {row.withAkechi}
+                      {row.withAlgoryq}
                     </Link>
                   </Td>
                 </Tr>
@@ -708,13 +708,13 @@ Content-Type: application/json
           </p>
           <div className="mt-6">
             <Table
-              caption="Akechi compared with Moodle and Google Classroom on six capabilities"
-              head={['Capability', 'Akechi', 'Moodle', 'Google Classroom']}
+              caption="Algoryq Learn compared with Moodle and Google Classroom on six capabilities"
+              head={['Capability', 'Algoryq Learn', 'Moodle', 'Google Classroom']}
             >
               {quickComparison.map((row) => (
                 <Tr key={row.capability}>
                   <Td header>{row.capability}</Td>
-                  <Td className="text-fg">{row.akechi}</Td>
+                  <Td className="text-fg">{row.algoryq}</Td>
                   <Td>{row.moodle}</Td>
                   <Td>{row.classroom}</Td>
                 </Tr>

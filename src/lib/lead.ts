@@ -25,8 +25,19 @@ export const leadSchema = z.object({
   phone: z.string().trim().max(40).optional().or(z.literal('')),
   message: z.string().trim().max(2000).optional().or(z.literal('')),
   intent: z.enum(['walkthrough', 'design-partner', 'pricing', 'security', 'starter', 'growth', 'enterprise']),
-  /** Honeypot. A real person never fills this in; it is hidden and not focusable. */
-  website: z.string().max(0, 'Rejected.').optional().or(z.literal('')),
+  /**
+   * Honeypot. A real person never fills this in; it is hidden and not focusable.
+   *
+   * It is deliberately impossible to fail — clamped rather than bounded. A constraint here
+   * would reject a filled honeypot at the schema, and the 400 would name `website` in its
+   * field errors, which tells a script precisely which input to leave alone next time. That
+   * is the leak the route exists to avoid, so the field parses whatever arrives and the route
+   * answers a silent 200 instead (see `app/api/lead/route.ts`).
+   */
+  website: z
+    .string()
+    .transform((value) => value.slice(0, 2000))
+    .optional(),
   /** Milliseconds between the form rendering and being submitted. Bots are fast. */
   elapsedMs: z.number().int().nonnegative(),
 });

@@ -9,75 +9,94 @@
  * Ink is the site's dark "assertion" surface. It deliberately holds the SAME value in dark
  * mode: if ink tracked the theme, the page's five dark bands would dissolve into the
  * background when the whole site is dark, and the act rhythm is what makes the scroll read.
+ *
+ * Since the 2026-08-01 rebrand, ink is navy rather than neutral — it is the plate the Algoryq
+ * mark is drawn on (#101A33 in the parent's favicon), pulled two steps darker so that a
+ * gradient can sit on it without the band turning into a light source.
  */
 
 :root {
   /*
    * Faces. The two webfont families are self-hosted and loaded by next/font/local
-   * (src/app/fonts.ts), which sets --font-inter and --font-fraunces on <html> and emits a
+   * (src/app/fonts.ts), which sets --font-inter and --font-grotesk on <html> and emits a
    * metric-matched fallback for each. The stacks below keep this file the single reference
    * point, and degrade to a sensible system face if the class is ever missing.
+   *
+   * Display is Space Grotesk, which is the face the parent brand sets its own display type in
+   * (algoryq.com). It replaced Fraunces at the rebrand: a high-contrast Scotch Roman said
+   * "editorial", and the thing this site is a sibling of says "engineering". The fallback
+   * stack is a grotesque now, not a serif — a serif fallback under a grotesque webfont is a
+   * visible identity change for the duration of the swap.
    *
    * Mono is deliberately NOT a webfont — see src/app/fonts.ts.
    */
   --mk-font-sans: var(--font-inter), system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --mk-font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+  --mk-font-display: var(--font-grotesk), 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
   --mk-font-mono: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Menlo, Consolas, monospace;
 
-  /* Ink surfaces */
-  --mk-ink-900: #0b0b11;
-  --mk-ink-800: #12121a;
-  --mk-ink-700: #1a1a24;
+  /* Ink surfaces — navy, from the mark's plate. */
+  --mk-ink-900: #070c18;
+  --mk-ink-800: #0d1524;
+  --mk-ink-700: #16203a;
   --mk-ink-border: rgb(255 255 255 / 0.09);
   --mk-ink-border-strong: rgb(255 255 255 / 0.16);
 
   /*
    * Text on ink. Measured against --mk-ink-900:
-   *   default 17.4:1 · muted 7.1:1 · faint 3.6:1
+   *   default 18.3:1 · muted 9.0:1 (8.4:1 on --mk-ink-800) · faint 4.3:1
    * `faint` is DECORATIVE ONLY — hairline labels and dividers. It is below 4.5:1 and
    * src/test/contrast.spec.ts asserts that fact so nobody promotes it to body copy.
+   * All three are cooled a few degrees to sit on navy rather than on neutral black.
    */
-  --mk-on-ink: #f7f7fa;
-  --mk-on-ink-muted: #a8adbb;
-  --mk-on-ink-faint: #6d7382;
+  --mk-on-ink: #f5f8fc;
+  --mk-on-ink-muted: #a6b0c4;
+  --mk-on-ink-faint: #6b7689;
 
   /*
    * The accent, as TEXT.
    *
-   * --accent-500 (#12a594) is a fill: 3.07:1 on white, which is fine behind a shape and a
+   * --accent-500 (#5f76fc) is a fill: 3.83:1 on white, which is fine behind a shape and a
    * failure in front of words. This is the same distinction the product draws between
    * --danger and --danger-text, and it is worth drawing again rather than reaching for the
-   * fill because it happened to be there. 5.0:1 on white, 4.7:1 on the 10% tint.
+   * fill because it happened to be there. This is Algoryq's own `pulse-600`, and it measures
+   * 5.68:1 on white and 4.98:1 on the 10% tint.
    */
-  --mk-accent-text: #0d7268;
+  --mk-accent-text: #4f54e2;
 
   /*
    * Links, as a token of their own.
    *
-   * --brand-500 is the brand; it is not always a legible link. In dark mode it measures
-   * 4.21:1 on --surface-muted — under the floor, and --surface-muted is exactly where a link
-   * inside a recessed card sits. So the link colour is derived from the brand rather than
-   * equal to it: darker on paper, lighter on dark, and checked on every surface by
-   * src/test/contrast.spec.ts.
+   * --brand-500 is the brand; it is not always a legible link. The colour is derived from the
+   * brand rather than equal to it: darker on paper, lighter on dark, and checked on every
+   * surface by src/test/contrast.spec.ts. Here it is the mark's dark gradient stop, 6.8:1 on
+   * --surface-muted — which is exactly where a link inside a recessed card sits, and the
+   * surface that catches this token out when it is set carelessly.
    */
-  --mk-link: #4a4ac4;
+  --mk-link: #1450b8;
 
   /* Glass — only ever over ink or over a gradient. Never over paper. */
   --mk-glass-bg: rgb(255 255 255 / 0.06);
   --mk-glass-border: rgb(255 255 255 / 0.12);
   --mk-glass-blur: 16px;
 
-  /* Aurora — the only gradient system. Two blobs, low alpha, on ink, behind no text. */
-  --mk-aurora-1: radial-gradient(60% 60% at 22% 18%, rgb(91 91 214 / 0.28), transparent 70%);
-  --mk-aurora-2: radial-gradient(52% 52% at 84% 62%, rgb(18 165 148 / 0.2), transparent 70%);
+  /*
+   * Aurora — the only gradient system. Two blobs, low alpha, on ink, behind no text.
+   * Brand blue and the parent's `aurora` cyan, which is the pairing algoryq.com uses.
+   */
+  --mk-aurora-1: radial-gradient(60% 60% at 22% 18%, rgb(27 92 212 / 0.32), transparent 70%);
+  --mk-aurora-2: radial-gradient(52% 52% at 84% 62%, rgb(0 201 209 / 0.16), transparent 70%);
 
-  /* Brand gradient — 1px rules, icon strokes, the wordmark accent. Never behind text. */
-  --mk-grad-brand: linear-gradient(97deg, #5b5bd6 0%, #7b5be0 46%, #12a594 100%);
+  /*
+   * Brand gradient — 1px rules, icon strokes, the wordmark accent. Never behind text.
+   * These are not "a blue gradient": they are the three stops of the Algoryq mark's own bar,
+   * in order, so a rule under a heading is the same object as the logo beside it.
+   */
+  --mk-grad-brand: linear-gradient(97deg, #1450b8 0%, #2e7be8 46%, #7fb3f0 100%);
 
   /* Categorical data-viz ramp, ordered by first use (docs/09 §5). */
   --mk-viz-1: var(--brand-500);
   --mk-viz-2: var(--accent-500);
-  --mk-viz-3: #8b5cf6;
+  --mk-viz-3: #00929a;
   --mk-viz-4: #b45309;
   --mk-viz-5: #52606d;
 
@@ -111,26 +130,26 @@
 @media (prefers-color-scheme: dark) {
   :root {
     /* On a dark surface the fill is already legible; a darker variant would not be. */
-    --mk-accent-text: #2cc0ae;
-    --mk-link: #a5a5f5;
-    --mk-viz-3: #a78bfa;
+    --mk-accent-text: #8fa2ff;
+    --mk-link: #9cc4f7;
+    --mk-viz-3: #59e6e6;
     --mk-viz-4: #f0ba55;
     --mk-viz-5: #9aa5b1;
   }
 }
 
 :root[data-theme='dark'] {
-  --mk-accent-text: #2cc0ae;
-  --mk-link: #a5a5f5;
-  --mk-viz-3: #a78bfa;
+  --mk-accent-text: #8fa2ff;
+  --mk-link: #9cc4f7;
+  --mk-viz-3: #59e6e6;
   --mk-viz-4: #f0ba55;
   --mk-viz-5: #9aa5b1;
 }
 
 :root[data-theme='light'] {
-  --mk-accent-text: #0d7268;
-  --mk-link: #4a4ac4;
-  --mk-viz-3: #8b5cf6;
+  --mk-accent-text: #4f54e2;
+  --mk-link: #1450b8;
+  --mk-viz-3: #00929a;
   --mk-viz-4: #b45309;
   --mk-viz-5: #52606d;
 }

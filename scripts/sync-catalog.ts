@@ -9,7 +9,7 @@
  * The source lives in the product monorepo, which this repository does not contain, so the path
  * is given rather than assumed:
  *
- *   AKECHI_CATALOG=../AkechiLMS/packages/authz/src/catalog.ts pnpm sync:catalog
+ *   ALGORYQ_CATALOG=../AkechiLMS/packages/authz/src/catalog.ts pnpm sync:catalog
  *
  * The default below is the layout this site was split out of — `website/..` — and still works
  * for anyone running it from inside that monorepo.
@@ -17,14 +17,14 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
-const CATALOG = process.env.AKECHI_CATALOG
-  ? resolve(process.env.AKECHI_CATALOG)
+const CATALOG = process.env.ALGORYQ_CATALOG
+  ? resolve(process.env.ALGORYQ_CATALOG)
   : join(process.cwd(), '..', 'packages', 'authz', 'src', 'catalog.ts');
 
 if (!existsSync(CATALOG)) {
   throw new Error(
-    `No permission catalogue at ${CATALOG}. It lives in the product monorepo — set AKECHI_CATALOG to its path:\n` +
-      '  AKECHI_CATALOG=../AkechiLMS/packages/authz/src/catalog.ts pnpm sync:catalog',
+    `No permission catalogue at ${CATALOG}. It lives in the product monorepo — set ALGORYQ_CATALOG to its path:\n` +
+      '  ALGORYQ_CATALOG=../AkechiLMS/packages/authz/src/catalog.ts pnpm sync:catalog',
   );
 }
 const OUT = join(process.cwd(), 'src', 'content', 'permission-catalog.json');

@@ -83,7 +83,7 @@ export function DemoForm({ intent }: { intent: LeadInput['intent'] }) {
         <h2 className="text-mk-title font-semibold text-fg">That is with us.</h2>
         <p className="mt-3 max-w-measure text-mk-body text-fg-muted">
           A real person will reply within one working day, from an address ending in
-          akechi.com. Not a sequence, not a bot, and not a call you did not ask for.
+          learn.algoryq.com. Not a sequence, not a bot, and not a call you did not ask for.
         </p>
         <p className="mt-3 max-w-measure text-mk-body-sm text-fg-muted">
           It arrived as an enquiry on our own admissions board — the same module in the

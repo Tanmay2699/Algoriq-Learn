@@ -107,7 +107,7 @@ export default function BuildStatusPage() {
             </p>
             <p>
               And because it is the same rule the product itself follows: an unbuilt surface in
-              Akechi renders an honest &ldquo;not built yet&rdquo; component rather than a fake
+              Algoryq Learn renders an honest &ldquo;not built yet&rdquo; component rather than a fake
               chart. We did not invent that rule for the website.
             </p>
           </div>

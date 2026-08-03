@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { fraunces, inter } from './fonts';
+import { grotesk, inter } from './fonts';
 import { NO_FLASH_SCRIPT } from '../lib/theme';
 import { site } from '../config/site';
 import './globals.css';
@@ -7,17 +7,17 @@ import './globals.css';
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: 'Akechi — the multi-tenant LMS for institutes',
-    template: '%s · Akechi',
+    default: 'Algoryq Learn — the multi-tenant LMS for institutes',
+    template: '%s · Algoryq Learn',
   },
   description:
     'One system of record for schools, colleges and coaching institutes: admissions, courses, '
     + 'live classes, assessments, fees, staff and outcomes. Free for 100 seats.',
-  applicationName: 'Akechi',
+  applicationName: 'Algoryq Learn',
   icons: { icon: '/icon.svg', apple: '/icon.svg' },
   openGraph: {
     type: 'website',
-    siteName: 'Akechi',
+    siteName: 'Algoryq Learn',
     locale: 'en_IN',
   },
   twitter: { card: 'summary_large_image' },
@@ -42,7 +42,7 @@ export const viewport: Viewport = {
  */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang={site.locale} dir="ltr" suppressHydrationWarning className={`${inter.variable} ${fraunces.variable}`}>
+    <html lang={site.locale} dir="ltr" suppressHydrationWarning className={`${inter.variable} ${grotesk.variable}`}>
       <head>
         {/* Before first paint, so an explicit light/dark choice never flashes. */}
         <script dangerouslySetInnerHTML={{ __html: NO_FLASH_SCRIPT }} />

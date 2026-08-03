@@ -33,7 +33,7 @@ export default function DpaPage() {
           <Prose>
             <h2 id="roles-heading">Who is the controller</h2>
             <p>
-              The institute is. When a school, college or coaching centre runs Akechi, it decides
+              The institute is. When a school, college or coaching centre runs Algoryq Learn, it decides
               what data to collect about its learners and staff and why — so it is the data
               controller, and it is the party a subject-access or erasure request is actually
               made to.

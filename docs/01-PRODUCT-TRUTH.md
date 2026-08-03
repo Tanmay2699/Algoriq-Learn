@@ -1,6 +1,6 @@
 # 01 — PRODUCT TRUTH
 
-**What Akechi actually is, extracted from the repository on 2026-07-31.**
+**What Algoryq Learn actually is, extracted from the repository on 2026-07-31.**
 
 This document is the **only permitted source for a capability claim on the website.** If a
 sentence of marketing copy asserts that the product does something, that something appears here

@@ -77,7 +77,7 @@ pnpm db:migrate && pnpm db:rls && pnpm db:seed
 pnpm --filter @akechi/api seed:demo          # Sunrise Academy
 pnpm --filter @akechi/api dev &
 pnpm --filter @akechi/web dev &
-pnpm --filter @akechi/website captures       # Playwright: 22 screens × 2 themes × 3 widths
+pnpm --filter @algoryq/learn-website captures       # Playwright: 22 screens × 2 themes × 3 widths
 ```
 
 The capture script is a Playwright project that signs in as each role, navigates, waits for network
@@ -225,23 +225,35 @@ marketing site quietly gains 200 KB.
 
 ## 7. Logo and brand marks
 
+**Both are the parent company's, unmodified** ([ADR 0010](adr/0010-algoryq-learn-brand-alignment.md)).
+Algoryq Learn is a product of Algoryq Technologies, not a separate identity, and a sibling brand
+that redraws the mark is a brand that has to be introduced twice.
+
 | Asset | Spec |
 |---|---|
-| Wordmark | "Akechi" in Fraunces 400, tracking −0.02em, with the `--mk-grad-brand` applied to a single hairline underscore beneath the final letter. Ships as SVG with the text converted to outlines, plus a live-text version for the header. |
-| Mark | A 24×24 glyph: two overlapping rounded rectangles forming a shallow spine — the lifecycle, abstracted. Monochrome, works at 16px. |
+| Mark | The Algoryq "A" — an apex, a descending stroke, a brand-coloured crossbar and a detached foot. Same path data and same 100×100 viewBox as `algoryq.com` serves. Implemented as live SVG in `src/components/layout/wordmark.tsx`, not an image. |
+| Wordmark | "Algoryq **Learn**" — the mark, then the name in Space Grotesk 600 at 1.375rem, tracking −0.02em, with "Learn" in `--brand-500`. The same construction the parent uses for `algoryq.tech`, so the two lockups read as one family. Live text in the header, so it scales with the user's font size and is selectable. |
+| The colour split | Decoration only, never the sole carrier of meaning (WCAG 1.4.1): the two words are also separated by a space, and the accessible name of the enclosing link is the full product name. |
+| Gradient | The parent's three-stop crossbar gradient survives only where it can be seen — `public/icon.svg` at 100×100, and `--mk-grad-brand` for rules. At 24px it spans about twelve pixels and resolves to one colour anyway, and an SVG gradient needs an `id`, which duplicates in a component rendered twice per page. |
+| Hairlines | `paint-order: stroke` with a stroke of the same paint as the fill, which is how the parent stops the thin wedges from dropping a two-pixel edge at small sizes. |
 | Clear space | 0.5× the mark's height on all sides. |
 | Minimum size | Wordmark 96px wide; mark 16px. |
-| Colour | `--text-primary` on paper, `--mk-on-ink` on ink, `--brand-500` where a single accent is wanted. **Never** on a gradient, never with a shadow, never rotated. |
-| Favicon | The mark, 3 sizes + `icon.svg` + `apple-touch-icon`. Matches the product's existing `/icon.svg` family. |
+| Colour | `--text-primary` on paper, `--mk-on-ink` on ink. **Never** on a gradient, never with a shadow, never rotated. |
+| Favicon | The mark, 3 sizes + `icon.svg` + `apple-touch-icon`. |
+| Endorsement | "A product of Algoryq Technologies — algoryq.tech", set as text beside the copyright at legal-copy size, plus `parentOrganization` in the `Organization` JSON-LD. A procurement fact, not a badge — see ADR 0010 §Why 2. |
 
 ---
 
 ## 8. Open Graph and social
 
-Generated at request time by `/api/og/[...]` (Satori) so a new page cannot ship without one.
+> **Deferred, and this section is intent rather than state.** OG *metadata* is complete on every
+> route (`src/config/seo.ts` throws on a page without it). The generated *image* is not built —
+> see `19` §C. What follows is the spec for when it is.
 
-Layout: 1200×630, ink-900 background with a single aurora blob, the page title in Fraunces at 64px
-(2 lines max, auto-shrinking to 52), an eyebrow in Inter caps, the wordmark bottom-left, and a
+To be generated at request time by `/api/og/[...]` (Satori) so a new page cannot ship without one.
+
+Layout: 1200×630, ink-900 background with a single aurora blob, the page title in Space Grotesk at
+64px (2 lines max, auto-shrinking to 52), an eyebrow in Inter caps, the wordmark bottom-left, and a
 1px brand rule. Four variants: `default`, `product`, `security`, `article`. No screenshots in OG
 images — they are unreadable at thumbnail size.
 

@@ -33,7 +33,7 @@ const NOT_BUILT: { name: string; detail: string }[] = [
   {
     name: 'Meeting providers',
     detail:
-      'Zoom, Meet, Teams and Jitsi. There is no adapter — you paste the link onto the session. Attendance is recorded in Akechi, not synced from the provider.',
+      'Zoom, Meet, Teams and Jitsi. There is no adapter — you paste the link onto the session. Attendance is recorded in Algoryq Learn, not synced from the provider.',
   },
   {
     name: 'Payment gateways',

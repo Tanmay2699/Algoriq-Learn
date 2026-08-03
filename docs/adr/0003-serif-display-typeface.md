@@ -1,6 +1,16 @@
 # ADR 0003 — Fraunces for display type, Inter for everything else
 
-**Date:** 2026-07-31 · **Status:** Accepted, with a kill criterion
+**Date:** 2026-07-31 · **Status:** ~~Accepted, with a kill criterion~~ →
+**Superseded by [ADR 0010](0010-algoryq-learn-brand-alignment.md) on 2026-08-01**
+
+> **Superseded, and not by the kill criterion below.** The W4 hero A/B never ran. Fraunces was
+> replaced because the product was renamed to Algoryq Learn and became a stated child of Algoryq
+> Technologies, whose own identity is set in Space Grotesk — a reason the argument below does not
+> address, because when it was written there was no parent brand to be a sibling of.
+>
+> The reasoning is kept rather than deleted: reasons 1 and 5 (the `opsz` argument, and restricting
+> display to ≥40px) still hold and are still binding — 0010 keeps the ≥40px floor and accepts the
+> loss of optical sizing explicitly rather than by forgetting it was ever an argument.
 
 ## Context
 

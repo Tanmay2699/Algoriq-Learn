@@ -101,4 +101,90 @@ test.describe('reflow', () => {
       expect(escapees, `${route} has unclipped content past the viewport`).toEqual([]);
     }
   });
+
+  /**
+   * The same question asked *between* the two widths Playwright runs at.
+   *
+   * The projects are 360 and 1440, so everything from 361 to 1439 was unverified — and that is
+   * exactly where a responsive header breaks, because a bar that fits at both ends can still be
+   * over budget in the middle. It was: the 2026-08-01 rebrand widened the wordmark and the row
+   * ran 248px past its box at 1024, through a `flex-1` nav that absorbs the excess by sliding
+   * its links under the CTAs rather than by pushing anything past the viewport edge. Both
+   * assertions above were green the whole time.
+   *
+   * So this sweeps the breakpoint boundaries and the pixel either side of each, and adds a
+   * collision check the reflow assertions cannot make: overlap *inside* the bar never reaches
+   * the viewport edge, so it has to be measured against the neighbour, not the page.
+   */
+  test('the header survives every width between the two we render at', async ({ page }) => {
+    const widths = [360, 400, 480, 639, 640, 641, 767, 768, 769, 900, 1023, 1024, 1150, 1279, 1280, 1281, 1440, 1600, 1920];
+
+    for (const width of widths) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/');
+
+      const report = await page.evaluate(() => {
+        const bar = document.querySelector('header > div')!;
+        const limit = document.documentElement.clientWidth;
+
+        // Anything in the bar that runs past the viewport.
+        const past = [...bar.querySelectorAll<HTMLElement>('*')]
+          .filter((el) => el.getBoundingClientRect().right > limit + 1)
+          .map((el) => el.tagName + '.' + el.className.toString().slice(0, 40));
+
+        // Anything in the bar that overlaps its next visible sibling. `getClientRects().length`
+        // filters out the display:none controls, which report a zero rect at the origin and
+        // would otherwise "overlap" everything.
+        const boxes = [...bar.children]
+          .flatMap((el) => [...el.querySelectorAll<HTMLElement>('a, button')])
+          .filter((el) => el.getClientRects().length > 0)
+          .map((el) => ({ label: (el.textContent || '').trim().slice(0, 20), r: el.getBoundingClientRect() }))
+          .sort((a, b) => a.r.left - b.r.left);
+
+        const collisions: string[] = [];
+        for (let i = 1; i < boxes.length; i++) {
+          const prev = boxes[i - 1]!;
+          const cur = boxes[i]!;
+          if (cur.r.left < prev.r.right - 1) collisions.push(`"${prev.label}" over "${cur.label}"`);
+        }
+        return { past, collisions };
+      });
+
+      expect(report.past, `header content past the viewport at ${width}px`).toEqual([]);
+      expect(report.collisions, `header controls overlap at ${width}px`).toEqual([]);
+    }
+  });
+});
+
+test.describe('reflow — legacy', () => {
+  test.skip('placeholder', async ({ page }) => {
+    await page.goto('/');
+      const moved = await page.evaluate(() => {
+        window.scrollTo({ left: 9999, top: 0, behavior: 'instant' });
+        const x = window.scrollX;
+        window.scrollTo({ left: 0, top: 0, behavior: 'instant' });
+        return x;
+      });
+      expect(moved, `${route} scrolls sideways by ${moved}px`).toBe(0);
+
+      // And no element sticks out past the viewport unless something is clipping it.
+      const escapees = await page.evaluate(() => {
+        const limit = document.documentElement.clientWidth;
+        const clips = (el: Element) =>
+          ['auto', 'scroll', 'hidden', 'clip'].includes(getComputedStyle(el).overflowX);
+        const out: string[] = [];
+        document.querySelectorAll<HTMLElement>('body *').forEach((el) => {
+          if (el.getBoundingClientRect().right <= limit + 1) return;
+          let parent: Element | null = el.parentElement;
+          while (parent && parent !== document.body) {
+            if (clips(parent)) return;
+            parent = parent.parentElement;
+          }
+          out.push(`${el.tagName}.${el.className.toString().slice(0, 60)}`);
+        });
+        return out.slice(0, 5);
+      });
+      expect(escapees, `${route} has unclipped content past the viewport`).toEqual([]);
+    }
+  });
 });

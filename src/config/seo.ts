@@ -17,7 +17,7 @@ export interface SeoEntry {
 
 const entries: Record<string, SeoEntry> = {
   '/': {
-    title: 'Akechi — the multi-tenant LMS for institutes',
+    title: 'Algoryq Learn — the multi-tenant LMS for institutes',
     description:
       'One system of record for schools, colleges and coaching institutes: admissions, courses, live classes, assessments, fees, staff and outcomes. Free for 100 seats.',
   },
@@ -32,9 +32,9 @@ const entries: Record<string, SeoEntry> = {
       'Coaching institutes, schools, universities, skilling academies and corporate L&D. Same product, different vocabulary, different order — and an honest disqualifier for each.',
   },
   '/compare': {
-    title: 'Comparisons — Akechi against the alternatives',
+    title: 'Comparisons — Algoryq Learn against the alternatives',
     description:
-      'Akechi compared with Moodle, Google Classroom, Canvas and the spreadsheet-and-WhatsApp stack. Every cell sourced and dated, including the rows they win.',
+      'Algoryq Learn compared with Moodle, Google Classroom, Canvas and the spreadsheet-and-WhatsApp stack. Every cell sourced and dated, including the rows they win.',
   },
   '/pricing': {
     title: 'Pricing — free for one campus',
@@ -63,7 +63,7 @@ const entries: Record<string, SeoEntry> = {
   },
   '/trust/dpa': {
     title: 'Data processing',
-    description: 'How Akechi processes personal data, what we are responsible for, and what you are.',
+    description: 'How Algoryq Learn processes personal data, what we are responsible for, and what you are.',
   },
   '/trust/responsible-disclosure': {
     title: 'Responsible disclosure',
@@ -89,8 +89,8 @@ const entries: Record<string, SeoEntry> = {
     description:
       'Nine real integrations and eight honest gaps. We would rather list what works than show sixty logos we have a screenshot of.',
   },
-  '/why-akechi': {
-    title: 'Why Akechi',
+  '/why-algoryq-learn': {
+    title: 'Why Algoryq Learn',
     description:
       'The five-tool stack, what its seams cost, and the arithmetic on your own numbers. Plus the design-partner offer.',
   },
@@ -107,7 +107,7 @@ const entries: Record<string, SeoEntry> = {
   '/about': {
     title: 'About',
     description:
-      'What Akechi is, who it is for, why it was built as one system rather than another course platform, and the five things it deliberately will never do.',
+      'What Algoryq Learn is, who it is for, why it was built as one system rather than another course platform, and the five things it deliberately will never do.',
   },
   '/contact': {
     title: 'Contact',

@@ -34,18 +34,34 @@ function resolveSiteUrl(): string {
 }
 
 export const site = {
-  name: 'Akechi',
-  legalName: 'Akechi',
+  name: 'Algoryq Learn',
+  /**
+   * The product is Algoryq Learn; the legal entity behind it is not. Keeping the two apart
+   * matters in exactly the places a name is load-bearing — the DPA, the sub-processor list
+   * and the `Organization` block a crawler reads — where naming a product as the contracting
+   * party is wrong on a document somebody may one day rely on.
+   */
+  legalName: 'Algoryq Technologies Private Limited',
+  /** The parent company. Its own site, its own mark; this product carries both. */
+  parent: {
+    name: 'Algoryq Technologies',
+    shortName: 'Algoryq',
+    url: 'https://algoryq.com',
+    /** The domain the parent's own wordmark advertises. */
+    domain: 'algoryq.tech',
+  },
   url: resolveSiteUrl(),
   /** The product. Sign-in lives here, not on this site. */
-  appUrl: process.env.APP_URL ?? 'https://app.akechi.com',
+  appUrl: process.env.APP_URL ?? 'https://app.learn.algoryq.com',
   /** A real institute with seeded data, read-only, no signup. */
-  sandboxUrl: process.env.SANDBOX_URL ?? 'https://sandbox.akechi.com',
+  sandboxUrl: process.env.SANDBOX_URL ?? 'https://sandbox.learn.algoryq.com',
   // The API host and our own tenant slug are deliberately NOT here: this module reaches the
   // browser, and those two belong to the server. See src/config/server.ts.
-  contactEmail: 'hello@akechi.com',
-  securityEmail: 'security@akechi.com',
-  accessibilityEmail: 'accessibility@akechi.com',
+  // Product-scoped inbox on the parent's domain: one company, one mail estate, and an
+  // address that says which product an enquiry is about without a second domain to run.
+  contactEmail: 'learn@algoryq.com',
+  securityEmail: 'security@algoryq.com',
+  accessibilityEmail: 'accessibility@algoryq.com',
   locale: 'en-IN',
   /** No profiles are claimed until they exist — an invented sameAs is a fabricated claim. */
   sameAs: [] as string[],

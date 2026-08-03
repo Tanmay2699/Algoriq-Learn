@@ -22,7 +22,7 @@ export default function ProductPage() {
       {jsonLd([
         breadcrumbJsonLd(TRAIL),
         itemListJsonLd(
-          'Akechi product clusters',
+          'Algoryq Learn product clusters',
           clusters.map((cluster) => ({ href: cluster.href, label: cluster.label })),
         ),
       ])}
@@ -30,7 +30,7 @@ export default function ProductPage() {
       <PageHero
         eyebrow="The product"
         title="Thirty-one modules. One tenant. One audit trail."
-        lead="Akechi is a single backend, a single PostgreSQL database and a single frontend. What follows is all of it, grouped by the job it does rather than by the team that built it."
+        lead="Algoryq Learn is a single backend, a single PostgreSQL database and a single frontend. What follows is all of it, grouped by the job it does rather than by the team that built it."
         trail={TRAIL}
       />
 

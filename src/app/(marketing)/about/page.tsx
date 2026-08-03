@@ -18,7 +18,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About"
         title="Built for the institute, not for the course"
-        lead="Akechi exists because the software an institute actually runs on is five products that have never met each other, and nobody was building the sixth one — the one that joins them."
+        lead="Algoryq Learn exists because the software an institute actually runs on is five products that have never met each other, and nobody was building the sixth one — the one that joins them."
         trail={TRAIL}
       />
 

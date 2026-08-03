@@ -18,7 +18,7 @@ export default function ResourcesPage() {
       {jsonLd([
         breadcrumbJsonLd(TRAIL),
         itemListJsonLd(
-          'Akechi guides',
+          'Algoryq Learn guides',
           articles.map((article) => ({ href: `/resources/${article.slug}`, label: article.title })),
         ),
       ])}

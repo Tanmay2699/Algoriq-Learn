@@ -8,7 +8,7 @@ How the site is built, wired and shipped.
 
 1. **Static unless proven otherwise.** 48 of 51 routes are HTML on a CDN.
 2. **Server Components by default.** Client JavaScript is an exception with a written reason.
-3. **One origin.** No request leaves `akechi.com` at runtime. CSP `default-src 'self'`.
+3. **One origin.** No request leaves `learn.algoryq.com` at runtime. CSP `default-src 'self'`.
 4. **Inherit, do not fork.** Tokens, charts, form controls and icons come from the product.
 5. **No state.** No session, no auth, no database, no cookie except an optional theme preference.
 6. **Fail the build, not the visitor.** Missing metadata, an unregistered claim, a stale capture,
@@ -34,7 +34,7 @@ packages:
 ```json
 // website/package.json
 {
-  "name": "@akechi/website",
+  "name": "@algoryq/learn-website",
   "private": true,
   "scripts": {
     "dev": "next dev --port 3001 --turbopack",
@@ -91,7 +91,7 @@ website/
 │   │   │   ├── developers/…
 │   │   │   ├── integrations/
 │   │   │   ├── compare/[competitor]/
-│   │   │   ├── why-akechi/
+│   │   │   ├── why-algoryq-learn/
 │   │   │   ├── customers/
 │   │   │   ├── resources/[slug]/
 │   │   │   ├── accessibility/
@@ -161,7 +161,7 @@ export default {
   content: ['./src/**/*.{ts,tsx,mdx}', '../packages/ui/src/**/*.{ts,tsx}'],
   theme: {
     extend: {
-      fontFamily: { display: ['var(--font-display)', 'Georgia', 'serif'] },
+      fontFamily: { display: ['var(--mk-font-display)', 'Space Grotesk', 'ui-sans-serif', 'sans-serif'] },
       fontSize: {
         'display-1': ['var(--mk-display-1)', { lineHeight: '0.95', letterSpacing: '-0.03em' }],
         // … the rest of 05 §3.2
@@ -186,7 +186,7 @@ The only write on the site. Validates with the shared Zod schema, applies a hone
 time-to-submit floor, then forwards to the product:
 
 ```
-POST {API_URL}/public/institutes/{AKECHI_TENANT_SLUG}/enquiries
+POST {API_URL}/public/institutes/{ALGORYQ_TENANT_SLUG}/enquiries
 ```
 
 - Nothing is stored here. The lead lives in the product's database and nowhere else.
@@ -259,7 +259,7 @@ CSS. It is scoped to styles only and is recorded here so nobody quietly widens `
 match. `security-headers.spec.ts` snapshots the whole policy and **fails on any change**, so
 widening it is a deliberate, reviewed act.
 
-No secrets in the client bundle. `API_URL` and `AKECHI_TENANT_SLUG` are server-only; a test asserts
+No secrets in the client bundle. `API_URL` and `ALGORYQ_TENANT_SLUG` are server-only; a test asserts
 that neither string appears in the built client output.
 
 ---
@@ -269,10 +269,10 @@ that neither string appears in the built client output.
 | Variable | Used by | Default |
 |---|---|---|
 | `API_URL` | `/api/lead`, `/api/plans` | `http://127.0.0.1:4000` in dev |
-| `AKECHI_TENANT_SLUG` | `/api/lead` | `akechi` |
+| `ALGORYQ_TENANT_SLUG` | `/api/lead` | `algoryq-learn` |
 | `SITE_URL` | metadata, sitemap, canonicals, OG | `http://localhost:3001` |
-| `SANDBOX_URL` | CTAs | `https://sandbox.akechi.com` |
-| `APP_URL` | "Sign in" | `https://app.akechi.com` |
+| `SANDBOX_URL` | CTAs | `https://sandbox.learn.algoryq.com` |
+| `APP_URL` | "Sign in" | `https://app.learn.algoryq.com` |
 | `ANALYTICS_URL` | the self-hosted collector | unset ⇒ analytics disabled, honestly |
 
 Use `127.0.0.1`, not `localhost`, for anything reaching a container — the product's own notes
@@ -301,7 +301,7 @@ Production refuses to build if `SITE_URL` is still a localhost value: a canonica
 
 ## 10. Deployment
 
-**Primary: Vercel.** The organisation already has a project (`akechi-lms`); the site becomes a
+**Primary: Vercel.** The organisation already has a project (`algoryq-learn`); the site becomes a
 second project pointed at `website/`. It is static, so hosting is a commodity and this is not a
 lock-in decision.
 
@@ -312,7 +312,7 @@ is what "no lock-in" means when we say it on `/security`.
 
 | Environment | Branch | URL |
 |---|---|---|
-| Production | `main` | `akechi.com` |
+| Production | `main` | `learn.algoryq.com` |
 | Preview | every PR | `*.vercel.app`, `noindex` enforced by a header |
 | Local | — | `localhost:3001` |
 

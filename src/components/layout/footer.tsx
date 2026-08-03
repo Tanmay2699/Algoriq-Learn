@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { Route } from 'next';
 import { footer } from '../../config/navigation';
 import { site } from '../../config/site';
-import { Wordmark } from './wordmark';
+import { PoweredByAlgoryq, Wordmark } from './wordmark';
 
 export function SiteFooter() {
   return (
@@ -31,9 +31,15 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-block flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <Wordmark />
-            <p className="text-mk-body-sm text-fg-muted">© 2026 Akechi</p>
+            <p className="text-mk-body-sm text-fg-muted">© 2026 Algoryq Technologies</p>
+            {/*
+              The endorsement sits with the copyright rather than in a nav column: it is a
+              statement about who is legally behind the product, which is the same class of
+              fact as the copyright line and the class of fact procurement looks for.
+            */}
+            <PoweredByAlgoryq />
           </div>
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-mk-body-sm text-fg-muted">

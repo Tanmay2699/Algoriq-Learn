@@ -23,6 +23,20 @@ export function organizationJsonLd(): Json {
     url: site.url,
     logo: `${site.url}/icon.svg`,
     email: site.contactEmail,
+    /*
+     * The ownership edge, stated once and machine-readably.
+     *
+     * A crawler that meets this site and the parent's separately has no way to know they are
+     * the same company — and "who actually is this vendor" is the first thing a procurement
+     * reviewer asks of an unfamiliar name. `parentOrganization` answers it in the markup
+     * rather than only in the footer text, and it is a checkable fact: algoryq.com's own
+     * Organization block names Algoryq Technologies Private Limited.
+     */
+    parentOrganization: {
+      '@type': 'Organization',
+      name: site.parent.name,
+      url: site.parent.url,
+    },
     // sameAs is omitted entirely rather than emitted empty: an invented profile is a claim.
     ...(site.sameAs.length > 0 ? { sameAs: site.sameAs } : {}),
   };
@@ -42,10 +56,11 @@ export function softwareJsonLd(): Json {
   return {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'Akechi',
+    name: 'Algoryq Learn',
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'Web',
     url: site.url,
+    publisher: { '@type': 'Organization', name: site.parent.name, url: site.parent.url },
     description:
       'A multi-tenant learning management system for schools, colleges and coaching institutes: admissions, courses, live classes, assessments, fees, staff and outcomes in one platform.',
     offers: plans

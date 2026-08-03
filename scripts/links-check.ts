@@ -5,7 +5,7 @@
  * that exists and is reachable from nowhere — which is the more common failure, and the one
  * that quietly loses a page from the crawl graph.
  *
- *   pnpm --filter @akechi/website build && pnpm --filter @akechi/website links:check
+ *   pnpm --filter @algoryq/learn-website build && pnpm --filter @algoryq/learn-website links:check
  */
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
@@ -62,7 +62,7 @@ const ALLOWED_ORPHANS = new Set([
   // The one server route. Posted to by the demo form, never navigated to.
   '/api/lead',
   // /customers stays out of the navigation until it has a real case study (ADR 0004). It is
-  // still reachable — /why-akechi and /about both link it — so it is not listed here.
+  // still reachable — /why-algoryq-learn and /about both link it — so it is not listed here.
 ]);
 
 const linked = new Set<string>();

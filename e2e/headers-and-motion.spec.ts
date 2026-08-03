@@ -56,7 +56,7 @@ test.describe('no secrets in the bundle', () => {
     );
     for (const src of scripts) {
       const body = await (await fetch(src)).text();
-      expect(body).not.toContain('AKECHI_TENANT_SLUG');
+      expect(body).not.toContain('ALGORYQ_TENANT_SLUG');
       expect(body).not.toContain('127.0.0.1:4000');
     }
   });

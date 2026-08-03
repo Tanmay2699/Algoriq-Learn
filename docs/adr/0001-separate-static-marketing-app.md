@@ -4,7 +4,7 @@
 
 ## Context
 
-Akechi already has a Next.js 15 app (`apps/web`) that serves the product, the auth pages and each
+Algoryq Learn already has a Next.js 15 app (`apps/web`) that serves the product, the auth pages and each
 tenant's public CMS site at `/s/[slug]`. Adding a marketing site there would mean one deployment,
 one build and shared components.
 

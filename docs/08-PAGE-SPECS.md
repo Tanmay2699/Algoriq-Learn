@@ -14,7 +14,7 @@ Five templates cover 48 of the 51 routes. A page that needs a sixth template nee
 |---|---|---|
 | **T1 · Pillar** | `/product`, `/solutions`, `/resources`, `/trust` | Hero (display-3) → intro → a grid of children → closing CTA |
 | **T2 · Feature** | 7 clusters, 14 modules | Hero → capability blocks alternating text/frame → "what's not built" → related modules → CTA |
-| **T3 · Long-form** | `/security`, `/accessibility`, `/why-akechi`, `/compare/*`, articles | Sticky table of contents ≥1024px → `<Prose>` with `<Act>`-level anchors → CTA |
+| **T3 · Long-form** | `/security`, `/accessibility`, `/why-algoryq-learn`, `/compare/*`, articles | Sticky table of contents ≥1024px → `<Prose>` with `<Act>`-level anchors → CTA |
 | **T4 · Utility** | `/pricing`, `/demo`, `/contact`, legal | Focused, single-column, no decoration |
 | **T5 · State** | 404, 500, empty `/customers` | Centred, short, link-rich |
 
@@ -229,15 +229,15 @@ better than any feature table, and is true.
 
 ---
 
-## 10. `/why-akechi`, `/resources/*`, `/customers`
+## 10. `/why-algoryq-learn`, `/resources/*`, `/customers`
 
-- **`/why-akechi` (T3)** — the long version of Act XI: the before/after tool table, the ROI
+- **`/why-algoryq-learn` (T3)** — the long version of Act XI: the before/after tool table, the ROI
   calculator with its full formula, the six-row comparison expanded to twenty, and the design-partner
   offer.
 - **`/resources` (T1)** — tag-filtered index. Launch set of six:
   *Migrating an institute off spreadsheets* · *RBAC for schools: what a permission actually is* ·
   *Assessment integrity without a camera* · *Buying accessible software: what to ask a vendor* ·
-  *Self-hosting Akechi in an afternoon* · *Why we built a PWA instead of two native apps.*
+  *Self-hosting Algoryq Learn in an afternoon* · *Why we built a PWA instead of two native apps.*
   No gating, no email wall, no "download the PDF".
 - **`/customers` (T5 until non-empty)** — renders the design-partner offer and nothing else. Not
   in the navigation until it has a real entry.

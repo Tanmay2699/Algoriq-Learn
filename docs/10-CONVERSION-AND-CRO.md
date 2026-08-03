@@ -83,7 +83,7 @@ fabricating a testimonial.
 ## 4. The demo form
 
 The only form on the site. It posts to the product's real web-to-lead endpoint —
-`POST /public/institutes/akechi/enquiries` — via `/api/lead`, so **the marketing site's leads land
+`POST /public/institutes/algoryq-learn/enquiries` — via `/api/lead`, so **the marketing site's leads land
 on the product's own admissions board**. We run our funnel on our own CRM. That is both a dogfooding
 discipline and the most honest possible demonstration of the module.
 
@@ -109,7 +109,7 @@ are questions for the call, and asking them on a form is how you get fake answer
 - Validation with a Zod schema shared between the client and `/api/lead`. Inline errors,
   `aria-describedby`, focus to the first invalid field on submit.
 - Success: the form is replaced by a confirmation naming **what happens next and by when** ("a real
-  person, within one working day, from an @akechi.com address"). Plus the sandbox link, because the
+  person, within one working day, from an @algoryq.com address"). Plus the sandbox link, because the
   best thing a waiting prospect can do is look at the product.
 - Failure: values preserved, the reason stated, a `mailto:` fallback offered. Never a silent retry.
 - Anti-spam: honeypot + time-to-submit floor + the API's per-tenant rate limit. **No CAPTCHA** — a
@@ -163,8 +163,8 @@ conservative end of the plausible range and is labelled *assumption*.
 Tools replaced            = monthlyToolSpend × 12
 Reconciliation time       = hoursPerWeek × 52
 Reconciliation cost       = hoursPerWeek × 52 × hourlyCost
-Akechi at your size       = plan(learners).annualPrice        ← from /api/plans
-Net first-year difference = (toolsReplaced + reconciliationCost) − akechiAnnual
+Algoryq Learn at your size       = plan(learners).annualPrice        ← from /api/plans
+Net first-year difference = (toolsReplaced + reconciliationCost) − algoryqAnnual
 ```
 
 ### 6.3 What we refuse to compute
@@ -206,7 +206,7 @@ The site's most important conversion path for the first ninety days.
 > refuse. In exchange: your real workload, your real complaints, and permission to fix things
 > in front of you.
 
-It appears in Act XI, on `/customers`, on `/why-akechi` and as `?intent=design-partner` on `/demo`.
+It appears in Act XI, on `/customers`, on `/why-algoryq-learn` and as `?intent=design-partner` on `/demo`.
 It is specific (three, twelve months, ninety days), it is reciprocal, and it converts the "you have
 no customers" objection into an invitation.
 
@@ -224,7 +224,7 @@ produces a confident wrong answer.
 | E2 | Primary CTA: "Book a 20-minute walkthrough" vs "Talk to the people who built it" | CTA click rate | +8% |
 | E3 | Sandbox-first vs walkthrough-first CTA order in the hero | Combined conversion | +5% |
 | E4 | Verifiable-by band above vs below the fold | Scroll depth + security-page visits | +10% on the second |
-| E5 | Serif display vs Inter Display (ADR 0003 kill criterion) | Scroll-to-Act-IV | −8% triggers the swap |
+| ~~E5~~ | ~~Serif display vs Inter Display (ADR 0003 kill criterion)~~ | — | **Retired.** The display face is now the parent brand's (ADR 0010), so it is a brand-consistency decision rather than a conversion one and is not the site's to A/B |
 | E6 | Pricing: plans first vs "what's included everywhere" first | Pricing → demo | +6% |
 
 Implementation: a build-time variant flag with a cookieless split (a hashed, non-persistent bucket

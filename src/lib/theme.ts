@@ -10,7 +10,7 @@
  *   - data-theme="dark"    → explicit dark, beating a light OS
  */
 
-export const THEME_KEY = 'akechi-theme';
+export const THEME_KEY = 'algoryq-learn-theme';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 

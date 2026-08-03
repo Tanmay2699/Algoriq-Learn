@@ -30,10 +30,10 @@ people search — and almost nowhere in the visible narrative.
 
 > For **institutes that have outgrown a folder of spreadsheets** — schools, colleges, coaching
 > centres, skilling academies and corporate L&D teams —
-> **Akechi** is the **system of record for learning**
+> **Algoryq Learn** is the **system of record for learning**
 > that runs admissions, teaching, assessment, fees, staff and outcomes **in one platform**.
 > Unlike **Moodle, Google Classroom or the five-tool stack most institutes actually run**,
-> Akechi **carries a permission and an audit trail on every action, isolates each institute's data
+> Algoryq Learn **carries a permission and an audit trail on every action, isolates each institute's data
 > in the database itself, and ships with the accessibility and portability an enterprise
 > procurement team asks for** — at a price a single campus can start on for free.
 
@@ -50,8 +50,8 @@ Use the shortest one that fits the space.
 | 3 words | **From enquiry to outcome.** |
 | 7 words | One system of record for the institute. |
 | 12 words | Run admissions, teaching, assessment, fees and outcomes on one platform. |
-| Tweet | Akechi is the system of record for institutes — from the first enquiry to the final certificate. One login, every role, an audit trail on every action. |
-| Elevator | Most institutes run on Moodle plus Zoom plus Google Forms plus Excel plus WhatsApp plus a payment link. Nothing reconciles, and every number is a month late. Akechi is one platform for the whole lifecycle — admissions, courses, live classes, assessment, fees, staff, placement — where each institute's data is isolated in the database itself and every action carries a permission and an audit trail. Free for one campus; it self-hosts if you need it to. |
+| Tweet | Algoryq Learn is the system of record for institutes — from the first enquiry to the final certificate. One login, every role, an audit trail on every action. |
+| Elevator | Most institutes run on Moodle plus Zoom plus Google Forms plus Excel plus WhatsApp plus a payment link. Nothing reconciles, and every number is a month late. Algoryq Learn is one platform for the whole lifecycle — admissions, courses, live classes, assessment, fees, staff, placement — where each institute's data is isolated in the database itself and every action carries a permission and an audit trail. Free for one campus; it self-hosts if you need it to. |
 
 ---
 
@@ -194,7 +194,7 @@ date per cell (`17-EVIDENCE-AND-CLAIMS-POLICY.md` §5).
 
 | Against | Their strength | Our line |
 |---|---|---|
-| **Moodle** | Free, ubiquitous, enormous plugin ecosystem | "Moodle is a course platform you then staff. Akechi is the institute's system of record — admissions, fees, staff and outcomes are in the same database as the coursework." |
+| **Moodle** | Free, ubiquitous, enormous plugin ecosystem | "Moodle is a course platform you then staff. Algoryq Learn is the institute's system of record — admissions, fees, staff and outcomes are in the same database as the coursework." |
 | **Google Classroom** | Free, zero-friction, everyone has an account | "Classroom is excellent at handing out work. It has no admissions, no fees, no register, no certificate, and no permission model you can shape." |
 | **Canvas / Blackboard** | Real enterprise LMS, deep integrations | "Same shape, higher floor. We add the business half — enquiries, fees, HR, placement — and publish our accessibility conformance and our build status." |
 | **The five-tool stack** (Zoom + Forms + Excel + WhatsApp + a payment link) | Free-ish, familiar, already working | "It is working. It is also why the monthly numbers arrive on the 5th and why one enquiry in five never gets a call back." |
@@ -206,7 +206,7 @@ date per cell (`17-EVIDENCE-AND-CLAIMS-POLICY.md` §5).
 
 **Primary (ship this).**
 > ### From the first enquiry to the final certificate.
-> Akechi is the system of record for an institute — admissions, teaching, assessment, fees, staff
+> Algoryq Learn is the system of record for an institute — admissions, teaching, assessment, fees, staff
 > and outcomes in one platform, where every action carries a permission and an audit trail.
 >
 > `[ Open the live sandbox ]`  `[ Book a 20-minute walkthrough ]`

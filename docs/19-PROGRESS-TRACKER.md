@@ -3,7 +3,7 @@
 **Living document. Update it every session.** It is authoritative over every other doc's
 description of *state* (the other docs are authoritative over *intent*).
 
-Last updated: **2026-07-31** · Phase: **built and verified; not deployed**
+Last updated: **2026-08-01** · Phase: **built and verified; rebranded to Algoryq Learn; not deployed**
 
 ---
 
@@ -13,7 +13,7 @@ Last updated: **2026-07-31** · Phase: **built and verified; not deployed**
 |---|---|
 | **Phase** | W1–W4 complete. W5 (launch) is the remaining phase. |
 | **Site source** | Built. 51 public pages, 66 routes in the build output. |
-| **Docs** | 20 documents + 9 ADRs, reconciled against what was actually built. |
+| **Docs** | 20 documents + 10 ADRs, reconciled against what was actually built. |
 | **Gates** | typecheck ✅ · unit **63** ✅ · browser **300** ✅ · claims ✅ · links ✅ · build ✅ |
 | **Figma** | Not created. The design exists as code; the file is handover work, not a prerequisite. |
 | **Product changes needed** | 1 remaining — `GET /public/plans` (W2.6). The workspace change is done. |
@@ -25,10 +25,11 @@ Last updated: **2026-07-31** · Phase: **built and verified; not deployed**
 ## B. What was built
 
 ### Foundation
-- `@akechi/website` in the pnpm workspace. Next 15 App Router, TypeScript strict, port 3001.
-- Two-layer tokens: `@akechi/ui/tokens.css` inherited untouched, plus the `--mk-*` marketing
-  layer. A lint-level rule is not needed yet because nothing redeclares a product token.
-- Self-hosted Inter + Fraunces, 115 KB, metric-matched fallbacks via `next/font/local`.
+- `@algoryq/learn-website` in the pnpm workspace. Next 15 App Router, TypeScript strict, port 3001.
+- Two-layer tokens: `@akechi/ui/tokens.css` inherited, plus the `--mk-*` marketing layer. Since
+  the rebrand, four brand tokens in layer 1 are authored here rather than upstream — see §E.1.
+  Everything else in layer 1 is untouched and nothing else redeclares a product token.
+- Self-hosted Inter + Space Grotesk, **70 KB**, metric-matched fallbacks via `next/font/local`.
   No third font file, no CDN, no third-party origin anywhere.
 - 20 components across primitives, layout, motion, product renderings and interactive.
 - `src/lib/cn.ts` — a local class merger that knows the custom font scale (see §D.1).
@@ -43,7 +44,7 @@ Last updated: **2026-07-31** · Phase: **built and verified; not deployed**
 ### Pages (51 public)
 Homepage (12 acts) · `/product` + 7 clusters + 14 modules · `/solutions` + 5 · `/pricing` ·
 `/security` · `/trust` + 4 · `/accessibility` · `/developers` + webhooks · `/integrations` ·
-`/compare` + 4 · `/why-akechi` · `/customers` · `/resources` + 6 · `/about` · `/contact` ·
+`/compare` + 4 · `/why-algoryq-learn` · `/customers` · `/resources` + 6 · `/about` · `/contact` ·
 `/demo` · `/legal` × 5 · 404 · sitemap · robots.
 
 ### Server
@@ -72,7 +73,7 @@ and a browser test asserts the API host and tenant slug never reach the bundle.
 | `/api/og` images | Open Graph metadata is complete on every route; the generated image is deferred. |
 | Analytics | The collector is not hosted yet. `ANALYTICS_URL` unset disables it honestly rather than as a silent no-op. |
 | The Figma file | The design exists as code and as `05`/`06`. Worth building for handover; not a prerequisite for the site to exist. |
-| Product screenshots | Superseded by ADR 0008 — DOM recreations, because the demo seed has people but no figures to photograph. |
+| Product screenshots | Superseded by ADR 0008 (DOM recreations), because the demo seed has people but no figures to photograph. |
 | `/changelog`, `/status`, `/careers` | Deferred with reasons in `03` §2. |
 
 ---
@@ -114,7 +115,45 @@ the hardest kind to notice and the easiest kind to avoid.
 
 ---
 
-## E. Claims and evidence
+## E. Carried debt
+
+Things that are correct here and not yet correct somewhere else. Each one is a divergence that
+will not announce itself. This section exists because the last silent divergence in a vendored
+file — the 2026-07-23 status-colour drift, recorded in the header of `tokens.product.css` — went
+unnoticed for three days, and what failed then was that nobody had written down that it *could*
+drift.
+
+### E.1 Layer 1 is ahead of the product on four brand tokens
+
+The 2026-08-01 rebrand (ADR 0010) re-authored four tokens in `src/styles/tokens.product.css`,
+which ADR 0002 defines as a vendored copy edited only upstream:
+
+| token | was (Akechi) | now (Algoryq Learn) | source |
+|---|---|---|---|
+| `--brand-500` | `#5b5bd6` | `#1b5cd4` | logo gradient, mid stop, darkened to clear 4.5:1 |
+| `--brand-600` | `#4a4ac4` | `#1450b8` | logo gradient, dark stop |
+| `--brand-soft` | `#eef0fe` | `#e8f0fd` | 10% tint of `--brand-500` |
+| `--accent-500` | `#12a594` | `#5f76fc` | Algoryq "pulse" |
+
+**Until `packages/ui/src/styles/tokens.css` and the Figma `Color` collection carry these four
+values, the product and this site render two different blues.** Neutrals, status colours and radii
+were deliberately left untouched, so the blast radius is four lines.
+
+*Closes when:* the product monorepo takes the same four values in one commit with its Figma
+update, and this file is re-copied from upstream whole.
+
+### E.2 The product still ships as `@akechi/*`
+
+The monorepo is `AkechiLMS` and its packages are `@akechi/ui`, `@akechi/api`, `@akechi/authz`.
+Every reference to them in this repository is left spelled that way deliberately (ADR 0010): they
+are paths into a repository this one only references, and inventing renamed ones would break the
+rule that every claim resolves to a file somebody can open.
+
+*Closes when:* the product renames itself, in the product's own commit. This repository follows.
+
+---
+
+## F. Claims and evidence
 
 | | Count |
 |---|---:|
@@ -126,7 +165,7 @@ the hardest kind to notice and the easiest kind to avoid.
 
 ---
 
-## F. Before the domain points here
+## G. Before the domain points here
 
 1. **Legal review** of the five `/legal` documents and `/trust/dpa`. They are honest drafts
    written from what the software does; they are not a lawyer's work.
@@ -143,9 +182,11 @@ the hardest kind to notice and the easiest kind to avoid.
 
 ---
 
-## G. Session log
+## H. Session log
 
 | Date | Who | What happened |
 |---|---|---|
 | 2026-07-31 | Claude | **Specification written.** Codebase and Figma analysed; `website/` created with `CLAUDE.md`, 20 documents and 7 ADRs. |
 | 2026-07-31 | Claude | **Built and verified.** 51 pages, 20 components, 63 unit tests, 300 browser tests, four CI gates. Four classes of defect found by the browser suite and fixed structurally (§D). Docs reconciled against what shipped; ADRs 0008 and 0009 added for the two decisions that changed during the build. |
+| 2026-08-01 | Claude | **Rebranded to Algoryq Learn** (ADR 0010). Akechi → Algoryq Learn across copy, routes (`/why-akechi` → `/why-algoryq-learn`), config and JSON-LD; parent mark adopted unmodified; brand ramp re-authored from the mark's gradient and held by `contrast.spec.ts`; Fraunces (67 KB) replaced by Space Grotesk (22 KB), taking the font payload to 70 KB. Layer-1 divergence recorded as debt in §E.1. Gates re-run green. |
+| 2026-08-01 | Claude | **Rebrand finished.** The typeface half of the rebrand had not reached the docs: `05`, `07`, `09`, `13`, `15`, `04`, `00` and `10` still specified Fraunces and a three-file font budget. Reconciled. The new ADR had also been filed as a second `0008` — renumbered to `0010`, with 0003 marked superseded and 0002 marked amended in the index. |

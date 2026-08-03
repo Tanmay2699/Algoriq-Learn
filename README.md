@@ -1,7 +1,7 @@
-# Akechi — Website
+# Algoryq Learn — Website
 
-The public marketing site for Akechi (`akechi.com`). Separate from the product
-(`apps/web` → `app.akechi.com`) and from a tenant's own CMS site (`/s/[slug]`), both of which
+The public marketing site for Algoryq Learn (`learn.algoryq.com`). Separate from the product
+(`apps/web` → `app.learn.algoryq.com`) and from a tenant's own CMS site (`/s/[slug]`), both of which
 live in the product monorepo. This repository is the site alone.
 
 **Status: built.** 48 statically-rendered routes, a Playwright + axe suite, and a claims check
@@ -21,7 +21,7 @@ Two files are vendored from the product's design system and are not authored her
 | Path | What it is |
 |---|---|
 | [`CLAUDE.md`](CLAUDE.md) | Working rules for anyone (human or agent) building this site |
-| [`docs/`](docs/) | The full specification set — 20 documents + 7 ADRs |
+| [`docs/`](docs/) | The full specification set — 20 documents + 10 ADRs |
 | `src/` | The site. `app/` (routes), `components/`, `content/`, `config/`, `lib/`, `styles/`, `test/` |
 | `e2e/` | Playwright: routes, accessibility, interaction, headers and motion |
 | `scripts/` | `sync-catalog`, `claims-check`, `links-check` |
@@ -31,7 +31,7 @@ Two files are vendored from the product's design system and are not authored her
 | Doc | Answers |
 |---|---|
 | [00 — Master implementation plan](docs/00-MASTER-IMPLEMENTATION-PLAN.md) | What gets built, in what order, by which gate |
-| [01 — Product truth](docs/01-PRODUCT-TRUTH.md) | What Akechi actually is, extracted from the code |
+| [01 — Product truth](docs/01-PRODUCT-TRUTH.md) | What Algoryq Learn actually is, extracted from the code |
 | [02 — Positioning & messaging](docs/02-POSITIONING-AND-MESSAGING.md) | What we say, to whom, and why it lands |
 | [03 — Information architecture](docs/03-INFORMATION-ARCHITECTURE.md) | Every URL, the nav, the crawl graph |
 | [04 — Homepage narrative](docs/04-HOMEPAGE-NARRATIVE.md) | The scroll, act by act, with copy |

@@ -36,7 +36,7 @@ export default async function ComparePage({ params }: { params: Promise<{ compet
     { href: `/compare/${comparison.slug}`, label: comparison.name },
   ];
 
-  const wins = comparison.rows.filter((row) => row.verdict === 'akechi').length;
+  const wins = comparison.rows.filter((row) => row.verdict === 'algoryq').length;
   const losses = comparison.rows.filter((row) => row.verdict === 'them').length;
   const evens = comparison.rows.filter((row) => row.verdict === 'even').length;
   const stalest = Math.max(...comparison.rows.map((row) => daysSince(row.retrievedAt)));
@@ -47,7 +47,7 @@ export default async function ComparePage({ params }: { params: Promise<{ compet
 
       <PageHero eyebrow="Comparison" title={comparison.h1} lead={comparison.lead} trail={trail}>
         <p className="mt-6 text-mk-body-sm text-fg-muted">
-          {comparison.rows.length} rows: {wins} favour Akechi, {losses} favour {comparison.name},{' '}
+          {comparison.rows.length} rows: {wins} favour Algoryq Learn, {losses} favour {comparison.name},{' '}
           {evens} are even. Every cell about {comparison.name} carries the source we read and the
           date we read it.
         </p>
@@ -79,13 +79,13 @@ export default async function ComparePage({ params }: { params: Promise<{ compet
           </Heading>
           <div className="mt-8">
             <Table
-              caption={`Akechi and ${comparison.name} compared, capability by capability`}
-              head={['Capability', 'Akechi', comparison.name]}
+              caption={`Algoryq Learn and ${comparison.name} compared, capability by capability`}
+              head={['Capability', 'Algoryq Learn', comparison.name]}
             >
               {comparison.rows.map((row) => (
                 <Tr key={row.capability}>
                   <Td header>{row.capability}</Td>
-                  <Td className={row.verdict === 'akechi' ? 'text-fg' : ''}>{row.akechi}</Td>
+                  <Td className={row.verdict === 'algoryq' ? 'text-fg' : ''}>{row.algoryq}</Td>
                   <Td className={row.verdict === 'them' ? 'text-fg' : ''}>
                     {row.them}
                     <span className="mt-1 block text-caption text-fg-muted">

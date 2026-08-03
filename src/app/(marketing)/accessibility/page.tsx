@@ -80,7 +80,7 @@ export default function AccessibilityPage() {
         trail={TRAIL}
       >
         <p className="mt-6 text-mk-body-sm text-fg-muted">
-          Scope: akechi.com and the Akechi product. Assessed 31 July 2026. Self-assessed;
+          Scope: learn.algoryq.com and the Algoryq Learn product. Assessed 31 July 2026. Self-assessed;
           an independent audit is planned and is listed below as an open item.
         </p>
       </PageHero>

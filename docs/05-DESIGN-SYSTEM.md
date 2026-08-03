@@ -108,16 +108,19 @@ It is written in `packages/ui/src/styles/tokens.css` in eleven lines of comment;
 
 | Role | Face | Why | Weight axis used |
 |---|---|---|---|
-| **Display** (≥40px only) | **Fraunces** variable — `opsz 9–144`, `wght 300–700`, `SOFT 0`, `WONK 0` | With WONK off it is a clean high-contrast Scotch Roman. The `opsz` axis is exactly what large display type needs: at 96px the thin strokes stay thin, which is what makes a headline look *drawn* rather than *scaled*. It carries academic authority without looking dusty — the right note for an institution buyer, and it is not what any competitor in this category uses. | 300–500 |
+| **Display** (≥40px only) | **Space Grotesk** variable — `wght 300–700`, latin | The face the parent brand sets its own display type in (`algoryq.com`), which is the whole argument: a visitor arriving from the parent site should not have to be told the two are the same company. Its quirks are what stop a geometric grotesque from reading as Helvetica at 6.5rem — the flat-sided `o`, the squared bowls, the single-storey `a`. | 400 |
 | **Text / UI** | **Inter** variable | It is the product's face. Continuity outranks novelty here. `cv11`, `ss01` on, matching `apps/web/globals.css`. | 400–600 |
-| **Mono** | **JetBrains Mono** | API examples, permission keys, formulas, the "Verifiable by" labels. Already in the product's preset. | 400–500 |
+| **Mono** | **The platform stack** — `ui-monospace`, `SFMono-Regular`, `Cascadia Mono`, `Menlo`, `Consolas` | API examples, permission keys, formulas, the "Verifiable by" labels. Not a webfont: see §3.4. | — |
 
-**ADR 0003** records this decision, the alternate (Newsreader), and the kill criterion: if the
-hero A/B in W4 shows the serif underperforming by more than 8% on scroll-depth-to-Act-IV, we swap
-to Inter Display at `wght 500`, `tracking -0.035em` — a change confined to two tokens.
+**[ADR 0010](adr/0010-algoryq-learn-brand-alignment.md)** records this decision and what it costs.
+It supersedes ADR 0003, which chose Fraunces and whose kill-criterion A/B never ran — the face was
+replaced by the rebrand, not by the experiment. The one argument that did not survive is optical
+sizing: Space Grotesk has no `opsz` axis, so a 6.5rem headline is a scaled 16px headline in the
+way ADR 0003 objected to. Accepted knowingly; the face's own display-size quirks do that work.
 
-**Display is never used below 40px.** Below that it loses its authority and starts to look like a
-theme. `--mk-display-3` is the floor at 40px.
+**Display is never used below 40px.** Below that its quirks read as noise rather than character.
+`--mk-display-3` is the floor at 40px. The single exception is the **wordmark** (1.375rem,
+`wght 600`), which is a brand lockup rather than running text — see `09` §7.
 
 ### 3.2 The marketing scale
 
@@ -125,16 +128,16 @@ Fluid via `clamp()`; every bound tested at 320px and 2560px.
 
 | Token | Face | Size | Leading | Tracking | Use |
 |---|---|---|---|---|---|
-| `--mk-display-1` | Fraunces 400 | `clamp(2.75rem, 1.15rem + 6.2vw, 6.5rem)` | 0.95 | −0.03em | Homepage H1 only |
-| `--mk-display-2` | Fraunces 400 | `clamp(2.25rem, 1.1rem + 4.4vw, 4.5rem)` | 1.00 | −0.025em | Act headlines |
-| `--mk-display-3` | Fraunces 400 | `clamp(1.875rem, 1.1rem + 2.6vw, 2.75rem)` | 1.10 | −0.02em | Page H1s, sub-act headlines |
+| `--mk-display-1` | Space Grotesk 400 | `clamp(2.75rem, 1.15rem + 6.2vw, 6.5rem)` | 0.95 | −0.03em | Homepage H1 only |
+| `--mk-display-2` | Space Grotesk 400 | `clamp(2.25rem, 1.1rem + 4.4vw, 4.5rem)` | 1.00 | −0.025em | Act headlines |
+| `--mk-display-3` | Space Grotesk 400 | `clamp(1.875rem, 1.1rem + 2.6vw, 2.75rem)` | 1.10 | −0.02em | Page H1s, sub-act headlines |
 | `--mk-title` | Inter 600 | `clamp(1.375rem, 1.05rem + 1.2vw, 1.875rem)` | 1.22 | −0.015em | Card and panel titles |
 | `--mk-subtitle` | Inter 600 | `1.125rem` | 1.45 | −0.005em | Small headings |
 | `--mk-lead` | Inter 400 | `clamp(1.0625rem, 1rem + 0.42vw, 1.3125rem)` | 1.55 | 0 | The paragraph under a headline |
 | `--mk-body` | Inter 400 | `1.0625rem` (17px) | 1.65 | 0 | Body copy |
 | `--mk-body-sm` | Inter 400 | `0.9375rem` | 1.6 | 0 | Captions, table cells, footnotes |
 | `--mk-eyebrow` | Inter 500 | `0.8125rem` | 1.2 | 0.08em, uppercase | Section eyebrows |
-| `--mk-mono` | JetBrains 400 | `0.875rem` | 1.6 | 0 | Code, keys, formulas |
+| `--mk-mono` | Platform mono | `0.875rem` | 1.6 | 0 | Code, keys, formulas |
 
 **The 17px body is deliberate.** The product's body is 14px because an application is dense and
 scanned. A marketing page is *read*, at arm's length, often on a phone, often by a 48-year-old
@@ -151,17 +154,24 @@ Document the divergence rather than "fixing" it.
 - **One H1 per page.** Acts use H2. Nothing skips a level; the outline is the document.
 - **Numerals**: `font-variant-numeric: tabular-nums` on anything that animates or aligns in a
   column. Proportional elsewhere.
-- **No italics in Fraunces below 40px** — its italic is beautiful and illegible small.
+- **No display italics, at any size.** Space Grotesk ships no true italic; a synthesised oblique
+  of a squared grotesque is visibly a slant rather than a cut. Emphasis in display type is a
+  weight change or a colour change, never a slope.
 
 ### 3.4 Loading
 
-**As shipped:** two self-hosted variable `woff2` files, latin subset — Inter (48 KB) and Fraunces
-(67 KB), **115 KB total**, both preloaded.
+**As shipped:** two self-hosted variable `woff2` files, latin subset — Inter (48 KB) and Space
+Grotesk (22 KB), **70 KB total**, both preloaded.
 
-There is no third file. JetBrains Mono would have cost 31 KB to set a dozen labels and would have
-put the budget 25% over, so the mono role uses the platform stack (`ui-monospace`,
-`SFMono-Regular`, `Cascadia Mono`, `Menlo`, `Consolas`), which is excellent everywhere and costs
-nothing.
+There is no third file. JetBrains Mono would have cost 31 KB to set a dozen labels, so the mono
+role uses the platform stack (`ui-monospace`, `SFMono-Regular`, `Cascadia Mono`, `Menlo`,
+`Consolas`), which is excellent everywhere and costs nothing.
+
+Both files are loaded by `next/font/local` (`src/app/fonts.ts`) rather than a hand-written
+`@font-face`, for `adjustFontFallback`: it reads the real metrics out of each `woff2` and emits a
+metric-matched fallback, so a 6.5rem headline does not reflow when the webfont lands. The files
+were fetched once at author time and are committed — nothing resolves a font host at build or run
+time, which is what makes the CSP claim in ADR 0007 checkable rather than aspirational.
 
 Both load through `next/font/local`, which reads the real metrics out of each file and emits a
 metric-matched fallback face. That is the whole reason for using it rather than a hand-written

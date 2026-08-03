@@ -88,7 +88,7 @@ export default async function DemoPage({
 
           <p className="text-caption text-fg-muted">
             We store nothing on this website. Your enquiry is recorded in our own instance of
-            Akechi and used to answer you.{' '}
+            Algoryq Learn and used to answer you.{' '}
             <Link href="/legal/privacy" className="underline underline-offset-4">
               Privacy
             </Link>
