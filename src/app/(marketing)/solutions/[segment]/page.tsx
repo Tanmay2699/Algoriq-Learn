@@ -22,7 +22,7 @@ export async function generateMetadata({
   const { segment } = await params;
   const solution = solutionBySlug(segment);
   if (!solution) return {};
-  return dynamicMeta(`/solutions/${solution.slug}`, `${solution.name} — ${solution.h1}`, solution.lead);
+  return dynamicMeta(`/solutions/${solution.slug}`, solution.seoTitle, solution.seoDescription);
 }
 
 export default async function SolutionPage({ params }: { params: Promise<{ segment: string }> }) {
@@ -97,7 +97,7 @@ export default async function SolutionPage({ params }: { params: Promise<{ segme
                 <li key={other.slug}>
                   <Link
                     href={`/solutions/${other.slug}` as Route}
-                    className="block h-full rounded-lg border border-border bg-surface p-5 transition-colors duration-fast hover:bg-surface-muted"
+                    className="block h-full rounded-lg border border-border bg-surface p-5 mk-lift hover:bg-surface-muted"
                   >
                     <h3 className="text-mk-subtitle font-semibold text-fg">{other.name}</h3>
                     <p className="mt-1.5 text-mk-body-sm text-fg-muted">{other.judgedOn}</p>

@@ -65,6 +65,15 @@ The last row is the one that makes the rest achievable. A single analytics tag, 
 chat widget is 180 KB of JavaScript, three DNS lookups and two long tasks — and it is where most
 "we optimised our site" projects stall.
 
+> **Homepage exception, 2026-09-01.** The hero's looping background video breaks the total-page-
+> weight row above on purpose — 1.4–3.6 MB depending on viewport, against a 900 KB budget — and
+> is very likely to cost the "LCP is a text node" claim on this one route too. First-load *JS*
+> barely moves (+4 KB); the weight is entirely video bytes, which is a deliberate trade a
+> stakeholder made for the hero specifically, not a regression that slipped past this table.
+> `docs/09-VISUAL-LANGUAGE-AND-ASSETS.md` §10 has the full accounting — what was cut from the
+> source clip, why, and every mitigation that shipped alongside the trade. Every other route
+> keeps the numbers above unchanged.
+
 ---
 
 ## 3. Rendering strategy

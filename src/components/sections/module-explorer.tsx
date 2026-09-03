@@ -33,16 +33,22 @@ const PANEL: Record<string, React.ReactNode> = {
  * Vertical orientation, manual activation: arrowing down the list moves focus without
  * swapping the panel, so a keyboard user is not made to render seven surfaces on the way
  * to the one they wanted.
+ *
+ * The list walks itself down the seven until somebody takes over, on the same beat as every
+ * other self-advancing thing on the site (`--mk-cycle`). Sharing one tempo matters more than
+ * tuning each switcher separately: two of them visible at once at 4.2s and 3.2s never line up
+ * and the page develops a syncopation nobody asked for.
  */
 export function ModuleExplorer() {
   return (
     <Tabs
+      autoCycle={4800}
       label="Product clusters"
       orientation="vertical"
       className="grid gap-8 lg:grid-cols-[20rem_1fr] lg:gap-12"
       tablistClassName="flex flex-col gap-0.5"
-      tabClassName="min-h-[44px] rounded-[--radius] px-3 py-2.5 text-start transition-colors duration-fast hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-2"
-      activeTabClassName="bg-surface-muted"
+      tabClassName="min-h-[44px] rounded-[--radius] px-3 py-2.5 text-start mk-lift hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-2"
+      activeTabClassName="bg-surface-muted mk-cluster-active"
       panelClassName="min-w-0 focus-visible:outline-2 focus-visible:outline-offset-4"
       items={clusters.map((cluster) => ({
         id: cluster.key,
@@ -60,7 +66,7 @@ export function ModuleExplorer() {
                 <Link
                   key={module.slug}
                   href={`/product/modules/${module.slug}` as Route}
-                  className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-border bg-surface px-3 text-mk-body-sm text-fg transition-colors duration-fast hover:bg-surface-muted"
+                  className="inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-border bg-surface px-3 text-mk-body-sm text-fg mk-lift hover:bg-surface-muted"
                 >
                   {module.title}
                   {module.completeness < 65 && (

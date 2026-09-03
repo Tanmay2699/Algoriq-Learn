@@ -41,10 +41,19 @@ const projectRoot = dirname(fileURLToPath(import.meta.url));
  *
  * `e2e/headers-and-motion.spec.ts` snapshots this exact string. Widening it further fails a
  * test, which is the point: it cannot happen quietly.
+ *
+ * ### `'unsafe-eval'`, dev-only
+ *
+ * `next dev`'s webpack pipeline wraps every module in `eval()` for Fast Refresh. Without
+ * `'unsafe-eval'` the browser blocks that eval, and React never hydrates — every button, the
+ * theme toggle, the mega-menu, all of it, silently dead, with only a CSP violation in the
+ * console to say why. `NODE_ENV` is `'development'` only under `next dev`; `next build` and
+ * `next start` — what `e2e/headers-and-motion.spec.ts` runs against — always see `'production'`,
+ * so the shipped policy is exactly the string the test snapshots, unchanged.
  */
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data:",
   "font-src 'self'",

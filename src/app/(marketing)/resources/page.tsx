@@ -25,8 +25,8 @@ export default function ResourcesPage() {
 
       <PageHero
         eyebrow="Guides"
-        title="Six things worth reading before you choose anything"
-        lead="Each one is written from something we actually built, and each one answers a question people ask us. Nothing is gated, and there is no email wall."
+        title="Six guides to read before you choose an LMS"
+        lead="Each is written from something we actually built, and answers a question people ask us. Nothing is gated, and there is no email wall."
         trail={TRAIL}
       />
 
@@ -59,17 +59,17 @@ export default function ResourcesPage() {
           </ul>
 
           <p className="mt-block max-w-prose text-mk-body-sm text-fg-muted">
-            There is no search box on this site. With fifty-one pages and a navigation that
-            works, a search box that returns nothing useful erodes more trust than its absence —
-            which is a slightly awkward thing to say given that search is the most complete
-            module in the product, at 88 per cent. We will add one at forty articles.
+            There is no search box on this site. Across fifty-one pages with a navigation that
+            works, a search box returning nothing useful erodes more trust than its absence —
+            slightly awkward to say, given search is the most complete module in the product at 88
+            per cent. We will add one at forty articles.
           </p>
         </div>
       </Act>
 
       <ClosingCTA
         title="Or skip the reading."
-        lead="The sandbox is a real institute with seeded data, and you can see every role in it without giving us anything."
+        lead="The sandbox is a real institute with seeded data, and every role is visible without giving us anything."
         primary={{ href: '/demo', label: 'Book a walkthrough' }}
         secondary={{ href: '/product', label: 'Read about the modules' }}
       />

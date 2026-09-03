@@ -29,6 +29,10 @@ export interface Comparison {
   name: string;
   h1: string;
   lead: string;
+  /** The search title. `h1` reads as prose; this one has 60 characters and a query to win. */
+  seoTitle: string;
+  /** The meta description. `lead` is usually too long for one. */
+  seoDescription: string;
   /** What they are genuinely good at. This paragraph comes first, before any row. */
   theirStrength: string;
   /** When somebody should stay where they are. */
@@ -47,15 +51,18 @@ export const comparisons: Comparison[] = [
   {
     slug: 'moodle',
     name: 'Moodle',
-    h1: 'Algoryq Learn and Moodle',
+    h1: 'Algoryq Learn vs Moodle',
+    seoTitle: 'Moodle Alternative — an Honest Comparison',
+    seoDescription:
+      'Algoryq Learn compared with Moodle, row by row, with a source and a date on every cell — including the rows Moodle wins. Scope, not quality.',
     lead:
-      'Moodle is the most widely deployed learning platform in the world, it is free, and its plugin ecosystem is two decades deep. Most of what follows is about scope rather than quality.',
+      'Moodle is the most widely deployed learning platform in the world, it is free, and its plugin ecosystem is two decades deep. What follows is about scope, not quality.',
     theirStrength:
-      'Moodle is genuinely excellent at what it is: a course platform with an enormous plugin ecosystem, no licence cost, an active community, and two decades of institutional trust. If your problem is delivering and assessing coursework and you have somebody who can maintain it, Moodle solves that problem and asks for no money.',
+      'Moodle is genuinely excellent at what it is: a course platform with an enormous plugin ecosystem, no licence cost, an active community and two decades of institutional trust. If your problem is delivering and assessing coursework, and you have somebody who can maintain it, Moodle solves that and asks for no money.',
     stayIf:
-      'You are happy with Moodle, you have somebody who maintains it, and the admissions, fees and staff side of the institute is not where your pain is.',
+      'You are happy with Moodle, somebody maintains it, and admissions, fees and staff are not where the pain is.',
     moveIf:
-      'The pain has moved out of the coursework and into the seams — enquiries in a notebook, fees in a spreadsheet, marks copied by hand, and a monthly report somebody compiles on a Sunday.',
+      'The pain has moved out of the coursework and into the seams: enquiries in a notebook, fees in a spreadsheet, marks copied by hand, a monthly report compiled on a Sunday.',
     rows: [
       {
         capability: 'Course delivery and assessment',
@@ -142,13 +149,16 @@ export const comparisons: Comparison[] = [
   {
     slug: 'google-classroom',
     name: 'Google Classroom',
-    h1: 'Algoryq Learn and Google Classroom',
+    h1: 'Algoryq Learn vs Google Classroom',
+    seoTitle: 'Google Classroom Alternative for Institutes',
+    seoDescription:
+      'Google Classroom is free and instant, and it is not a system of record. Compared row by row on admissions, fees, attendance and certificates.',
     lead:
-      'Classroom is free, everybody already has an account, and it takes about four minutes to start using. It is also not a system of record, and it does not claim to be.',
+      'Classroom is free, everybody already has an account, and it takes four minutes to start. It is also not a system of record, and does not claim to be.',
     theirStrength:
       'Zero friction. Everybody in the building already has a Google account, teachers need no training, and the whole thing works on the first day. For handing out and collecting work, nothing is faster to adopt.',
     stayIf:
-      'What you need is to hand out work, collect it, and give feedback — and the rest of the institute is genuinely fine as it is.',
+      'You need to hand out work, collect it and give feedback, and the rest of the institute is genuinely fine as it is.',
     moveIf:
       'You need a record that outlives a term: enquiries, fees, attendance a parent can see, a certificate an employer can verify, and an audit trail.',
     rows: [
@@ -229,13 +239,16 @@ export const comparisons: Comparison[] = [
   {
     slug: 'canvas',
     name: 'Canvas',
-    h1: 'Algoryq Learn and Canvas',
+    h1: 'Algoryq Learn vs Canvas',
+    seoTitle: 'Canvas LMS Alternative — Compared',
+    seoDescription:
+      'Canvas is mature and deeply integrated. This compares the business half of an institute — admissions, fees, staff — with a source on every cell.',
     lead:
-      'Canvas is a real enterprise LMS with a deep integration ecosystem and a long track record in higher education. The comparison is about the business half of an institute, not about the coursework.',
+      'Canvas is a real enterprise LMS with a deep integration ecosystem and a long track record in higher education. This is about the business half of an institute, not the coursework.',
     theirStrength:
-      'Canvas is mature, well supported, deeply integrated through LTI, and trusted by large universities. Its assessment and course-delivery feature set is broader than ours, its ecosystem is far larger, and it has an operational history we do not.',
+      'Canvas is mature, well supported, deeply integrated through LTI and trusted by large universities. Its assessment and course-delivery feature set is broader than ours, its ecosystem is far larger, and it has an operational history we do not.',
     stayIf:
-      'You are a large institution with an LTI ecosystem, a support contract you value, and a separate student information system that already handles admissions and fees.',
+      'You are a large institution with an LTI ecosystem, a support contract you value, and an SIS already handling admissions and fees.',
     moveIf:
       'You do not want to run two systems. Or the SIS you would need alongside it costs more than the LMS.',
     rows: [
@@ -301,14 +314,17 @@ export const comparisons: Comparison[] = [
     slug: 'spreadsheets-and-whatsapp',
     name: 'Spreadsheets and WhatsApp',
     h1: 'Algoryq Learn and the stack you already run',
+    seoTitle: 'Replacing Spreadsheets and WhatsApp',
+    seoDescription:
+      'The most common competitor here is not software: a spreadsheet, a group chat, a payment link and somebody who remembers everything. Compared honestly.',
     lead:
       'The most common competitor in this category is not software. It is a spreadsheet, a group chat, a payment link and somebody who remembers everything.',
     theirStrength:
       'It is free, everybody already knows how to use it, it needed no procurement, and it is working — which is more than can be said for a lot of software. Underestimating this is how vendors lose deals they thought they had won.',
     stayIf:
-      'One campus, one person who knows everything, and nothing has gone wrong yet that you noticed.',
+      'One campus, one person who knows everything, and nothing has gone wrong that you noticed.',
     moveIf:
-      'A second branch opened. Or the person who remembers everything took a holiday. Or a parent asked a question you could not answer in the meeting.',
+      'A second branch opened. Or the person who remembers everything took a holiday. Or a parent asked something you could not answer in the meeting.',
     rows: [
       {
         capability: 'Cost',

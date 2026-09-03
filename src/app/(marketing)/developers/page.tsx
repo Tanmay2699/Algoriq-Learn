@@ -26,9 +26,9 @@ const CODE = {
   "instance": "/v1/courses/42/publish"
 }`,
   webhook: `POST https://your-endpoint.example.com/algoryq-learn
-X-Algoryq Learn-Signature: sha256=<hmac of the raw body>
-X-Algoryq Learn-Delivery: 01J2…
-X-Algoryq Learn-Event: enrollment.created`,
+X-Algoryq-Signature: sha256=<hmac of the raw body>
+X-Algoryq-Delivery: 01J2…
+X-Algoryq-Event: enrollment.created`,
   selfhost: `docker compose up -d
 pnpm db:migrate && pnpm db:rls && pnpm db:seed
 pnpm --filter @akechi/api worker:dev`,
@@ -42,7 +42,7 @@ export default function DevelopersPage() {
       <PageHero
         eyebrow="Developers"
         title="A REST API where every route carries a permission key"
-        lead="Versioned, permission-checked, correlation-tagged, and documented. The same API the product's own frontend uses — there is no privileged internal one."
+        lead="The LMS API this product's own frontend runs on — versioned, permission-checked and correlation-tagged. There is no privileged internal one."
         trail={TRAIL}
       />
 
@@ -68,14 +68,14 @@ export default function DevelopersPage() {
             </Heading>
             <div className="mt-6 space-y-4 text-mk-body text-fg-muted">
               <p>
-                API keys are hashed at rest and shown once, at creation. If it is lost it is
-                rotated, not recovered — a key a vendor can show you again is a key stored in a
-                way you should mind.
+                API keys are hashed at rest and shown once, at creation. A lost key is rotated,
+                not recovered — a key a vendor can show you again is a key stored in a way you
+                should mind.
               </p>
               <p>
                 Every request carries the permissions of the key&apos;s owner. There is no
-                &ldquo;API user&rdquo; with special powers: a key that can publish a course is a
-                key held by somebody who can publish a course.
+                &ldquo;API user&rdquo; with special powers: a key that can publish a course is
+                held by somebody who can.
               </p>
               <p>
                 Send a correlation id and it travels through every log line the request touches,
@@ -104,9 +104,9 @@ export default function DevelopersPage() {
             <div>
               <h3 className="text-mk-subtitle font-semibold text-fg">Failure</h3>
               <p className="mt-2 text-mk-body-sm text-fg-muted">
-                RFC 7807 problem+json. Note where the human-readable message lives:{' '}
-                <Mono>title</Mono>, not <Mono>detail</Mono>. Our own frontend once dropped every
-                API error message by reading the wrong field, so it is worth saying out loud.
+                RFC 7807 problem+json. The human-readable message lives in <Mono>title</Mono>,
+                not <Mono>detail</Mono> — our own frontend once dropped every API error by reading
+                the wrong field, so it is worth saying out loud.
               </p>
               <CodeBlock label="An error response" className="mt-4">{CODE.error}</CodeBlock>
             </div>
@@ -120,8 +120,8 @@ export default function DevelopersPage() {
             The public endpoints, and their threat model
           </Heading>
           <p className="mt-5 max-w-prose text-mk-body text-on-ink-muted">
-            Almost everything requires a key. Three things do not, and each was designed with a
-            specific abuse in mind.
+            Almost everything requires a key. Three things do not, each designed with a specific
+            abuse in mind.
           </p>
 
           <div className="mt-block grid gap-6 md:grid-cols-3">
@@ -132,12 +132,12 @@ export default function DevelopersPage() {
               <p className="mt-3 text-mk-body-sm text-on-ink-muted">
                 Web-to-lead. It forces the source and has <em>no fields</em> for stage, owner or
                 pipeline — absent from the schema rather than validated away, because a field
-                that is accepted and then overridden is one somebody eventually forgets to
-                override. It returns a fixed acknowledgement, so it cannot be used to ask whether
-                an address is on file, and it answers identically for an unknown or a suspended
-                institute, so it cannot enumerate them. It notifies nobody automatically: an
-                unauthenticated request that can put a message in a named person&apos;s inbox is
-                a spam vector wearing a feature&apos;s clothes.
+                accepted and then overridden is one somebody eventually forgets to override. It
+                returns a fixed acknowledgement, so it cannot be asked whether an address is on
+                file, and answers identically for an unknown or suspended institute, so it cannot
+                enumerate them. It notifies nobody automatically: an unauthenticated request that
+                can put a message in a named person&apos;s inbox is a spam vector wearing a
+                feature&apos;s clothes.
               </p>
               <p className="mt-3 text-mk-body-sm text-on-ink-muted">
                 The form on this website posts to it.
@@ -149,9 +149,9 @@ export default function DevelopersPage() {
               </h3>
               <p className="mt-3 text-mk-body-sm text-on-ink-muted">
                 Certificate verification. Whoever holds the code is usually an employer, not a
-                user. It returns what was certified, to whom, when, and whether it still stands —
-                and deliberately nothing else. Unknown and revoked produce different words,
-                because those mean very different things to the person checking.
+                user. It returns what was certified, to whom, when, and whether it still stands,
+                and nothing else. Unknown and revoked produce different words, because they mean
+                very different things to the person checking.
               </p>
             </Card>
             <Card surface="ink">
@@ -160,8 +160,8 @@ export default function DevelopersPage() {
               </h3>
               <p className="mt-3 text-mk-body-sm text-on-ink-muted">
                 An institute&apos;s own public website — pages, posts, events, gallery. Author
-                text is Markdown source rendered to React elements; the renderer never emits
-                HTML, so nothing an author types can become script in a visitor&apos;s browser.
+                text is Markdown rendered to React elements; the renderer never emits HTML, so
+                nothing an author types can become script in a visitor&apos;s browser.
               </p>
             </Card>
           </div>
@@ -177,13 +177,12 @@ export default function DevelopersPage() {
             <div className="mt-6 space-y-4 text-mk-body text-fg-muted">
               <p>
                 Register an endpoint, subscribe to events, and every delivery is signed with an
-                HMAC over the raw body. Verify the signature before you parse — parsing first is
-                how a signature check becomes decorative.
+                HMAC over the raw body. Verify before you parse — parsing first is how a signature
+                check becomes decorative.
               </p>
               <p>
-                Deliveries are logged with their status and response, retried on failure, and can
-                be replayed from the interface. A webhook you cannot inspect is a webhook you
-                cannot debug at 9pm.
+                Deliveries are logged with status and response, retried on failure, and replayable
+                from the interface. A webhook you cannot inspect is one you cannot debug at 9pm.
               </p>
             </div>
             <p className="mt-6">
@@ -204,14 +203,14 @@ export default function DevelopersPage() {
             </Heading>
             <div className="mt-6 space-y-4 text-mk-body text-fg-muted">
               <p>
-                Three commands and no cloud account. The second line is three steps on purpose:
+                Three commands, no cloud account. The second line is three steps on purpose:
                 migrations create the schema, row-level security is applied separately from the
                 database catalogue so a table added later is covered automatically, and the seed
                 installs the permission catalogue and role templates.
               </p>
               <p>
-                Run exactly one worker. Its jobs claim no rows, so a second copy would
-                double-send email.
+                Run exactly one worker. Its jobs claim no rows, so a second copy double-sends
+                email.
               </p>
             </div>
             <p className="mt-6">
@@ -238,9 +237,9 @@ export default function DevelopersPage() {
             <li>No SCIM, no SAML, no OIDC.</li>
             <li>No official client libraries beyond the typed internal SDK.</li>
             <li>
-              No hosted, browsable reference on this site yet. The OpenAPI document is exported
-              from the running application, which means it is generated from the routes rather
-              than maintained by hand — and it is on the list to publish here.
+              No hosted, browsable reference here yet. The OpenAPI document is exported from the
+              running application, so it is generated from the routes rather than maintained by
+              hand, and publishing it is on the list.
             </li>
           </ul>
         </div>
@@ -248,7 +247,7 @@ export default function DevelopersPage() {
 
       <ClosingCTA
         title="Read the security model before you build against it."
-        lead="Deny-by-default authorization, forced row-level isolation, and a hash-chained audit log — with the file each one lives in."
+        lead="Deny-by-default authorization, forced row-level isolation and a hash-chained audit log, with the file each one lives in."
         primary={{ href: '/security', label: 'Security notes' }}
         secondary={{ href: '/demo', label: 'Talk to whoever built it' }}
       />

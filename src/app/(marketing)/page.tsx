@@ -4,6 +4,7 @@ import type { Route } from 'next';
 import { Act } from '../../components/layout/act';
 import { ClosingCTA } from '../../components/layout/page-parts';
 import { RoleSwitcher } from '../../components/sections/hero';
+import { VideoHero } from '../../components/sections/video-hero';
 import { ModuleExplorer } from '../../components/sections/module-explorer';
 import { DesignPartnerOffer, ProofBand } from '../../components/sections/proof';
 import { RoiCalculator } from '../../components/sections/roi-calculator';
@@ -13,7 +14,6 @@ import { Disclosure } from '../../components/primitives/disclosure';
 import { Reveal, Stagger } from '../../components/primitives/motion';
 import { Table, Td, Tr } from '../../components/primitives/table';
 import { CourseDiff, RiskList, RolesMatrix, VerifyCertificate } from '../../components/product/renderings';
-import { site } from '../../config/site';
 import { quickComparison, spine, toolStack } from '../../content/lifecycle';
 import { averagePercent } from '../../content/build-status';
 import { formatMoney, plans } from '../../content/plans';
@@ -63,39 +63,39 @@ export default function HomePage() {
       {jsonLd([organizationJsonLd(), websiteJsonLd(), softwareJsonLd(), faqJsonLd(FAQ)])}
 
       {/* ───────────────────────────────── ACT I — Arrival */}
-      <Act labelledBy="act-1" surface="ink" spacing="tight" className="relative overflow-hidden pt-14">
-        <div aria-hidden="true" className="aurora pointer-events-none absolute inset-0" />
-        <div className="container-mk relative">
-          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
-            <div>
-              <Eyebrow surface="ink">The institute operating system</Eyebrow>
-              <Heading level={1} display="display-1" id="act-1" surface="ink" className="mt-4">
-                <span className="block">From the first enquiry</span>
-                <span className="block">to the final certificate.</span>
-              </Heading>
-              <Lead surface="ink" className="mt-6">
-                Algoryq Learn is the system of record for an institute — admissions, teaching,
-                assessment, fees, staff and outcomes in one platform, where every action
-                carries a permission and an audit trail.
-              </Lead>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <CTA href={site.sandboxUrl} size="lg" surface="ink" external>
-                  Open the live sandbox
-                </CTA>
-                <CTA href="/demo" variant="secondary" size="lg" surface="ink">
-                  Book a 20-minute walkthrough
-                </CTA>
-              </div>
-              <p className="mt-4 max-w-measure text-mk-body-sm text-on-ink-muted">
-                No signup for the sandbox. It is a real institute with seeded data, read-only,
-                and you can see every role.
-              </p>
-            </div>
+      <VideoHero />
 
-            <div className="min-w-0">
+      {/*
+        What used to open Act I — the lead paragraph, the role switcher, the proof band —
+        rather than duplicating the headline that now lives on the video. `VideoHero` carries
+        its own `<h1>`; this act gets its own `<h2>` so it is still a landmark a screen-reader
+        user can navigate to by name, not a region borrowing a heading from the section above.
+      */}
+      <Act labelledBy="act-1-continued" surface="ink" spacing="tight">
+        <div className="container-mk">
+          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
+            <Reveal variant="left" className="max-w-xl">
+              <Eyebrow surface="ink" className="mb-4">
+                The System of Record
+              </Eyebrow>
+              <h2
+                id="act-1-continued"
+                className="font-display text-2xl sm:text-3xl lg:text-[2.125rem] font-normal leading-[1.3] tracking-[-0.02em] text-on-ink"
+              >
+                <span className="font-semibold text-white">Algoryq Learn</span> is the system of record for an institute —{' '}
+                <span className="text-on-ink/90">
+                  admissions, teaching, assessment, fees, staff and outcomes in one platform,
+                </span>{' '}
+                <span className="text-on-ink-muted">
+                  where every action carries a permission and an audit trail.
+                </span>
+              </h2>
+            </Reveal>
+
+            <Reveal variant="right" className="min-w-0">
               <p className="text-mk-body-sm text-on-ink-muted">I am a…</p>
               <RoleSwitcher />
-            </div>
+            </Reveal>
           </div>
 
           <Divider surface="ink" className="my-block" />
@@ -116,9 +116,17 @@ export default function HomePage() {
           </Lead>
 
           <Reveal className="mt-block">
+            {/*
+              `walkRows` on a prose table is the one place this gesture is arguable — the rows
+              are sentences somebody is reading, not a picture of a screen. It is here because
+              it was asked for, it uses the surface tint rather than the brand one so it reads
+              as a reading cursor rather than a selection, and removing it is deleting this one
+              prop.
+            */}
             <Table
               caption="What an institute uses today for each job, and what the gap costs"
               head={['The job', 'What you use today', 'What it costs you']}
+              walkRows={toolStack.length}
             >
               {toolStack.map((row) => (
                 <Tr key={row.job}>
@@ -203,9 +211,15 @@ export default function HomePage() {
             surface below is built from the product&apos;s own components and tokens.
           </Lead>
 
-          <div className="mt-block">
+          {/*
+            `zoom` rather than `rise`: this is the surface the act is about, and a large frame
+            that slides up from below reads as a card in a list. Settling out of a slight
+            over-scale reads as a camera finding it, which is the gesture the whole section
+            wants — "look inside" is the copy, so the motion should be a look, not a slide.
+          */}
+          <Reveal variant="zoom" className="mt-block">
             <ModuleExplorer />
-          </div>
+          </Reveal>
 
           <p className="mt-block max-w-measure text-mk-body-sm text-fg-muted">
             Four of these are still being finished, and we publish exactly how far along each
@@ -295,7 +309,7 @@ export default function HomePage() {
                 </Link>
               </p>
             </div>
-            <CourseDiff />
+            <Reveal variant="zoom"><CourseDiff /></Reveal>
           </div>
         </div>
       </Act>
@@ -387,66 +401,7 @@ export default function HomePage() {
                 against our own specification, and we publish the number.
               </p>
             </div>
-            <RiskList />
-          </div>
-        </div>
-      </Act>
-
-      {/* ───────────────────────────────── ACT VIII — Everywhere */}
-      <Act labelledBy="act-8" surface="muted">
-        <div className="container-mk">
-          <Eyebrow>Devices, performance and infrastructure</Eyebrow>
-          <Heading level={2} id="act-8" className="mt-4">
-            Built for a 360-pixel screen on a bad connection.
-          </Heading>
-
-          <div className="mt-block grid gap-6 md:grid-cols-3">
-            <Card>
-              <h3 className="text-mk-title font-semibold text-fg">Installable, not downloadable</h3>
-              <p className="mt-3 text-mk-body-sm text-fg-muted">
-                Algoryq Learn is a PWA: it installs to a home screen without an app store, updates
-                without a review queue, and is designed at 360 pixels first. There is no native
-                iOS or Android app, and for these learners that is the right trade.
-              </p>
-              <p className="mt-4">
-                <Link href="/resources/why-a-pwa" className="text-mk-body-sm text-link underline underline-offset-4">
-                  Why a PWA
-                </Link>
-              </p>
-            </Card>
-            <Card>
-              <h3 className="text-mk-title font-semibold text-fg">Progress survives the tunnel</h3>
-              <p className="mt-3 text-mk-body-sm text-fg-muted">
-                Progress captured without a connection is queued on the device and replayed in
-                order when the signal returns — idempotently, so a double replay changes
-                nothing and a stale event cannot overwrite a newer one.
-              </p>
-            </Card>
-            <Card>
-              <h3 className="text-mk-title font-semibold text-fg">Ports, not vendors</h3>
-              <p className="mt-3 text-mk-body-sm text-fg-muted">
-                Storage is local disk, S3-compatible or Azure Blob. Mail is SMTP. Search is
-                Postgres or Meilisearch. AI is one of three providers, or off. Every one is an
-                environment variable, and no cloud SDK is imported in feature code.
-              </p>
-            </Card>
-          </div>
-
-          <div className="mt-block rounded-lg border border-border bg-surface p-6 sm:p-8">
-            <h3 className="text-mk-title font-semibold text-fg">This page is the proof.</h3>
-            <p className="mt-3 max-w-prose text-mk-body text-fg-muted">
-              No third-party script, no font CDN, no analytics on the critical path, no cookie
-              banner because there are no cookies. Open your network tab. A company that ships
-              a 400-kilobyte marketing page is telling you something about the software behind
-              it.
-            </p>
-            <p className="mt-4 max-w-prose text-mk-body-sm text-fg-muted">
-              On the product side: the API is horizontally scalable, permission grants are
-              cached and version-busted, and rate limiting runs before the guards. The
-              background worker is deliberately a single process today — its jobs claim no
-              rows, so a second copy would double-send. We would rather say that here than have
-              you find it.
-            </p>
+            <Reveal variant="zoom"><RiskList /></Reveal>
           </div>
         </div>
       </Act>
@@ -510,8 +465,12 @@ export default function HomePage() {
           </div>
 
           <div className="mt-block grid gap-8 lg:grid-cols-2 lg:gap-14">
-            <RolesMatrix />
-            <VerifyCertificate />
+            <Reveal variant="zoom">
+              <RolesMatrix />
+            </Reveal>
+            <Reveal variant="zoom" delay={120}>
+              <VerifyCertificate />
+            </Reveal>
           </div>
 
           <div className="mt-block flex flex-wrap gap-3">
@@ -646,7 +605,7 @@ Content-Type: application/json
                 <Link
                   key={title}
                   href={href as Route}
-                  className="block rounded-lg border border-border bg-surface p-5 transition-colors duration-fast hover:bg-surface-muted"
+                  className="block h-full rounded-lg border border-border bg-surface p-5 transition-colors duration-fast hover:bg-surface-muted"
                 >
                   <h4 className="text-mk-subtitle font-semibold text-fg">{title}</h4>
                   <p className="mt-1.5 text-mk-body-sm text-fg-muted">{body}</p>
@@ -734,14 +693,24 @@ Content-Type: application/json
       </Act>
 
       {/* ───────────────────────────────── ACT XII — Decision */}
-      <Act labelledBy="act-12" surface="ink">
+      <Act labelledBy="act-12" surface="ink" aurora>
         <div className="container-mk">
-          <Eyebrow surface="ink">Pricing</Eyebrow>
-          <Heading level={2} id="act-12" surface="ink" className="mt-4">
-            Free for one campus. Priced for a group.
-          </Heading>
+          <Reveal>
+            <Eyebrow surface="ink">Pricing</Eyebrow>
+          </Reveal>
+          <Reveal variant="lines" delay={80}>
+            <Heading level={2} id="act-12" surface="ink" className="mt-4">
+              Free for one campus. Priced for a group.
+            </Heading>
+          </Reveal>
 
-          <div className="mt-block grid gap-6 md:grid-cols-3">
+          {/*
+            Three plans arriving left to right, cheapest first. The stagger is the reading
+            order and it is doing work: a price grid that appears all at once invites a
+            comparison, and one that arrives in sequence invites you to start at the free tier
+            — which is the tier we actually want somebody to start on.
+          */}
+          <Stagger step={90} className="mt-block grid gap-6 md:grid-cols-3">
             {plans.map((plan) => (
               <Card key={plan.key} surface="ink">
                 <div className="flex items-baseline justify-between gap-3">
@@ -773,7 +742,7 @@ Content-Type: application/json
                 </ul>
               </Card>
             ))}
-          </div>
+          </Stagger>
 
           <p className="mt-8 max-w-prose text-mk-body text-on-ink-muted">
             There is no online checkout yet — the billing module has no payment-gateway adapter,

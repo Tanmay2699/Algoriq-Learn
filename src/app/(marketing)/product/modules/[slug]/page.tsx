@@ -4,7 +4,7 @@ import type { Route } from 'next';
 import { notFound } from 'next/navigation';
 import { Act } from '../../../../../components/layout/act';
 import { ClosingCTA, NotBuilt, PageHero } from '../../../../../components/layout/page-parts';
-import { Badge, Card, Heading, Mono } from '../../../../../components/primitives';
+import { Badge, Card, Counter, Heading, Mono } from '../../../../../components/primitives';
 import { Stagger } from '../../../../../components/primitives/motion';
 import { clusters } from '../../../../../config/navigation';
 import { dynamicMeta } from '../../../../../config/seo';
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const module = moduleBySlug(slug);
   if (!module) return {};
-  return dynamicMeta(`/product/modules/${module.slug}`, `${module.title} — ${module.h1}`, module.lead);
+  return dynamicMeta(`/product/modules/${module.slug}`, module.seoTitle, module.seoDescription);
 }
 
 export default async function ModulePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -41,16 +41,18 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
       <PageHero eyebrow={cluster?.label ?? 'Product'} title={module.h1} lead={module.lead} trail={trail}>
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <span className="text-mk-body-sm text-fg-muted">
-            <Mono>{module.apiModule}</Mono> · {module.routes} API routes
+            <Mono>{module.apiModule}</Mono> · <Counter value={module.routes} /> API routes
           </span>
           {module.completeness < 65 && (
-            <Badge tone="progress">{module.completeness}% against our own specification</Badge>
+            <Badge tone="progress">
+              <Counter value={module.completeness} suffix="%" /> against our own specification
+            </Badge>
           )}
         </div>
         {module.completeness < 65 && (
           <p className="mt-4 max-w-measure text-mk-body-sm text-fg-muted">
-            This module is one of the four we would rather you knew about before a demo rather
-            than after one. What exists is below; so is what does not.
+            One of the four we would rather you knew about before a demo than after one. What
+            exists is below; so is what does not.
           </p>
         )}
       </PageHero>
@@ -88,8 +90,8 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
               The permission keys it adds
             </Heading>
             <p className="mt-3 max-w-measure text-mk-body-sm text-fg-muted">
-              A sample. Each one is a real key in the catalogue, with a description written for a
-              school administrator rather than for an engineer.
+              A sample. Each is a real key in the catalogue, described for a school administrator
+              rather than an engineer.
             </p>
             <ul className="mt-5 space-y-1.5">
               {module.keys.map((key) => (
@@ -120,8 +122,8 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
               ))}
             </ul>
             <p className="mt-5 max-w-measure text-mk-body-sm text-fg-muted">
-              These are the shipped role templates that hold it by default. Every one of them is
-              a copy you own and can edit — nothing in the code reads a role&apos;s name.
+              The shipped role templates that hold it by default. Each is a copy you own and can
+              edit — nothing in the code reads a role&apos;s name.
             </p>
           </div>
         </div>
@@ -134,8 +136,8 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
               And what it does not
             </Heading>
             <p className="mt-3 max-w-measure text-mk-body-sm text-fg-muted">
-              Naming these on the website is cheaper for both of us than discovering them in
-              week six of a pilot.
+              Naming these here is cheaper for both of us than discovering them in week six of a
+              pilot.
             </p>
           </div>
           <NotBuilt items={module.notBuilt} />

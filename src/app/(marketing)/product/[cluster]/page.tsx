@@ -4,7 +4,7 @@ import type { Route } from 'next';
 import { notFound } from 'next/navigation';
 import { Act } from '../../../../components/layout/act';
 import { ClosingCTA, NotBuilt, PageHero } from '../../../../components/layout/page-parts';
-import { Badge, Card, Heading } from '../../../../components/primitives';
+import { Badge, Card, Counter, Heading } from '../../../../components/primitives';
 import { Stagger } from '../../../../components/primitives/motion';
 import {
   AdmissionsBoard,
@@ -25,43 +25,43 @@ const PROOF: Record<string, { heading: string; body: string; frame: React.ReactN
   'admissions-and-growth': {
     heading: 'Round-robin is a cursor, not a count',
     body:
-      '“Whoever has fewest enquiries” sounds fairer and is unpredictable in exactly the case that matters: two enquiries a second apart, both reading the same counts, both landing on the same counsellor. The cursor lives on the rule and is incremented in the database, so it cannot happen. And a rule naming somebody who has left leaves the enquiry unassigned rather than parking it with a leaver, because the unclaimed queue is a state somebody actually looks at.',
+      '“Whoever has fewest enquiries” sounds fairer and is unpredictable in exactly the case that matters: two enquiries a second apart, both reading the same counts, both landing on the same counsellor. The cursor lives on the rule and is incremented in the database, so that cannot happen. A rule naming somebody who has left leaves the enquiry unassigned rather than parking it with a leaver, because the unclaimed queue is a state somebody looks at.',
     frame: <AdmissionsBoard />,
   },
   'academics-and-content': {
     heading: 'Restore rebuilds from the snapshot',
     body:
-      'Restoring a course version does not patch the live course — it rebuilds its lessons from the stored snapshot. That is the right behaviour and it has a sharp edge: any field the snapshot omits is erased on restore. When written lesson bodies were added, carrying them through publish, restore and diff was the work; adding the column was the easy part.',
+      'Restoring a course version rebuilds its lessons from the stored snapshot rather than patching the live course. That is right, and it has a sharp edge: any field the snapshot omits is erased on restore. When written lesson bodies were added, carrying them through publish, restore and diff was the work; the column was the easy part.',
     frame: <CourseDiff />,
   },
   'delivery-and-engagement': {
     heading: 'The offline queue replays in order, idempotently',
     body:
-      'Progress events are queued on the device with their original sequence and replayed through one endpoint that is safe to call twice. Out-of-order replay would let a stale “quarter watched” overwrite a later “complete”; a non-idempotent one would double-count a retry. Neither is theoretical on a train through a tunnel, which is where a great deal of this product’s learning happens.',
+      'Progress events are queued on the device in their original sequence and replayed through one endpoint that is safe to call twice. Out-of-order replay would let a stale “quarter watched” overwrite a later “complete”; a non-idempotent one would double-count a retry. Neither is theoretical on a train through a tunnel.',
     frame: <RoleDashboard role="student" />,
   },
   'assessment-and-outcomes': {
     heading: 'Signals, shown to a human — never a verdict',
     body:
-      'The marking queue is anonymised and drops anything already marked, so two markers cannot collide. Integrity is what a cooperating browser reported, disclosed to the candidate while it happens and shown to a marker with the caveat on the same screen. There is no camera and nothing automatic, because an automated cheating verdict derived from a focus event is a false accusation waiting for a lawyer.',
+      'The marking queue is anonymised and drops anything already marked, so two markers cannot collide. Integrity is what a cooperating browser reported, disclosed to the candidate while it happens and shown to a marker with the caveat on the same screen. No camera, nothing automatic: a cheating verdict derived from a focus event is a false accusation waiting for a lawyer.',
     frame: <ItemAnalysis />,
   },
   'money-and-people': {
     heading: 'An invoice line copies its description at issue',
     body:
-      'It does not read through to the course. Rename a course next term and last year’s invoice still says what was actually sold. The same rule governs certificate wording and application details: a document that re-renders itself from live data is a document that quietly rewrites history.',
+      'It does not read through to the course. Rename a course next term and last year’s invoice still says what was sold. Certificate wording and application details follow the same rule: a document that re-renders itself from live data quietly rewrites history.',
     frame: <PeopleList />,
   },
   intelligence: {
     heading: 'A saved search stores the query, never the results',
     body:
-      'Which is exactly why sharing one is safe: the person you shared it with runs it under their own permissions and sees only what they are allowed to see. Results are trimmed at query time, not filtered afterwards in the interface, so a permission change takes effect on the next search rather than the next deployment.',
+      'Which is why sharing one is safe: whoever you share it with runs it under their own permissions and sees only what they may. Results are trimmed at query time, not filtered afterwards in the interface, so a permission change takes effect on the next search rather than the next deployment.',
     frame: <RiskList />,
   },
   'platform-and-trust': {
     heading: 'One build serves every institute',
     body:
-      'Branding — logo, colours, radius — is injected into the server-rendered shell at request time, read from the institute’s own row. There are no per-tenant builds and no per-tenant deployments, which is what makes a custom domain a DNS record rather than a release.',
+      'Branding — logo, colours, radius — is injected into the server-rendered shell at request time, read from the institute’s own row. No per-tenant builds, no per-tenant deployments, which is what makes a custom domain a DNS record rather than a release.',
     frame: <RolesMatrix />,
   },
 };
@@ -108,7 +108,8 @@ export default async function ClusterPage({ params }: { params: Promise<{ cluste
         trail={trail}
       >
         <p className="mt-6 text-mk-body-sm text-fg-muted">
-          {cluster.modules} modules · {cluster.routes} API routes · one tenant boundary
+          <Counter value={cluster.modules} /> modules · <Counter value={cluster.routes} /> API
+          routes · one tenant boundary
         </p>
       </PageHero>
 
@@ -137,11 +138,15 @@ export default async function ClusterPage({ params }: { params: Promise<{ cluste
                 <Link
                   key={module.slug}
                   href={`/product/modules/${module.slug}` as Route}
-                  className="block rounded-lg border border-border bg-surface p-6 transition-colors duration-fast hover:bg-surface-muted"
+                  className="block h-full rounded-lg border border-border bg-surface p-6 mk-lift hover:bg-surface-muted"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <h3 className="text-mk-title font-semibold text-fg">{module.title}</h3>
-                    {module.completeness < 65 && <Badge tone="progress">{module.completeness}%</Badge>}
+                    {module.completeness < 65 && (
+                      <Badge tone="progress">
+                        <Counter value={module.completeness} suffix="%" />
+                      </Badge>
+                    )}
                   </div>
                   <p className="mt-2 text-mk-body-sm text-fg-muted">{module.lead}</p>
                 </Link>

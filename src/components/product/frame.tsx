@@ -91,11 +91,71 @@ export function FramePanel({
   );
 }
 
-/** The product's sidebar, at frame scale. Labels come from its real navigation registry. */
+/**
+ * A list whose selection walks its rows on its own.
+ *
+ * Every product surface on this site that is a list of rows uses this: the frame sidebar,
+ * the roles matrix, the people list, the item analysis, the risk list. It is what stops a
+ * product rendering reading as a screenshot — a still list shows one state of a screen, a
+ * walking one shows that the screen has rows and something is looking through them.
+ *
+ * No JavaScript at all. These frames are server components and a page carries several; a
+ * timer each would be React re-rendering a highlight. Spread this on the list, add the
+ * `mk-rows` class, and the CSS in `globals.css` indexes the children itself — nothing has to
+ * thread a row number through a `map`.
+ *
+ * Above twelve rows it returns nothing and the list simply does not animate. That is not a
+ * limit worth engineering around: a walking highlight in a thirteen-row list takes long
+ * enough per row that a reader has scrolled past before it reaches the bottom, and the
+ * generated keyframes stop there for the same reason.
+ */
+export function walkingList(
+  count: number,
+  opts?: {
+    fg?: string;
+    litFg?: string;
+    litBg?: string;
+    /**
+     * How long to rest on each row, in ms.
+     *
+     * Omit it and the list takes one `--mk-nav-cycle` to walk however many rows it has —
+     * which is what the frame sidebar wants, because it sits inside the role switcher and
+     * has to finish its trip exactly as the switcher swaps (see `--mk-cycle`).
+     *
+     * Every other list should set it. A fixed total cycle means an eleven-row roles matrix
+     * flickers at 430ms a row while a three-card risk list dozes at 1.6s, and the two read
+     * as different mechanisms rather than the same one. A fixed dwell reads as one cursor
+     * moving at one speed, whatever it is moving through.
+     */
+    dwell?: number;
+  },
+): React.CSSProperties | undefined {
+  if (count < 2 || count > 12) return undefined;
+  return {
+    '--mk-row-kf': `mk-row-${count}`,
+    '--mk-row-n': count,
+    '--mk-row-fg': opts?.fg ?? 'var(--text-muted)',
+    '--mk-row-lit-fg': opts?.litFg ?? 'var(--mk-link)',
+    '--mk-row-lit-bg': opts?.litBg ?? 'var(--brand-soft)',
+    ...(opts?.dwell ? { '--mk-nav-cycle': `${count * opts.dwell}ms` } : null),
+  } as React.CSSProperties;
+}
+
+/**
+ * The product's sidebar, at frame scale. Labels come from its real navigation registry.
+ *
+ * The selection walks the list on its own — Dashboard through Settings, then round again.
+ * A still sidebar shows one page of the product; a walking one shows that the product *has*
+ * those pages, which is the only thing this decoration is here to say. The whole nav is
+ * `aria-hidden`, so this is motion in a picture of software, announced to nobody.
+ *
+ * `active` decides which row is lit when the animation is off — reduced motion, or a list
+ * too long for the generated keyframes.
+ */
 export function FrameSidebar({ items, active }: { items: string[]; active: string }) {
   return (
     <nav aria-hidden="true" className="hidden w-40 shrink-0 sm:block">
-      <ul className="space-y-0.5">
+      <ul className="mk-rows space-y-0.5" style={walkingList(items.length)}>
         {items.map((item) => (
           <li
             key={item}

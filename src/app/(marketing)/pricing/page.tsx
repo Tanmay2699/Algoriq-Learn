@@ -2,18 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Act } from '../../../components/layout/act';
 import { ClosingCTA, PageHero } from '../../../components/layout/page-parts';
-import { Badge, CTA, Card, Heading, Lead } from '../../../components/primitives';
+import { Stagger } from '../../../components/primitives/motion';
+import { Badge, CTA, Card, Counter, Heading, Lead } from '../../../components/primitives';
 import { Disclosure } from '../../../components/primitives/disclosure';
 import { Table, Td, Tr } from '../../../components/primitives/table';
 import { pageMeta } from '../../../config/seo';
-import {
-  formatBytes,
-  formatLimit,
-  formatMoney,
-  includedEverywhere,
-  plans,
-  plansSource,
-} from '../../../content/plans';
+import { formatMoney, includedEverywhere, plans, plansSource } from '../../../content/plans';
 import { breadcrumbJsonLd, faqJsonLd, jsonLd } from '../../../lib/json-ld';
 
 export const metadata: Metadata = pageMeta('/pricing');
@@ -23,11 +17,11 @@ const TRAIL = [{ href: '/pricing', label: 'Pricing' }];
 const FAQ = [
   {
     q: 'What counts as a seat?',
-    a: 'A membership of your institute — a learner, a teacher or an administrator. Guardians linked to a learner are not seats. A person who belongs to two of your branches is one seat.',
+    a: 'A membership of your institute — a learner, a teacher or an administrator. Guardians linked to a learner are not seats, and somebody in two of your branches is one seat.',
   },
   {
     q: 'What happens when we hit a limit?',
-    a: 'The action refuses, with a message naming the limit. Nothing is silently truncated and nothing is deleted. The same refusal reaches an admissions counsellor converting an application, which is why converting is two explicit steps.',
+    a: 'The action refuses, naming the limit. Nothing is silently truncated or deleted. The same refusal reaches a counsellor converting an application, which is why converting is two explicit steps.',
   },
   {
     q: 'Is there a contract or a minimum term?',
@@ -39,11 +33,11 @@ const FAQ = [
   },
   {
     q: 'Do you charge for the API, or for security features?',
-    a: 'No. Tiering security is a dark pattern. Row-level isolation, the permission model, the audit log, the API, webhooks, exports and the right to self-host are on every plan including the free one.',
+    a: 'No. Tiering security is a dark pattern. Row-level isolation, the permission model, the audit log, the API, webhooks, exports and the right to self-host are on every plan, including the free one.',
   },
   {
     q: 'Can we self-host instead?',
-    a: 'Yes. One compose file boots the whole platform with no cloud account. If you self-host there is nothing to pay us for and no telemetry going anywhere.',
+    a: 'Yes. One compose file boots the whole platform with no cloud account. Self-hosted, there is nothing to pay us and no telemetry going anywhere.',
   },
 ];
 
@@ -55,7 +49,7 @@ export default function PricingPage() {
       <PageHero
         eyebrow="Pricing"
         title="Free for one campus. Priced for a group."
-        lead="Three plans, the real numbers, and no asterisk. The limits below are the rows in our own plans table, not a marketing simplification."
+        lead="Three plans, real numbers, no asterisk. These limits are the rows in our own plans table, not a marketing simplification."
         trail={TRAIL}
       />
 
@@ -64,7 +58,12 @@ export default function PricingPage() {
           <h2 id="plans-heading" className="sr-only">
             Plans
           </h2>
-          <div className="grid gap-6 lg:grid-cols-3">
+          {/*
+            Cheapest first, arriving in that order. The stagger is not decoration on a price
+            grid: three cards appearing together are a comparison, three arriving in sequence
+            are a recommendation, and the one we recommend starting on is the free one.
+          */}
+          <Stagger step={90} className="grid gap-6 lg:grid-cols-3">
             {plans.map((plan) => (
               <Card key={plan.key} elevation={plan.key === 'growth' ? 'e2' : 'e0'} className="flex flex-col">
                 <div className="flex items-baseline justify-between gap-3">
@@ -74,11 +73,7 @@ export default function PricingPage() {
                 </div>
 
                 <p className="mt-4 font-display text-display-3 text-fg">
-                  {plan.maxSeats === null
-                    ? 'Let’s talk'
-                    : plan.priceMinor === 0
-                      ? '₹0'
-                      : formatMoney(plan.priceMinor, plan.currency)}
+                  {plan.maxSeats === null ? 'Let’s talk' : <Counter value={plan.priceMinor / 100} prefix="₹" />}
                   {plan.maxSeats !== null && plan.priceMinor > 0 && (
                     <span className="font-sans text-mk-body text-fg-muted"> / month</span>
                   )}
@@ -86,10 +81,21 @@ export default function PricingPage() {
                 <p className="mt-3 text-mk-body-sm text-fg-muted">{plan.description}</p>
 
                 <dl className="mt-6 space-y-2.5 text-mk-body-sm">
-                  <Limit label="Seats" value={formatLimit(plan.maxSeats)} />
-                  <Limit label="Courses" value={formatLimit(plan.maxCourses)} />
-                  <Limit label="Storage" value={formatBytes(plan.storageBytes)} />
-                  <Limit label="AI tokens" value={`${formatLimit(plan.aiTokensPerMonth)}${plan.aiTokensPerMonth ? ' / month' : ''}`} />
+                  <Limit label="Seats" value={limitNode(plan.maxSeats)} />
+                  <Limit label="Courses" value={limitNode(plan.maxCourses)} />
+                  <Limit label="Storage" value={bytesNode(plan.storageBytes)} />
+                  <Limit
+                    label="AI tokens"
+                    value={
+                      plan.aiTokensPerMonth === null ? (
+                        'Unlimited'
+                      ) : (
+                        <>
+                          <Counter value={plan.aiTokensPerMonth} /> / month
+                        </>
+                      )
+                    }
+                  />
                 </dl>
 
                 <div className="mt-auto pt-6">
@@ -99,17 +105,17 @@ export default function PricingPage() {
                 </div>
               </Card>
             ))}
-          </div>
+          </Stagger>
 
           <p className="mt-8 max-w-prose text-mk-body text-fg-muted">
             There is no online checkout — the billing module has no payment-gateway adapter, so
             every paid plan starts with a short conversation. The free tier starts without one.
           </p>
           <p className="mt-3 max-w-prose text-mk-body-sm text-fg-muted">
-            These figures are a snapshot of the product&apos;s <code className="font-mono">plans</code>{' '}
-            table taken on {plansSource.capturedAt}. Once the product exposes a public plans
-            endpoint this page will read it directly, so it cannot drift; until then, this is a
-            second copy and we would rather say so.
+            A snapshot of the product&apos;s <code className="font-mono">plans</code> table taken
+            on {plansSource.capturedAt}. Once the product exposes a public plans endpoint this page
+            will read it directly and cannot drift; until then this is a second copy, and saying so
+            is cheaper than being caught by it.
           </p>
         </div>
       </Act>
@@ -157,25 +163,25 @@ export default function PricingPage() {
               <Tr>
                 <Td header>Seats</Td>
                 {plans.map((plan) => (
-                  <Td key={plan.key}>{formatLimit(plan.maxSeats)}</Td>
+                  <Td key={plan.key}>{limitNode(plan.maxSeats)}</Td>
                 ))}
               </Tr>
               <Tr>
                 <Td header>Courses</Td>
                 {plans.map((plan) => (
-                  <Td key={plan.key}>{formatLimit(plan.maxCourses)}</Td>
+                  <Td key={plan.key}>{limitNode(plan.maxCourses)}</Td>
                 ))}
               </Tr>
               <Tr>
                 <Td header>Storage</Td>
                 {plans.map((plan) => (
-                  <Td key={plan.key}>{formatBytes(plan.storageBytes)}</Td>
+                  <Td key={plan.key}>{bytesNode(plan.storageBytes)}</Td>
                 ))}
               </Tr>
               <Tr>
                 <Td header>AI budget</Td>
                 {plans.map((plan) => (
-                  <Td key={plan.key}>{formatLimit(plan.aiTokensPerMonth)}</Td>
+                  <Td key={plan.key}>{limitNode(plan.aiTokensPerMonth)}</Td>
                 ))}
               </Tr>
               <Tr>
@@ -217,7 +223,7 @@ export default function PricingPage() {
 
       <ClosingCTA
         title="Start on the free tier."
-        lead="A hundred seats, twenty-five courses, no card and no call. Bring your spreadsheet."
+        lead="A hundred seats, twenty-five courses, no card, no call. Bring your spreadsheet."
         primary={{ href: '/demo?intent=starter', label: 'Start free' }}
         secondary={{ href: '/demo', label: 'Book a 20-minute walkthrough' }}
       />
@@ -225,11 +231,21 @@ export default function PricingPage() {
   );
 }
 
-function Limit({ label, value }: { label: string; value: string }) {
+function Limit({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex items-baseline justify-between gap-3">
       <dt className="text-fg-muted">{label}</dt>
       <dd className="font-medium tabular-nums text-fg">{value}</dd>
     </div>
   );
+}
+
+/** `null` means unlimited/negotiated — the only case with nothing to count up to. */
+function limitNode(value: number | null): React.ReactNode {
+  return value === null ? 'Unlimited' : <Counter value={value} />;
+}
+
+function bytesNode(bytes: number | null): React.ReactNode {
+  if (bytes === null) return 'Unlimited';
+  return <Counter value={Math.round(bytes / 1024 ** 3)} suffix=" GiB" />;
 }

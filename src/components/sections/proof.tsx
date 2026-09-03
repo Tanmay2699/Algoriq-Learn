@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Route } from 'next';
 import { site } from '../../config/site';
+import { Counter } from '../primitives/motion';
 
 /**
  * The proof components.
@@ -192,9 +193,9 @@ export function DesignPartnerOffer({ surface = 'paper' }: { surface?: 'paper' | 
         We have no case studies yet.
       </h3>
       <p className={ink ? 'mt-3 max-w-measure text-mk-body text-on-ink-muted' : 'mt-3 max-w-measure text-mk-body text-fg-muted'}>
-        Algoryq Learn has not shipped to a paying customer. We are taking three design partners: the
-        Growth plan free for twelve months, direct access to the people who built it, weekly
-        calls, and a named case study at ninety days — yours to approve, or to refuse. In
+        Algoryq Learn has not shipped to a paying customer. We are taking <Counter value={3} /> design partners: the
+        Growth plan free for <Counter value={12} /> months, direct access to the people who built it, weekly
+        calls, and a named case study at <Counter value={90} /> days — yours to approve, or to refuse. In
         exchange: your real workload, your real complaints, and permission to fix things in
         front of you.
       </p>

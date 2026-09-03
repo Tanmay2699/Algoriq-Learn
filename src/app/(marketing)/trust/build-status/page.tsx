@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Act } from '../../../../components/layout/act';
 import { ClosingCTA, PageHero } from '../../../../components/layout/page-parts';
-import { Heading } from '../../../../components/primitives';
+import { Counter, Heading, PercentBar } from '../../../../components/primitives';
 import { Table, Td, Tr } from '../../../../components/primitives/table';
 import { pageMeta } from '../../../../config/seo';
 import { averagePercent, buildStatus, buildStatusUpdated, notBuiltAtAll } from '../../../../content/build-status';
@@ -23,7 +23,13 @@ export default function BuildStatusPage() {
       <PageHero
         eyebrow="Build status"
         title="What is finished, and what is not."
-        lead={`Twenty-four modules, averaging ${averagePercent}% against our own written specification. This is the real matrix from our tracker, published unedited — including the rows we would rather not show you.`}
+        lead={
+          <>
+            Twenty-four modules, averaging <Counter value={averagePercent} suffix="%" /> against
+            our own written specification. The real matrix from our tracker, published unedited —
+            including the rows we would rather not show.
+          </>
+        }
         trail={TRAIL}
       >
         <p className="mt-6 text-mk-body-sm text-fg-muted">
@@ -49,18 +55,7 @@ export default function BuildStatusPage() {
                   <span className="mt-0.5 block text-caption font-normal text-fg-muted">{row.cluster}</span>
                 </Td>
                 <Td>
-                  <span className="flex items-center gap-2">
-                    <span
-                      aria-hidden="true"
-                      className="hidden h-1.5 w-16 overflow-hidden rounded-full bg-surface-muted sm:block"
-                    >
-                      <span
-                        className="block h-full rounded-full bg-viz-1"
-                        style={{ width: `${row.percent}%` }}
-                      />
-                    </span>
-                    <span className="tabular-nums font-medium text-fg">{row.percent}%</span>
-                  </span>
+                  <PercentBar value={row.percent} />
                 </Td>
                 <Td>{row.real}</Td>
                 <Td className={row.gap === '—' ? '' : 'text-warning-text'}>{row.gap}</Td>
@@ -76,8 +71,7 @@ export default function BuildStatusPage() {
             Not built at all
           </Heading>
           <p className="mt-4 max-w-measure text-mk-body text-fg-muted">
-            Some of these are on the way. Some of them are decisions we do not intend to
-            reverse, and they are marked as such.
+            Some are on the way. Some are decisions we do not intend to reverse, and say so.
           </p>
           <ul className="mt-8 grid gap-5 md:grid-cols-2">
             {notBuiltAtAll.map((item) => (
@@ -97,18 +91,17 @@ export default function BuildStatusPage() {
           </Heading>
           <div className="mt-6 space-y-4 text-mk-body text-on-ink-muted">
             <p>
-              Because you will find out anyway, and the only question is whether you find out
+              Because you will find out anyway, and the only question is whether that happens
               before or after you have committed a term to us.
             </p>
             <p>
-              Because a vendor who publishes their weak modules is a vendor whose strong claims
-              are worth reading. Everything else on this site is more believable because this
-              page exists.
+              Because a vendor who publishes their weak modules is one whose strong claims are
+              worth reading. Everything else here is more believable because this page exists.
             </p>
             <p>
-              And because it is the same rule the product itself follows: an unbuilt surface in
-              Algoryq Learn renders an honest &ldquo;not built yet&rdquo; component rather than a fake
-              chart. We did not invent that rule for the website.
+              And because the product follows the same rule: an unbuilt surface renders an honest
+              &ldquo;not built yet&rdquo; component rather than a fake chart. We did not invent
+              that rule for the website.
             </p>
           </div>
           <p className="mt-8 text-mk-body-sm">
@@ -121,7 +114,7 @@ export default function BuildStatusPage() {
 
       <ClosingCTA
         title="If none of that was a dealbreaker, look at the software."
-        lead="The sandbox is a real institute with seeded data, read-only, and you can see every role."
+        lead="The sandbox is a real institute with seeded data, read-only, and every role visible."
         primary={{ href: '/demo', label: 'Book a walkthrough' }}
         secondary={{ href: '/product', label: 'Read about the modules' }}
       />

@@ -7,6 +7,7 @@ import { cn } from '../../lib/cn';
 import { formatMoney } from '../../content/plans';
 import { ROI_FORMULA, computeRoi, roiIsReady } from '../../lib/roi';
 import { CodeBlock } from '../primitives/code-block';
+import { Counter } from '../primitives';
 import { Disclosure } from '../primitives/disclosure';
 
 /**
@@ -142,30 +143,85 @@ export function RoiCalculator() {
             </p>
           ) : (
             <>
-              <dl className="space-y-3 text-mk-body-sm">
-                <Row label="Tools you would stop paying for" value={formatMoney(result.toolsAnnualMinor, 'INR')} sub="per year" />
+              {/*
+                The visible figures animate on every keystroke, and an aria-live region that
+                watches them mutate would read out each intermediate frame rather than the
+                result — the same reason `Counter` itself carries no aria-live (see its
+                docstring, and VPAT 4.1.3). This sr-only paragraph is the one thing the live
+                region actually announces: the settled numbers, once, in plain text.
+              */}
+              <p className="sr-only">
+                Tools you would stop paying for: {formatMoney(Math.round(result.toolsAnnualMinor), 'INR')} per
+                year. Time spent moving data between them: {result.hoursAnnual} hrs per year, about{' '}
+                {formatMoney(Math.round(result.reconcileCostMinor), 'INR')}. Algoryq Learn at{' '}
+                {parsed.learners.toLocaleString('en-IN')} learners:{' '}
+                {result.plan && result.plan.priceMinor === 0 && result.plan.key === 'starter'
+                  ? 'free'
+                  : result.plan?.maxSeats === null
+                    ? 'negotiated'
+                    : `${formatMoney(Math.round(result.algoryqAnnualMinor), 'INR')}, ${result.plan?.name} plan, per year`}
+                . First-year difference on your numbers:{' '}
+                {result.netMinor === undefined
+                  ? 'negotiated at your size, no honest number to give'
+                  : `${result.netMinor < 0 ? 'a loss of ' : ''}${formatMoney(Math.round(Math.abs(result.netMinor)), 'INR')}`}
+                .
+              </p>
+              <dl aria-hidden="true" className="space-y-3 text-mk-body-sm">
+                <Row
+                  label="Tools you would stop paying for"
+                  value={<Counter value={result.toolsAnnualMinor / 100} format={(n) => formatMoney(Math.round(n * 100), 'INR')} />}
+                  sub="per year"
+                />
                 <Row
                   label="Time spent moving data between them"
-                  value={`${result.hoursAnnual.toLocaleString('en-IN')} hrs`}
-                  sub={`per year ≈ ${formatMoney(result.reconcileCostMinor, 'INR')}`}
+                  value={<Counter value={result.hoursAnnual} suffix=" hrs" />}
+                  sub={
+                    <span>
+                      per year ≈{' '}
+                      <Counter
+                        value={result.reconcileCostMinor / 100}
+                        format={(n) => formatMoney(Math.round(n * 100), 'INR')}
+                      />
+                    </span>
+                  }
                 />
                 <Row
                   label={`Algoryq Learn at ${parsed.learners.toLocaleString('en-IN')} learners`}
                   value={
-                    result.plan && result.plan.priceMinor === 0 && result.plan.key === 'starter'
-                      ? 'Free'
-                      : result.plan?.maxSeats === null
-                        ? 'Negotiated'
-                        : formatMoney(result.algoryqAnnualMinor, 'INR')
+                    result.plan && result.plan.priceMinor === 0 && result.plan.key === 'starter' ? (
+                      'Free'
+                    ) : result.plan?.maxSeats === null ? (
+                      'Negotiated'
+                    ) : (
+                      <Counter
+                        value={result.algoryqAnnualMinor / 100}
+                        format={(n) => formatMoney(Math.round(n * 100), 'INR')}
+                      />
+                    )
                   }
                   sub={result.plan ? `${result.plan.name} plan, per year` : ''}
                 />
               </dl>
 
-              <p className="mt-5 border-t border-border pt-5 text-mk-body">
+              <p aria-hidden="true" className="mt-5 border-t border-border pt-5 text-mk-body">
                 <span className="text-fg-muted">First-year difference on your numbers: </span>
                 <span className="font-display text-display-3 tabular-nums text-fg">
-                  {result.netMinor === undefined ? '—' : formatMoney(result.netMinor, 'INR')}
+                  {result.netMinor === undefined ? (
+                    '—'
+                  ) : (
+                    // A local const, not `result.netMinor!`: TypeScript narrows a variable
+                    // across a closure, not a property access, so the capture below is what
+                    // makes the sign check provably safe rather than merely asserted.
+                    (() => {
+                      const netMinor = result.netMinor;
+                      return (
+                        <Counter
+                          value={Math.abs(netMinor / 100)}
+                          format={(n) => `${netMinor < 0 ? '-' : ''}${formatMoney(Math.round(n * 100), 'INR')}`}
+                        />
+                      );
+                    })()
+                  )}
                 </span>
               </p>
               {result.netMinor === undefined && (
@@ -192,7 +248,7 @@ export function RoiCalculator() {
   );
 }
 
-function Row({ label, value, sub }: { label: string; value: string; sub?: string }) {
+function Row({ label, value, sub }: { label: string; value: React.ReactNode; sub?: React.ReactNode }) {
   return (
     <div className="flex items-baseline justify-between gap-4">
       <dt className="text-fg-muted">{label}</dt>

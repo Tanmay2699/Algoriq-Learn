@@ -27,6 +27,30 @@ async function settle(page: Page) {
   await page.waitForTimeout(700);
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
   await page.waitForTimeout(400);
+
+  /*
+   * Then wait for the page-load entrance specifically, rather than trusting the timeouts
+   * above to have outlasted it. The entrance runs for `--mk-dur-entrance` plus up to five
+   * stagger steps, which is longer than the 1100ms of scrolling — so axe could analyse a
+   * heading still at partial opacity and report a contrast ratio no reader ever sees. That
+   * failed on exactly the routes with the longest hero ladder, and only sometimes, which is
+   * the worst kind of test to debug.
+   *
+   * The ambient drift and the scroll-linked parallax are excluded: one never ends and the
+   * other is driven by scroll position, so neither would ever settle.
+   */
+  await page.waitForFunction(
+    () =>
+      document
+        .getAnimations()
+        .filter((animation) => {
+          const name = (animation as CSSAnimation).animationName;
+          return typeof name === 'string' && name.startsWith('mk-enter');
+        })
+        .every((animation) => animation.playState === 'finished'),
+    undefined,
+    { timeout: 5000 },
+  );
 }
 
 test.describe('axe', () => {
@@ -156,35 +180,11 @@ test.describe('reflow', () => {
   });
 });
 
-test.describe('reflow — legacy', () => {
-  test.skip('placeholder', async ({ page }) => {
-    await page.goto('/');
-      const moved = await page.evaluate(() => {
-        window.scrollTo({ left: 9999, top: 0, behavior: 'instant' });
-        const x = window.scrollX;
-        window.scrollTo({ left: 0, top: 0, behavior: 'instant' });
-        return x;
-      });
-      expect(moved, `${route} scrolls sideways by ${moved}px`).toBe(0);
-
-      // And no element sticks out past the viewport unless something is clipping it.
-      const escapees = await page.evaluate(() => {
-        const limit = document.documentElement.clientWidth;
-        const clips = (el: Element) =>
-          ['auto', 'scroll', 'hidden', 'clip'].includes(getComputedStyle(el).overflowX);
-        const out: string[] = [];
-        document.querySelectorAll<HTMLElement>('body *').forEach((el) => {
-          if (el.getBoundingClientRect().right <= limit + 1) return;
-          let parent: Element | null = el.parentElement;
-          while (parent && parent !== document.body) {
-            if (clips(parent)) return;
-            parent = parent.parentElement;
-          }
-          out.push(`${el.tagName}.${el.className.toString().slice(0, 60)}`);
-        });
-        return out.slice(0, 5);
-      });
-      expect(escapees, `${route} has unclipped content past the viewport`).toEqual([]);
-    }
-  });
-});
+/*
+ * The old reflow test lived here. It was replaced by the per-width header check above and
+ * left behind as a skipped placeholder — but the leftover body still carried the closing
+ * brace of a `for` loop that no longer existed, and a reference to an undefined `route`.
+ * Being `test.skip` did not help: Playwright parses the file before it decides what to
+ * skip, so the syntax error took the whole accessibility suite down with it, and axe was
+ * silently not running on any route.
+ */

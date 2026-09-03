@@ -61,10 +61,12 @@ test.describe('the FAQ', () => {
   test('has its answers in the HTML, open or closed', async ({ page }) => {
     await page.goto('/');
     // <details>, so find-in-page and a crawler both see the answer without JavaScript.
-    const answer = page.getByText(/boots the entire platform/i).first();
+    // Anchored on the command, not the sentence around it — the prose gets edited, the
+    // command does not, and what this test is about is the answer being in the DOM.
+    const answer = page.getByText(/docker compose up/i).first();
     await expect(answer).toBeAttached();
 
-    const summary = page.getByText('Can we self-host it?').first();
+    const summary = page.getByText(/Can we self-host/i).first();
     await summary.click();
     await expect(answer).toBeVisible();
   });

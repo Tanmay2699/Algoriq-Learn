@@ -3,7 +3,7 @@ import Link from 'next/link';
 import type { Route } from 'next';
 import { Act } from '../../../components/layout/act';
 import { ClosingCTA, PageHero } from '../../../components/layout/page-parts';
-import { Heading } from '../../../components/primitives';
+import { Counter, Heading } from '../../../components/primitives';
 import { Stagger } from '../../../components/primitives/motion';
 import { pageMeta } from '../../../config/seo';
 import { site } from '../../../config/site';
@@ -27,8 +27,8 @@ export default function ComparisonsPage() {
 
       <PageHero
         eyebrow="Comparisons"
-        title="Four honest comparisons"
-        lead="Every cell about another product carries the source we read and the date we read it. Where they are better, the table says so — a comparison one column wins outright is an advertisement, and nobody reads one twice."
+        title="Four honest LMS comparisons"
+        lead="Every cell about another product carries the source we read and the date we read it. Where they are better, the table says so — a comparison one column wins outright is an advertisement."
         trail={TRAIL}
       />
 
@@ -47,13 +47,14 @@ export default function ComparisonsPage() {
                 <Link
                   key={comparison.slug}
                   href={`/compare/${comparison.slug}` as Route}
-                  className="block rounded-lg border border-border bg-surface p-6 transition-colors duration-fast hover:bg-surface-muted"
+                  className="block h-full rounded-lg border border-border bg-surface p-6 mk-lift hover:bg-surface-muted"
                 >
                   <h3 className="text-mk-title font-semibold text-fg">{comparison.h1}</h3>
                   <p className="mt-2 text-mk-body-sm text-fg-muted">{comparison.lead}</p>
                   <p className="mt-4 text-caption text-fg-muted">
-                    {comparison.rows.length} rows · {wins} favour Algoryq Learn · {losses} favour{' '}
-                    {comparison.name} · {evens} even
+                    <Counter value={comparison.rows.length} /> rows · <Counter value={wins} />{' '}
+                    favour Algoryq Learn · <Counter value={losses} /> favour {comparison.name} ·{' '}
+                    <Counter value={evens} /> even
                   </p>
                 </Link>
               );
@@ -70,17 +71,17 @@ export default function ComparisonsPage() {
           <ul className="mt-6 space-y-3 text-mk-body text-fg-muted">
             <li>One source URL and one retrieval date per cell, rendered as a footnote.</li>
             <li>
-              Only official sources — the other product&apos;s own documentation. Never a review
-              site, never a forum post, never &ldquo;in our testing&rdquo;.
+              Official sources only — the other product&apos;s own documentation. Never a review
+              site, a forum post, or &ldquo;in our testing&rdquo;.
             </li>
             <li>Where they are better, we say so, and the summary counts those rows.</li>
             <li>
-              No trademarks, no logos, no brand styling and no pejoratives. Their users are our
-              prospects, and the tone tells a reader more about us than about them.
+              No trademarks, logos, brand styling or pejoratives. Their users are our prospects,
+              and the tone tells a reader more about us than about them.
             </li>
             <li>
-              Re-verified quarterly. A cell older than 180 days shows a notice; older than 270
-              days, the page comes down until somebody has checked it.
+              Re-verified quarterly. Past 180 days a cell shows a notice; past 270, the page comes
+              down until somebody has checked it.
             </li>
             <li>
               Found something out of date? Email{' '}

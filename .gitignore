@@ -9,3 +9,4 @@ playwright-report/
 .eslintcache
 .vercel
 .DS_Store
+*.log

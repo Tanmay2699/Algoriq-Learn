@@ -4,6 +4,7 @@
 
 import { useId, useRef, useState } from 'react';
 import { cn } from '../../lib/cn';
+import { useAutoCycle } from './motion';
 
 export interface TabItem {
   id: string;
@@ -28,6 +29,7 @@ export function Tabs({
   activeTabClassName,
   panelClassName,
   onSelect,
+  autoCycle,
 }: {
   items: TabItem[];
   /** Accessible name for the tablist. Required — an unnamed tablist is an unnavigable one. */
@@ -39,11 +41,32 @@ export function Tabs({
   activeTabClassName?: string;
   panelClassName?: string;
   onSelect?: (id: string, index: number) => void;
+  /**
+   * Advance by itself every `autoCycle` ms until the visitor touches it, then stop for good.
+   *
+   * Off by default, and it should stay off for most tab sets. It earns its place where the
+   * set *is* the point — four role dashboards, seven clusters — and a visitor who never
+   * interacts would otherwise leave having seen one of them. See `useAutoCycle` for what it
+   * gives back: reduced motion, off-screen, background tab, hover and focus all hold it, and
+   * the first click ends it permanently rather than pausing it.
+   */
+  autoCycle?: number;
 }) {
   const uid = useId();
-  const [selected, setSelected] = useState(0);
   const [focused, setFocused] = useState(0);
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  /*
+   * The cycle owns the selected index whether or not it is cycling: with `enabled: false` it
+   * is a `useState(0)` with a setter that also latches, which is precisely the old behaviour.
+   * Keeping one source of truth avoids the bug where a timer advances one index and a click
+   * sets another.
+   */
+  const cycle = useAutoCycle(items.length, {
+    interval: autoCycle,
+    enabled: autoCycle !== undefined,
+  });
+  const selected = cycle.index;
 
   const move = (next: number) => {
     const index = (next + items.length) % items.length;
@@ -52,7 +75,7 @@ export function Tabs({
   };
 
   const select = (index: number) => {
-    setSelected(index);
+    cycle.take(index);
     const item = items[index];
     if (item && onSelect) onSelect(item.id, index);
   };
@@ -82,7 +105,7 @@ export function Tabs({
   const active = items[selected];
 
   return (
-    <div className={className}>
+    <div className={className} {...cycle.containerProps}>
       <div
         role="tablist"
         aria-label={label}
@@ -116,11 +139,18 @@ export function Tabs({
 
       {active && (
         <div
+          /*
+           * `key` is load-bearing, not React housekeeping. Without it React reuses this
+           * element across a swap, the entrance animation never restarts, and the panel
+           * changes instantly — which on a product frame reads as a glitch rather than as a
+           * switch. With it, every change is a fresh mount and `mk-swap` runs again.
+           */
+          key={active.id}
           role="tabpanel"
           id={`${uid}-panel-${active.id}`}
           aria-labelledby={`${uid}-tab-${active.id}`}
           tabIndex={0}
-          className={panelClassName}
+          className={cn('mk-swap', panelClassName)}
         >
           {active.panel}
         </div>

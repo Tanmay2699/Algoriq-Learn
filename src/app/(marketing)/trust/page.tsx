@@ -29,7 +29,7 @@ export default function TrustPage() {
       <PageHero
         eyebrow="Trust"
         title="What we can prove today."
-        lead="We have no customer logos, no awards and no certifications, because we have not earned any of them yet. Here is what you can check instead — none of it requires talking to us."
+        lead="No customer logos, no awards, no certifications — none of them earned yet. Here is what you can check instead, none of it requiring a word with us."
         trail={TRAIL}
       />
 
@@ -46,7 +46,7 @@ export default function TrustPage() {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block h-full rounded-lg border border-border bg-surface p-6 transition-colors duration-fast hover:bg-surface-muted"
+                    className="block h-full rounded-lg border border-border bg-surface p-6 mk-lift hover:bg-surface-muted"
                   >
                     <h3 className="font-mono text-mk-mono text-fg">
                       {item.label}
@@ -57,7 +57,7 @@ export default function TrustPage() {
                 ) : (
                   <Link
                     href={item.href as Route}
-                    className="block h-full rounded-lg border border-border bg-surface p-6 transition-colors duration-fast hover:bg-surface-muted"
+                    className="block h-full rounded-lg border border-border bg-surface p-6 mk-lift hover:bg-surface-muted"
                   >
                     <h3 className="font-mono text-mk-mono text-fg">{item.label}</h3>
                     <p className="mt-2 text-mk-body-sm text-fg-muted">{item.detail}</p>
@@ -76,21 +76,21 @@ export default function TrustPage() {
           </Heading>
           <div className="mt-6 space-y-4 text-mk-body text-on-ink-muted">
             <p>
-              Algoryq Learn has not shipped to a paying customer. Putting up six grey logos, or a
-              testimonial from a persona, or a &ldquo;trusted by 10,000 institutes&rdquo; line
-              would be discovered in the first serious conversation — enterprise buyers call
-              references — and it would poison every other claim on the site, including the true,
-              unusual, hard-won ones about isolation and permissions.
+              Algoryq Learn has not shipped to a paying customer. Six grey logos, a testimonial
+              from a persona, or a &ldquo;trusted by 10,000 institutes&rdquo; line would be
+              discovered in the first serious conversation — buyers call references — and would
+              poison every other claim here, including the true, hard-won ones about isolation and
+              permissions.
             </p>
             <p>
-              So the components that would render social proof return nothing at all until there
-              is something real to put in them. Not a placeholder, not a skeleton, not a
-              &ldquo;coming soon&rdquo;. The layout was designed to look finished without them.
+              So the components that would render social proof return nothing until there is
+              something real to put in them. No placeholder, no skeleton, no &ldquo;coming
+              soon&rdquo;. The layout was designed to look finished without them.
             </p>
             <p>
-              For the two people who usually decide these things — whoever runs IT and whoever
-              runs procurement — checkable evidence beats logos anyway. You cannot verify a logo.
-              You can run <code className="font-mono">docker compose up</code>.
+              For the two people who usually decide — whoever runs IT and whoever runs
+              procurement — checkable evidence beats logos anyway. You cannot verify a logo. You
+              can run <code className="font-mono">docker compose up</code>.
             </p>
           </div>
         </div>

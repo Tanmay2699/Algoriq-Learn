@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Act } from '../../../components/layout/act';
 import { ClosingCTA, PageHero } from '../../../components/layout/page-parts';
-import { Heading, Prose } from '../../../components/primitives';
+import { Counter, Heading, Prose } from '../../../components/primitives';
 import { Table, Td, Tr } from '../../../components/primitives/table';
 import { pageMeta } from '../../../config/seo';
 import { site } from '../../../config/site';
@@ -22,7 +22,7 @@ const KNOWN_ISSUES = [
     issue: 'This website has not yet had an independent audit',
     sc: 'All',
     impact:
-      'Our conformance claim rests on automated checks and our own manual passes. An external audit is planned; until it happens, treat this statement as self-assessed.',
+      'The claim rests on automated checks and our own manual passes. An external audit is planned; until it happens, treat this statement as self-assessed.',
     since: '2026-07-31',
   },
   {
@@ -36,7 +36,7 @@ const KNOWN_ISSUES = [
     issue: 'Component borders are decorative rather than sole indicators',
     sc: '1.4.11',
     impact:
-      'Card and input borders sit below 3:1 against their background in light mode. They are never the only signal — state is carried by text and by a filled colour as well — but a reviewer counting contrast ratios will see them.',
+      'Card and input borders sit below 3:1 against their background in light mode. They are never the only signal — text and a filled colour carry state too — but a reviewer counting ratios will see them.',
     since: '2026-07-23',
   },
   {
@@ -80,8 +80,8 @@ export default function AccessibilityPage() {
         trail={TRAIL}
       >
         <p className="mt-6 text-mk-body-sm text-fg-muted">
-          Scope: learn.algoryq.com and the Algoryq Learn product. Assessed 31 July 2026. Self-assessed;
-          an independent audit is planned and is listed below as an open item.
+          Scope: learn.algoryq.com and the Algoryq Learn product. Assessed 31 July 2026.
+          Self-assessed; an independent audit is planned and listed below as an open item.
         </p>
       </PageHero>
 
@@ -93,21 +93,20 @@ export default function AccessibilityPage() {
               <li>
                 <strong>Automated, in CI, failing the build.</strong> axe runs in the component
                 library and across every page in the browser suite — at 360 pixels among other
-                widths, in both light and dark. A failure blocks the merge; it is not a report
-                somebody reads later.
+                widths, in light and dark. A failure blocks the merge; it is not a report somebody
+                reads later.
               </li>
               <li>
                 <strong>Contrast, computed from the tokens.</strong> A test measures every text
-                colour against every surface it can land on, including the tinted backgrounds
-                used by status banners. It exists because the product once shipped error text at
-                2.1:1 for three days — a fill colour used as a text colour — and nothing caught
-                it until a page happened to render an error on load rather than after a submit.
+                colour against every surface it can land on, including tinted status backgrounds.
+                It exists because the product once shipped error text at 2.1:1 for three days — a
+                fill colour used as a text colour — and nothing caught it until a page rendered an
+                error on load rather than after a submit.
               </li>
               <li>
                 <strong>Motion.</strong> A test loads every page with reduced motion emulated and
-                asserts both that nothing is still animating and that the same text is visible.
-                The second assertion is the important one: it is what stops an animation from
-                carrying meaning.
+                asserts that nothing is still animating <em>and</em> that the same text is
+                visible. The second assertion is what stops an animation carrying meaning.
               </li>
               <li>
                 <strong>Manual, before a release.</strong> Keyboard-only pass, VoiceOver with
@@ -119,14 +118,14 @@ export default function AccessibilityPage() {
             <ul>
               <li>
                 <strong>No drag-and-drop anywhere in the product.</strong> The admissions board
-                moves cards with a select and reorders stages with arrow buttons. HTML5 drag
-                works from neither a keyboard nor a phone, and a board that only works with a
-                mouse excludes both a screen-reader user and a counsellor on a bus.
+                moves cards with a select and reorders stages with arrow buttons. HTML5 drag works
+                from neither a keyboard nor a phone, and a mouse-only board excludes both a
+                screen-reader user and a counsellor on a bus.
               </li>
               <li>
                 <strong>No CAPTCHA on this site.</strong> It would be a cognitive-function test
-                (SC 3.3.8) and a third-party origin. The form is defended by a honeypot, a
-                timing floor and the API&apos;s own rate limit instead.
+                (SC 3.3.8) and a third-party origin. The form is defended by a honeypot, a timing
+                floor and the API&apos;s own rate limit.
               </li>
               <li>
                 <strong>No scroll-jacking.</strong> Pinned scroll scenes break the scrollbar&apos;s
@@ -152,8 +151,8 @@ export default function AccessibilityPage() {
             Known issues
           </Heading>
           <p className="mt-4 max-w-measure text-mk-body text-fg-muted">
-            With dates. A statement without this section is a statement nobody in procurement
-            believes.
+            <Counter value={KNOWN_ISSUES.length} /> open items, with dates. A statement without
+            this section is one nobody in procurement believes.
           </p>
           <div className="mt-8">
             <Table caption="Known accessibility issues, the criterion each touches, and its impact" head={['Issue', 'Criterion', 'Impact', 'Known since']}>
@@ -176,8 +175,9 @@ export default function AccessibilityPage() {
             Criterion by criterion
           </Heading>
           <p className="mt-4 max-w-measure text-mk-body text-fg-muted">
-            Shaped so it can be lifted into a procurement checklist. Only the criteria this site
-            can meaningfully fail are listed; the rest are supported by construction.
+            Shaped to lift straight into a procurement checklist. Only the{' '}
+            <Counter value={VPAT.length} /> criteria this site can meaningfully fail are listed;
+            the rest are supported by construction.
           </p>
           <div className="mt-8">
             <Table caption="WCAG 2.2 criteria, conformance level, and our status against each" head={['Criterion', 'Level', 'Status', 'Notes']}>
@@ -206,24 +206,23 @@ export default function AccessibilityPage() {
             <a href={`mailto:${site.accessibilityEmail}`} className="text-on-ink underline underline-offset-4">
               {site.accessibilityEmail}
             </a>
-            . We answer within five working days, and we will tell you what we are going to do
-            and when — including if the answer is &ldquo;not soon&rdquo;, which is more useful
-            than silence.
+            . We answer within five working days and tell you what we will do and when —
+            including if the answer is &ldquo;not soon&rdquo;, which beats silence.
           </p>
           <p className="mt-4 text-mk-body text-on-ink-muted">
-            If you are evaluating software for an institution, the guide on{' '}
+            Evaluating software for an institution? The guide on{' '}
             <a href="/resources/buying-accessible-software" className="text-on-ink underline underline-offset-4">
               what to ask a vendor
             </a>{' '}
-            lists the nine questions that separate a real accessibility programme from a
-            paragraph in a sales deck. Ask us all nine.
+            lists the nine questions that separate a real accessibility programme from a paragraph
+            in a sales deck. Ask us all nine.
           </p>
         </div>
       </Act>
 
       <ClosingCTA
         title="The rest of the procurement pack"
-        lead="Security notes with the mechanism behind each control, sub-processors, data processing, and the honest build status."
+        lead="Security notes with the mechanism behind each control, sub-processors, data processing and the honest build status."
         primary={{ href: '/security', label: 'Security notes' }}
         secondary={{ href: '/trust', label: 'What we can prove' }}
       />

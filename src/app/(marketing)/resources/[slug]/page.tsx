@@ -18,7 +18,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const article = articleBySlug(slug);
   if (!article) return {};
-  return dynamicMeta(`/resources/${article.slug}`, article.title, article.description);
+  return dynamicMeta(
+    `/resources/${article.slug}`,
+    article.seoTitle ?? article.title,
+    article.description,
+  );
 }
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {

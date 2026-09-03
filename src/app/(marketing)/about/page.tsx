@@ -18,7 +18,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About"
         title="Built for the institute, not for the course"
-        lead="Algoryq Learn exists because the software an institute actually runs on is five products that have never met each other, and nobody was building the sixth one — the one that joins them."
+        lead="Algoryq Learn exists because the software an institute runs on is five products that have never met each other, and nobody was building the sixth — the one that joins them."
         trail={TRAIL}
       />
 
@@ -27,45 +27,43 @@ export default function AboutPage() {
           <Prose>
             <h2 id="why-heading">Why this and not another course platform</h2>
             <p>
-              Course platforms are a solved problem. Moodle has been solving it for twenty years,
-              Classroom solves it for free, and Canvas solves it at scale. What none of them
-              solves is the other half of an institute: the enquiry that never got a call back,
-              the fee that was reconciled by hand, the attendance register that lives in a book,
-              the certificate somebody made in Canva.
+              Course platforms are a solved problem: Moodle for twenty years, Google Classroom
+              for free, Canvas at scale. None solves the other half of an institute — the enquiry
+              that never got a call back, the fee reconciled by hand, the register in a book, the
+              certificate somebody made in Canva.
             </p>
             <p>
-              Those things are not adjacent to learning. They <em>are</em> the institute. And
-              because they live in different tools, the join between them is a person with a
-              spreadsheet — which is why the monthly numbers arrive on the fifth, and why one
-              enquiry in five goes cold.
+              Those things are not adjacent to learning. They <em>are</em> the institute. Because
+              they live in different tools, the join between them is a person with a spreadsheet —
+              which is why the monthly numbers arrive on the fifth.
             </p>
 
             <h2 id="how">How we decided to build it</h2>
             <p>
-              One backend, one database, one frontend. Thirty-one modules that share a tenant
-              boundary, a permission catalogue and an audit log. Not microservices — one product
-              team should not pay a distributed-systems tax before it has the traffic that
-              justifies one, and the seam is there if a module ever needs to leave.
+              One backend, one database, one frontend. Thirty-one modules sharing a tenant
+              boundary, a permission catalogue and an audit log. Not microservices — one team
+              should not pay a distributed-systems tax before the traffic justifies it, and the
+              seam is there if a module ever needs to leave.
             </p>
             <p>
-              Deny by default, everywhere. Isolation in the database rather than in application
+              Deny by default everywhere. Isolation in the database rather than in application
               code that remembered. Migrations only. Money as integers. Accessibility as a build
-              gate. None of those are marketing positions; they are the reason the product can be
-              changed quickly without breaking quietly.
+              gate. Not marketing positions — the reason the product can change quickly without
+              breaking quietly.
             </p>
 
             <h2 id="honest">The rule that shaped everything, including this website</h2>
             <p>
               <strong>No fabricated data.</strong> In the product, an unbuilt surface renders an
-              honest &ldquo;not built yet&rdquo; component rather than a fake chart. On this
-              website, the components that would render customer logos and testimonials return
-              nothing at all, and there is a page listing every module&apos;s real completeness —{' '}
+              honest &ldquo;not built yet&rdquo; component rather than a fake chart. On this site,
+              the components that would render logos and testimonials return nothing at all, and a
+              page lists every module&apos;s real completeness —{' '}
               <Link href="/trust/build-status">including the ones at 45 per cent</Link>.
             </p>
             <p>
-              That is not modesty. It is the only position that survives a reference call, and it
-              is what makes the strong claims — forced row-level isolation, 272 permission keys,
-              a hash-chained audit log — worth reading.
+              That is not modesty. It is the only position that survives a reference call, and
+              what makes the strong claims — forced row-level isolation, 272 permission keys, a
+              hash-chained audit log — worth reading.
             </p>
 
             <h2 id="not">What we will not build</h2>
@@ -82,9 +80,9 @@ export default function AboutPage() {
 
             <h2 id="where">Where we are</h2>
             <p>
-              Feature-complete against our own roadmap and preparing for a first deployment. No
-              paying customers yet, which is why{' '}
-              <Link href="/customers">the customers page says so</Link> and why the design-partner
+              Feature-complete against our own roadmap, preparing for a first deployment, and
+              with no paying customers — which is why{' '}
+              <Link href="/customers">the customers page says so</Link>, and why the design-partner
               offer is the most useful thing on it.
             </p>
           </Prose>
@@ -103,14 +101,14 @@ export default function AboutPage() {
             <StatBlock evidence="unit-tests" label="unit tests" />
           </div>
           <p className="mt-8 max-w-measure text-mk-body-sm text-fg-muted">
-            Each of these is reproducible with a command, and the commands are published.
+            Each is reproducible with a command, and the commands are published.
           </p>
         </div>
       </Act>
 
       <ClosingCTA
         title="The quickest way to judge any of this"
-        lead="Open the sandbox and look at the software, or read the build-status page and see what we are still finishing."
+        lead="Open the sandbox and look at the software, or read the build-status page and see what is still being finished."
         primary={{ href: '/trust/build-status', label: 'See what’s built' }}
         secondary={{ href: '/demo', label: 'Talk to whoever built it' }}
       />

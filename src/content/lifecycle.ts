@@ -29,7 +29,7 @@ export const spine: SpineStop[] = [
     step: 'Enrolment',
     title: 'One press, two honest outcomes.',
     body:
-      'Already a member? Enrolled. Not yet? Invited — and the application says so until they accept. Press it twice and nothing doubles. A seat limit refuses out loud rather than pretending.',
+      'Already a member? Enrolled. Not yet? Invited, and the application says so until they accept. Press it twice and nothing doubles; a seat limit refuses out loud rather than pretending.',
     module: 'Batches & enrolment',
     href: '/product/modules/batches-and-enrollment',
   },
@@ -37,7 +37,7 @@ export const spine: SpineStop[] = [
     step: 'Learning',
     title: 'Every learner, one record.',
     body:
-      'Courses, batches, timetable, live classes, attendance, notes, questions and progress — including progress captured on a phone with no signal and replayed in order when it comes back.',
+      'Courses, batches, timetable, live classes, attendance, notes, questions and progress — including progress captured on a phone with no signal and replayed in order when it returns.',
     module: 'Learning delivery',
     href: '/product/modules/learning-delivery',
   },
@@ -61,7 +61,7 @@ export const spine: SpineStop[] = [
     step: 'Placement',
     title: 'The outcome you are judged on.',
     body:
-      'Drives, openings, applications, interview panels and scorecards — with a practice interview the learner can run on their own first.',
+      'Drives, openings, applications, interview panels and scorecards — with a practice interview the learner runs on their own first.',
     module: 'Placement & interviews',
     href: '/product/modules/placement-and-interviews',
   },

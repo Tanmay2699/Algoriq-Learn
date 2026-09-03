@@ -37,6 +37,16 @@
     outline-color: var(--mk-on-ink);
   }
 
+  /*
+   * Same fix, for the header while it is blended over the video hero. Not `.on-ink`: that
+   * class also paints a solid near-black background (see below), which is exactly what a
+   * *transparent* header must not have. This takes only the focus-ring half of `.on-ink`.
+   */
+  .hero-on-video :focus-visible,
+  .hero-on-video:focus-visible {
+    outline-color: var(--mk-on-ink);
+  }
+
   ::selection {
     background: var(--brand-soft);
     color: var(--text-primary);
@@ -68,7 +78,14 @@
     *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+      /*
+       * `none`, not a near-zero duration. `transition-property` defaults to `all`, so forcing
+       * a duration here would *create* a transition for every property that changes on every
+       * element — including the `max-width` of every `65ch` measure when the webfont loads.
+       * Nothing in this codebase listens for `transitionend`, which is the only reason the
+       * 0.01ms form is usually preferred.
+       */
+      transition: none !important;
       scroll-behavior: auto !important;
     }
   }
@@ -109,14 +126,68 @@
     color: var(--mk-on-ink);
   }
 
-  .aurora {
-    background-image: var(--mk-aurora-1), var(--mk-aurora-2);
+  /*
+   * The aurora is two layers, not one background with two gradients, because the two blobs
+   * drift independently (see `.aurora-drift` in the motion layer). Kept as a single class at
+   * the call sites: `.aurora` paints its own children, so no page has to know it is two.
+   */
+  /*
+   * Two layers rather than one background with two gradients, because the blobs drift on
+   * separate clocks (`.aurora-drift`, motion layer). The `inset: -10%` is the bleed the drift
+   * travels into: without it the gradient's own edge walks into frame as a visible seam.
+   *
+   * Still one class at the call sites — no page needs to know it is two.
+   */
+  .aurora::before,
+  .aurora::after {
+    content: '';
+    position: absolute;
+    inset: -10%;
+    pointer-events: none;
+    background-image: var(--mk-aurora-1);
+  }
+
+  .aurora::after {
+    background-image: var(--mk-aurora-2);
   }
 
   .glass {
     background: var(--mk-glass-bg);
     border: 1px solid var(--mk-glass-border);
     backdrop-filter: blur(var(--mk-glass-blur));
+  }
+
+  /*
+   * The video hero's scrim. Three layers, stacked as `background-image` (the gradients) over
+   * `background-color` (the wash) so this is one element, not three:
+   *
+   *  1. A constant wash — the footage is never trusted to be dark enough on its own. It is
+   *     handheld daylight video; some frames are a sunlit doorway.
+   *  2. A top plateau, flat across `0` to `4rem` — the header's own height (`h-16`), not a
+   *     gradient over it. A gradient THROUGH the header means the exact contrast the nav text
+   *     sits on depends on where in that 64px band it happens to be vertically centred, which
+   *     is a detail nobody sets out to get wrong and everybody eventually does. Flat removes
+   *     the variable: every pixel of the header sees the same, worst-case-checked backdrop.
+   *     Combined with the wash, this composites to ~0.93 effective opacity — checked by hand
+   *     against this clip's measured brightest header-strip frame (YAVG 182/255, the
+   *     brightest 9% of any of ~380 sampled frames) plus a further margin for a single bright
+   *     pixel the region-average would hide: even against an assumed-worse (240,240,240)
+   *     source pixel, on-ink text on the composited result still clears 15:1.
+   *  3. A bottom plateau, flat across the bottom 42% of the hero — sized to hold the headline
+   *     and the CTA row, which live in that band. Percentage-based, not rem: unlike the
+   *     header, this band's position is proportional to the hero's own height, which varies
+   *     by viewport.
+   *
+   * The RGB is `--mk-ink-900`'s own value, hand-matched rather than referenced: this file
+   * already hardcodes one-off rgba tuples for shadows and status tints (`tailwind.config.ts`'s
+   * `boxShadow` scale is the same pattern), and a scrim over unpredictable video is exactly
+   * that kind of one-off, not a token relationship worth a variable.
+   */
+  .hero-video-scrim {
+    background-color: rgb(7 12 24 / 0.4);
+    background-image:
+      linear-gradient(to bottom, rgb(7 12 24 / 0.88) 0, rgb(7 12 24 / 0.88) 4rem, rgb(7 12 24 / 0.32) 9rem, transparent 13rem),
+      linear-gradient(to top, rgb(7 12 24 / 0.8) 0%, rgb(7 12 24 / 0.8) 42%, rgb(7 12 24 / 0.28) 62%, transparent 80%);
   }
 
   /*
@@ -142,6 +213,751 @@
     [data-reveal='ready'] {
       opacity: 1;
       transform: none;
+    }
+  }
+}
+
+/*
+ * ─────────────────────────────────────────────────────────────────────────────
+ * The motion layer (docs/07).
+ *
+ * Three rules govern everything below, and they are why this is CSS rather than a
+ * library:
+ *
+ *  1. Motion is an enhancement, never a precondition for content. Nothing here starts
+ *     an element at `opacity: 0` as a *static* style. The entrance uses an animation
+ *     whose `from` state only exists while the animation runs, so if the animation
+ *     never runs — reduced motion, an old browser, a stylesheet that 404s — the element
+ *     renders in its normal, visible state. `Reveal` follows the same rule via JS.
+ *
+ *  2. Compositor properties only: `transform`, `opacity`, `clip-path`. Nothing here
+ *     animates width, height, top or left, so none of it triggers layout.
+ *
+ *  3. Under reduced motion every rule below resolves to `animation: none` rather than a
+ *     near-zero duration. An infinite animation with a 0.01ms duration is still a
+ *     *running* animation, and `headers-and-motion.spec.ts` asserts that
+ *     `document.getAnimations()` reports zero running animations. Killing the duration
+ *     would pass the eye test and fail the real one.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+@layer components {
+  /* ── Page-load entrance ─────────────────────────────────────────────────────
+   * For above-the-fold content, which `Reveal` deliberately skips. Zero JavaScript:
+   * it runs before hydration, so the hero is already moving while the bundle loads.
+   */
+  @keyframes mk-enter {
+    from {
+      opacity: 0;
+      transform: translate3d(0, var(--mk-enter-shift), 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  /*
+   * A class rather than a data attribute, because the primitives this lands on — `Eyebrow`,
+   * `Lead` — take a `className` and nothing else. An attribute would be dropped before it
+   * reached the DOM, and TypeScript does not flag a hyphenated JSX attribute, so it would
+   * have failed silently and looked like a CSS bug.
+   *
+   * Six steps is the whole ladder. Past that the last element lands a second in, by which
+   * point the reader has started scrolling and is watching content arrive late.
+   */
+  .mk-enter {
+    animation: mk-enter var(--mk-dur-entrance) var(--mk-ease-entrance) both;
+    animation-delay: var(--mk-enter-delay, 0ms);
+  }
+
+  .mk-enter-2 {
+    --mk-enter-delay: calc(var(--mk-enter-step) * 1);
+  }
+  .mk-enter-3 {
+    --mk-enter-delay: calc(var(--mk-enter-step) * 2);
+  }
+  .mk-enter-4 {
+    --mk-enter-delay: calc(var(--mk-enter-step) * 3);
+  }
+  .mk-enter-5 {
+    --mk-enter-delay: calc(var(--mk-enter-step) * 4);
+  }
+  .mk-enter-6 {
+    --mk-enter-delay: calc(var(--mk-enter-step) * 5);
+  }
+
+  /* ── Reveal variants ────────────────────────────────────────────────────────
+   * The base reveal (fade + rise) lives above. These give sections a different
+   * gesture so a long page does not repeat one animation twelve times. The `ready`
+   * state is the from-state; `in` is the settle.
+   */
+  [data-reveal='ready'][data-reveal-variant='left'] {
+    transform: translate3d(calc(-1 * var(--mk-shift)), 0, 0);
+  }
+
+  [data-reveal='ready'][data-reveal-variant='right'] {
+    transform: translate3d(var(--mk-shift), 0, 0);
+  }
+
+  /* For product frames and other large visuals: settles rather than travels. */
+  [data-reveal='ready'][data-reveal-variant='scale'] {
+    transform: scale(0.985);
+  }
+
+  /*
+   * `zoom` is `scale`'s louder sibling, and it goes the other way — the frame arrives
+   * slightly *too big* and settles back, which reads as a camera finding focus rather than
+   * as a card growing. Reserved for the one or two surfaces a page is actually about; used
+   * on a grid of cards it is nausea.
+   */
+  [data-reveal='ready'][data-reveal-variant='zoom'] {
+    transform: scale(var(--mk-zoom-from));
+  }
+
+  [data-reveal='in'][data-reveal-variant='zoom'] {
+    transition:
+      opacity var(--mk-dur-scene) var(--mk-ease-entrance),
+      transform var(--mk-dur-scene) var(--mk-ease-entrance);
+    transition-delay: var(--mk-reveal-delay, 0ms);
+  }
+
+  /*
+   * The mask reveal wipes rather than fades, so the element stays fully opaque
+   * throughout — no partial-opacity text, which is a contrast problem as well as an
+   * ugly one. Used only on visuals, never on a paragraph.
+   */
+  [data-reveal='ready'][data-reveal-variant='mask'] {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 100% 0);
+  }
+
+  [data-reveal='in'][data-reveal-variant='mask'] {
+    clip-path: inset(0 0 0 0);
+    transition:
+      clip-path var(--mk-dur-scene) var(--mk-ease-entrance),
+      opacity var(--mk-dur-slow) var(--mk-ease-entrance);
+    transition-delay: var(--mk-reveal-delay, 0ms);
+  }
+
+  /* ── Ambient drift ──────────────────────────────────────────────────────────
+   * One element on the site: the hero aurora. A 32-second transform loop on a
+   * decorative gradient that carries no text and no meaning. It is the only
+   * continuous animation here, and it is the reason the hero reads as alive rather
+   * than as a screenshot.
+   */
+  @keyframes mk-drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1.04);
+    }
+    50% {
+      transform: translate3d(0, -1.2%, 0) scale(1.08);
+    }
+  }
+
+  /*
+   * The counter-drift. Opposite direction and a different period, so the two blobs converge
+   * and separate instead of sliding in formation — the difference between a background with
+   * depth and a background that is one image being panned.
+   */
+  @keyframes mk-drift-b {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1.06);
+    }
+    50% {
+      transform: translate3d(-1.4%, 1%, 0) scale(1.02);
+    }
+  }
+
+  /*
+   * Applied to the aurora element; it drives the two layers, not the element, so the
+   * gradients move relative to each other and the box itself never shifts.
+   */
+  .aurora-drift::before {
+    animation: mk-drift var(--mk-drift-dur) ease-in-out infinite;
+  }
+
+  .aurora-drift::after {
+    animation: mk-drift-b var(--mk-drift-dur-b) ease-in-out infinite;
+  }
+
+  /* ── The line ladder ────────────────────────────────────────────────────────
+   * A display headline arrives a line at a time, wiped up from its own baseline
+   * rather than faded: `clip-path` keeps every line fully opaque for the whole
+   * gesture, so no headline is ever rendered at a partial opacity (rule 8, and
+   * the same reason `mask` exists as a reveal variant).
+   *
+   * The wrapper only sets up the ladder. Each line is a block-level child the
+   * markup already has — `<span class="block">` — so this adds no elements and
+   * no JavaScript, and a headline that is one line simply animates once.
+   */
+  @keyframes mk-line {
+    from {
+      clip-path: inset(0 0 100% 0);
+      transform: translate3d(0, var(--mk-line-shift), 0);
+    }
+    to {
+      clip-path: inset(0 0 -0.15em 0);
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  /*
+   * A one-line headline is the same gesture with the ladder collapsed, so it shares the
+   * keyframes rather than owning a near-identical copy — `mk-wipe` on the element, `mk-lines`
+   * on the wrapper. Both read `--mk-enter-delay`, which means the `mk-enter-2..6` classes
+   * position them in the existing entrance ladder and there is one ladder on the site rather
+   * than two that drift apart.
+   */
+  .mk-wipe,
+  .mk-lines > * {
+    /*
+     * Descenders (g, y, p) sit below the baseline and a tight `inset(0 0 0 0)` shears them
+     * off for the length of the animation. The `to` state overshoots the bottom edge so the
+     * line is never clipped, and `will-change` keeps the wipe off the main thread.
+     */
+    animation: mk-line var(--mk-line-dur) var(--mk-ease-entrance) both;
+    animation-delay: calc(
+      var(--mk-enter-delay, 0ms) + var(--mk-line-index, 0) * var(--mk-line-step)
+    );
+    will-change: clip-path, transform;
+  }
+
+  .mk-lines > *:nth-child(2) {
+    --mk-line-index: 1;
+  }
+  .mk-lines > *:nth-child(3) {
+    --mk-line-index: 2;
+  }
+  .mk-lines > *:nth-child(4) {
+    --mk-line-index: 3;
+  }
+  .mk-lines > *:nth-child(n + 5) {
+    --mk-line-index: 4;
+  }
+
+  /*
+   * The scroll-triggered form, as a `Reveal` variant rather than a paused animation.
+   *
+   * Pausing the ladder until intersection was the obvious implementation and it is wrong: an
+   * animation on a page-load class starts at first paint and `Reveal` cannot add `ready`
+   * until after mount, so every below-fold headline plays a frame or two of its entrance and
+   * then jumps back. Going through `data-reveal` instead means the from-state never exists
+   * until JavaScript has decided the element is off screen — the same contract every other
+   * variant honours, which is what keeps the content visible with JS off.
+   */
+  [data-reveal='ready'][data-reveal-variant='lines'] > * {
+    opacity: 1;
+    clip-path: inset(0 0 100% 0);
+    transform: translate3d(0, var(--mk-line-shift), 0);
+  }
+
+  [data-reveal='in'][data-reveal-variant='lines'] > * {
+    clip-path: inset(0 0 -0.15em 0);
+    transform: translate3d(0, 0, 0);
+    transition:
+      clip-path var(--mk-line-dur) var(--mk-ease-entrance),
+      transform var(--mk-line-dur) var(--mk-ease-entrance);
+    transition-delay: calc(
+      var(--mk-reveal-delay, 0ms) + var(--mk-line-index, 0) * var(--mk-line-step)
+    );
+  }
+
+  [data-reveal-variant='lines'] > *:nth-child(2) {
+    --mk-line-index: 1;
+  }
+  [data-reveal-variant='lines'] > *:nth-child(3) {
+    --mk-line-index: 2;
+  }
+  [data-reveal-variant='lines'] > *:nth-child(4) {
+    --mk-line-index: 3;
+  }
+  [data-reveal-variant='lines'] > *:nth-child(n + 5) {
+    --mk-line-index: 4;
+  }
+
+  /* ── Hover lift ─────────────────────────────────────────────────────────────
+   * Fast, small, and on transform only, so a grid of cards costs one composite.
+   * Hover-capable pointers only: on a touch screen `:hover` sticks after a tap and
+   * leaves a card raised with no way to put it back down.
+   */
+  .mk-lift {
+    transition:
+      transform var(--mk-dur-fast) var(--mk-ease),
+      background-color var(--mk-dur-fast) var(--mk-ease),
+      border-color var(--mk-dur-fast) var(--mk-ease);
+  }
+
+  /*
+   * Hover-capable pointers only. On a touch screen `:hover` sticks after a tap, which would
+   * leave a card raised with no gesture that puts it back down.
+   */
+  @media (hover: hover) {
+    .mk-lift:hover {
+      transform: translate3d(0, -2px, 0);
+    }
+  }
+
+  /* ── Scroll-linked travel ───────────────────────────────────────────────────
+   * A view timeline, so the browser drives it on the compositor: no scroll listener,
+   * no rAF loop, nothing to leak. Unsupported browsers simply render the element
+   * still, which is why this needs no fallback.
+   *
+   * `entry 0% cover 60%` finishes the travel before the element is centred — parallax
+   * that is still moving while you read it is just wobble.
+   */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      @keyframes mk-parallax {
+        from {
+          transform: translate3d(0, var(--mk-parallax), 0);
+        }
+        to {
+          transform: translate3d(0, calc(-0.5 * var(--mk-parallax)), 0);
+        }
+      }
+
+      .mk-parallax {
+        animation: mk-parallax linear both;
+        animation-timeline: view();
+        animation-range: entry 0% cover 60%;
+      }
+    }
+  }
+
+  /* ── Panel swap ─────────────────────────────────────────────────────────────
+   * What a switcher does when it changes what a product frame is showing.
+   *
+   * Not a crossfade: two dashboards double-exposed for 150ms looks like a rendering
+   * fault, not a transition. The outgoing panel is already gone — React has replaced
+   * the subtree — and this animates only the arrival, which is why it is a keyframe
+   * on mount rather than a transition between two states.
+   *
+   * The `key` on the panel is what re-runs it. Without one React reuses the element,
+   * the animation never restarts, and the swap is instant and unreadable.
+   */
+  @keyframes mk-swap {
+    from {
+      opacity: 0;
+      transform: translate3d(0, var(--mk-swap-shift), 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .mk-swap {
+    animation: mk-swap var(--mk-swap-dur) var(--mk-ease-entrance) both;
+  }
+
+  /* ── The active cluster ─────────────────────────────────────────────────────
+   * The highlight on a self-advancing vertical list wipes in from the leading edge
+   * instead of appearing, so the eye is told *which way* the list is walking. On a
+   * list that advances by itself that is the difference between following it and
+   * noticing, a beat late, that something changed.
+   *
+   * A pseudo-element rather than a background transition, because the row already has
+   * a hover background and animating the same property from two places is how you get
+   * a highlight that sticks after the pointer leaves.
+   */
+  @keyframes mk-cluster {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  .mk-cluster-active {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .mk-cluster-active::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: var(--brand-soft);
+    border-inline-start: 2px solid var(--brand-500);
+    animation: mk-cluster var(--mk-dur-slow) var(--mk-ease) both;
+  }
+
+  /* ── The walking row ────────────────────────────────────────────────────────
+   * A selection that steps down a list on its own, used on every product surface
+   * on the site that is a list of rows: the frame sidebar, the roles matrix, the
+   * people list, the item analysis, the risk list.
+   *
+   * Each row lights itself on a delay of `index × (cycle ÷ n)`, so the highlight
+   * appears to travel. That needs a keyframe whose lit window is `1/n` of the
+   * cycle, and a percentage inside `@keyframes` cannot be a variable — so the set
+   * below is generated, one keyframe per supported row count. It is dull CSS and
+   * it is the only version that works.
+   *
+   * The alternative — one overlay bar translating down with `steps(n)` — needs a
+   * single keyframe and no generation, which is why it was tried first. It also
+   * assumes every row is exactly the same height, and the moment it met a risk
+   * card carrying three signal chips instead of one it sat across two rows. Rows
+   * lighting themselves cannot have that bug: a row is wherever the row is.
+   *
+   * `--mk-row-fg` and `--mk-row-lit-fg` are both required at the call site. A
+   * keyframe that resolved the resting colour to `inherit` would quietly discard
+   * whatever text colour the row had, which reads as the animation "washing out"
+   * the list rather than moving through it.
+   */
+  @keyframes mk-row-2 {
+    0% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+    7%,
+    43% {
+      background-color: var(--mk-row-lit-bg);
+      color: var(--mk-row-lit-fg);
+    }
+    50%,
+    100% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+  }
+
+  @keyframes mk-row-3 {
+    0% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+    4.6667%,
+    28.6667% {
+      background-color: var(--mk-row-lit-bg);
+      color: var(--mk-row-lit-fg);
+    }
+    33.3333%,
+    100% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+  }
+
+  @keyframes mk-row-4 {
+    0% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+    3.5%,
+    21.5% {
+      background-color: var(--mk-row-lit-bg);
+      color: var(--mk-row-lit-fg);
+    }
+    25%,
+    100% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+  }
+
+  @keyframes mk-row-5 {
+    0% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+    2.8%,
+    17.2% {
+      background-color: var(--mk-row-lit-bg);
+      color: var(--mk-row-lit-fg);
+    }
+    20%,
+    100% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+  }
+
+  @keyframes mk-row-6 {
+    0% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+    2.3333%,
+    14.3333% {
+      background-color: var(--mk-row-lit-bg);
+      color: var(--mk-row-lit-fg);
+    }
+    16.6667%,
+    100% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+  }
+
+  @keyframes mk-row-7 {
+    0% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+    2%,
+    12.2857% {
+      background-color: var(--mk-row-lit-bg);
+      color: var(--mk-row-lit-fg);
+    }
+    14.2857%,
+    100% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+  }
+
+  @keyframes mk-row-8 {
+    0% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+    1.75%,
+    10.75% {
+      background-color: var(--mk-row-lit-bg);
+      color: var(--mk-row-lit-fg);
+    }
+    12.5%,
+    100% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+  }
+
+  @keyframes mk-row-9 {
+    0% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+    1.5556%,
+    9.5556% {
+      background-color: var(--mk-row-lit-bg);
+      color: var(--mk-row-lit-fg);
+    }
+    11.1111%,
+    100% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+  }
+
+  @keyframes mk-row-10 {
+    0% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+    1.4%,
+    8.6% {
+      background-color: var(--mk-row-lit-bg);
+      color: var(--mk-row-lit-fg);
+    }
+    10%,
+    100% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+  }
+
+  @keyframes mk-row-11 {
+    0% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+    1.2727%,
+    7.8182% {
+      background-color: var(--mk-row-lit-bg);
+      color: var(--mk-row-lit-fg);
+    }
+    9.0909%,
+    100% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+  }
+
+  @keyframes mk-row-12 {
+    0% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+    1.1667%,
+    7.1667% {
+      background-color: var(--mk-row-lit-bg);
+      color: var(--mk-row-lit-fg);
+    }
+    8.3333%,
+    100% {
+      background-color: transparent;
+      color: var(--mk-row-fg);
+    }
+  }
+
+  /*
+   * The container drives its own children. Threading an index through every call site was
+   * the first version and it meant every list that wanted this had to change its `map` —
+   * which is a lot of edits to make a decoration work, and one forgotten index is a row
+   * that never lights with nothing to show you why. `nth-child` cannot be forgotten.
+   */
+  .mk-rows > * {
+    animation-name: var(--mk-row-kf);
+    animation-duration: var(--mk-nav-cycle);
+    animation-timing-function: var(--mk-ease);
+    animation-iteration-count: infinite;
+    animation-delay: calc(var(--mk-row-i, 0) * var(--mk-nav-cycle) / var(--mk-row-n));
+  }
+
+  .mk-rows > *:nth-child(1) {
+    --mk-row-i: 0;
+  }
+  .mk-rows > *:nth-child(2) {
+    --mk-row-i: 1;
+  }
+  .mk-rows > *:nth-child(3) {
+    --mk-row-i: 2;
+  }
+  .mk-rows > *:nth-child(4) {
+    --mk-row-i: 3;
+  }
+  .mk-rows > *:nth-child(5) {
+    --mk-row-i: 4;
+  }
+  .mk-rows > *:nth-child(6) {
+    --mk-row-i: 5;
+  }
+  .mk-rows > *:nth-child(7) {
+    --mk-row-i: 6;
+  }
+  .mk-rows > *:nth-child(8) {
+    --mk-row-i: 7;
+  }
+  .mk-rows > *:nth-child(9) {
+    --mk-row-i: 8;
+  }
+  .mk-rows > *:nth-child(10) {
+    --mk-row-i: 9;
+  }
+  .mk-rows > *:nth-child(11) {
+    --mk-row-i: 10;
+  }
+  .mk-rows > *:nth-child(12) {
+    --mk-row-i: 11;
+  }
+
+  /* ── Board travel ───────────────────────────────────────────────────────────
+   * One card crossing one board, forever.
+   *
+   * This is the only looping animation on the site that carries an argument rather
+   * than atmosphere: a record moves through stages and the system writes the timeline.
+   * That is why it is slow, why it rests at each end, and why the card it moves is a
+   * decorative copy — the real card stays in its column, in the DOM, in reading order,
+   * where a screen reader and a reader with reduced motion both find it unmoved.
+   *
+   * `--mk-travel-x` is set per instance in the component: the distance is one column
+   * plus one gap, and only the component knows how wide its columns are.
+   */
+  @keyframes mk-travel {
+    0%,
+    16% {
+      transform: translate3d(0, 0, 0);
+    }
+    38%,
+    66% {
+      transform: translate3d(var(--mk-travel-x, 100%), 0, 0);
+    }
+    88%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .mk-travel {
+    animation: mk-travel calc(var(--mk-travel-dur) * 2 + var(--mk-travel-hold) * 2)
+      var(--mk-ease-travel) infinite;
+  }
+
+  /* ── Smaller screens ────────────────────────────────────────────────────────
+   * Shorter travel and quicker timing on a phone: the viewport is smaller, so the
+   * same distance reads as a much bigger movement, and the device is likely slower.
+   */
+  @media (max-width: 640px) {
+    :root {
+      --mk-enter-shift: 14px;
+      --mk-enter-step: 60ms;
+      --mk-dur-entrance: 560ms;
+      --mk-parallax: 10px;
+    }
+
+    /* Ambient drift is a desktop luxury; on a phone it is battery for no gain. */
+    .aurora-drift::before,
+    .aurora-drift::after {
+      animation: none;
+    }
+
+    /*
+     * The board travel stays — it is the argument the section makes, not decoration — but a
+     * phone shows two columns instead of five, so the distance is set by the component and
+     * the gesture is shortened here to suit a smaller field of view.
+     */
+    :root {
+      --mk-line-shift: 0.3em;
+      --mk-line-step: 90ms;
+      --mk-line-dur: 620ms;
+      --mk-zoom-from: 1.03;
+    }
+  }
+
+  /* ── Reduced motion ─────────────────────────────────────────────────────────
+   * Not a stripped rendering — the finished one, immediately. `animation: none`
+   * rather than a clipped duration, so nothing is left in a running state.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    /*
+     * `animation: none`, never a clipped duration. An infinite animation running at 0.01ms is
+     * still a *running* animation, and `headers-and-motion.spec.ts` asserts that
+     * `document.getAnimations()` reports none — the eye test and the real test disagree here,
+     * and the real test is the one that matters to somebody who gets motion sick.
+     */
+    .mk-enter,
+    .mk-parallax,
+    .mk-swap,
+    .mk-travel,
+    .mk-cluster-active::before,
+    .mk-rows > *,
+    .mk-wipe,
+    .mk-lines > *,
+    .aurora-drift::before,
+    .aurora-drift::after {
+      animation: none;
+    }
+
+    [data-reveal='ready'][data-reveal-variant='left'],
+    [data-reveal='ready'][data-reveal-variant='right'],
+    [data-reveal='ready'][data-reveal-variant='scale'],
+    [data-reveal='ready'][data-reveal-variant='zoom'] {
+      transform: none;
+    }
+
+    [data-reveal='ready'][data-reveal-variant='mask'] {
+      clip-path: none;
+    }
+
+    /*
+     * The line ladder's from-state is a clip, so clearing the transform is not enough: without
+     * this the headline would sit permanently wiped to nothing, which is the failure mode this
+     * whole file is arranged to prevent.
+     */
+    [data-reveal='ready'][data-reveal-variant='lines'] > * {
+      clip-path: none;
+      transform: none;
+    }
+
+    .mk-lift {
+      transition: none;
     }
   }
 }

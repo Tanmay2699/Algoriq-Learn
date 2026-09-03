@@ -99,8 +99,10 @@ test.describe('with JavaScript disabled', () => {
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     // Reveal-wrapped content is server-rendered and visible: the animation is an enhancement.
     await expect(page.getByText('No enquiry goes cold.')).toBeVisible();
-    // The FAQ is <details>, so its answers are in the document either way.
-    await expect(page.getByText(/boots the entire platform/i).first()).toBeAttached();
+    // The FAQ is <details>, so its answers are in the document either way. Match on the
+    // command rather than the sentence around it: the prose gets edited, `docker compose up`
+    // does not, and this assertion is about the answer being in the DOM without JS.
+    await expect(page.getByText(/docker compose up/i).first()).toBeAttached();
     // Every navigation destination is a real link.
     expect(await page.locator('footer a').count()).toBeGreaterThan(20);
   });

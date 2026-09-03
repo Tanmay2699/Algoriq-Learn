@@ -2,6 +2,9 @@ import Link from 'next/link';
 import type { Route } from 'next';
 import { cn } from '../../lib/cn';
 import { claim, claimValue, type ClaimId } from '../../lib/claims';
+import { Counter, PercentBar, type CounterProps } from './motion';
+
+export { Counter, PercentBar, type CounterProps };
 
 /* ------------------------------------------------------------------ CTA */
 
@@ -186,7 +189,14 @@ export function Card({
   className?: string;
   as?: 'div' | 'li' | 'article' | 'section';
 }) {
-  const base = 'rounded-lg p-6';
+  /*
+   * `h-full` so a card fills its grid cell instead of shrink-wrapping its own copy. Grid and
+   * flex items already stretch, but `Stagger` wraps each child in a `Reveal` element — that
+   * wrapper becomes the item and stretches, and without this the card inside it did not, so
+   * every staggered card row rendered at three different heights. Height: 100% against a
+   * parent of auto height resolves to auto, so this is inert everywhere else.
+   */
+  const base = 'h-full rounded-lg p-6';
   const skin =
     surface === 'ink'
       ? 'border border-ink-border bg-ink-800 text-on-ink'
@@ -271,7 +281,10 @@ export function StatBlock({
   surface?: Surface;
   className?: string;
 }) {
+  const c = claim(evidence);
+  const isNumeric = typeof c?.value === 'number';
   const value = claimValue(evidence);
+
   return (
     <div className={cn(className)}>
       <p
@@ -280,7 +293,7 @@ export function StatBlock({
           surface === 'ink' ? 'text-on-ink' : 'text-fg',
         )}
       >
-        {value}
+        {isNumeric ? <Counter value={c.value as number} /> : value}
       </p>
       <p className={cn('mt-1 text-mk-body-sm', surface === 'ink' ? 'text-on-ink-muted' : 'text-fg-muted')}>
         {label}

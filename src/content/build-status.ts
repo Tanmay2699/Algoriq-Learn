@@ -194,11 +194,11 @@ export const notBuiltAtAll: { thing: string; why: string }[] = [
   { thing: 'A meeting-provider adapter', why: 'You paste a Zoom, Meet, Teams or Jitsi link onto the session.' },
   { thing: 'Video transcoding', why: 'The storage port and player are built; the transcoding worker is not.' },
   { thing: 'A visual workflow builder', why: 'Approval chains, assignment rules and scheduled jobs are configuration, not a canvas.' },
-  { thing: 'Camera proctoring', why: 'Deliberately. Integrity signals shown to a human, disclosed to the candidate, no automatic verdicts.' },
+  { thing: 'Camera proctoring', why: 'Deliberately. Integrity signals shown to a human, disclosed to the candidate, and never an automatic verdict.' },
   { thing: 'Native iOS and Android apps', why: 'Deliberately. It is an installable PWA, designed at 360 pixels first.' },
   { thing: 'Statutory payroll filing', why: 'Deliberately, and permanently. HR holds records.' },
-  { thing: 'Multi-region data residency', why: 'Designed and not built. A region field that does not move bytes would read as a guarantee and be false.' },
-  { thing: 'A telemetry exporter', why: 'The environment variables are validated; nothing consumes them yet. So there is no status page, because a status page that cannot go red is theatre.' },
+  { thing: 'Multi-region data residency', why: 'Designed and not built. A region field that moves no bytes reads as a guarantee and is false.' },
+  { thing: 'A telemetry exporter', why: 'The environment variables are validated; nothing consumes them yet. Hence no status page — one that cannot go red is theatre.' },
 ];
 
 export const averagePercent = Math.round(

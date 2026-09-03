@@ -26,10 +26,11 @@ function menuKeyOf(item: { menu?: MenuKey }): MenuKey {
 }
 
 export function SiteHeader() {
+  const pathname = usePathname();
   const [open, setOpen] = useState<MenuKey | null>(null);
   const [sheet, setSheet] = useState(false);
   const [solid, setSolid] = useState(false);
-  const pathname = usePathname();
+  const [overHero, setOverHero] = useState(pathname === '/');
   const navRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -41,6 +42,32 @@ export function SiteHeader() {
       return;
     }
     const observer = new IntersectionObserver(([entry]) => setSolid(!entry?.isIntersecting), {
+      threshold: 0,
+    });
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  /*
+   * The video hero's own sentinel, independent of the one above. It exists only on the
+   * homepage — `getElementById` returns null everywhere else — so every other route is
+   * entirely unaffected and keeps the exact background/border logic this header has always
+   * had. Where it does exist, it sits at the hero's bottom edge (see `VideoHero`), so
+   * `overHero` is true for exactly as long as that edge has not yet scrolled past the
+   * viewport top.
+   *
+   * This is deliberately a second, independent observer rather than a second reading of the
+   * one above: the two sentinels answer different questions ("has the reader scrolled at
+   * all" vs "are they still over the hero"), and folding them into one boolean is how the
+   * hairline and the transparency end up coupled when a page has neither, one, or both.
+   */
+  useEffect(() => {
+    const sentinel = document.getElementById('hero-video-sentinel');
+    if (!sentinel) {
+      setOverHero(false);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => setOverHero(!!entry?.isIntersecting), {
       threshold: 0,
     });
     observer.observe(sentinel);
@@ -85,112 +112,159 @@ export function SiteHeader() {
     closeTimer.current = setTimeout(() => setOpen(null), 240);
   };
 
+  const isBlended = overHero && !solid && !open;
+
   return (
-    <header
-      className={cn(
-        // Always solid, never translucent.
-        //
-        // A see-through bar looks good over the hero and then crosses a dark section, where
-        // its own dark link text lands on dark content at 3.7:1. It is a contrast failure that
-        // only appears at certain scroll positions, which is the hardest kind to notice and
-        // the easiest kind to avoid. The sentinel now decides only whether the hairline shows.
-        'sticky top-0 z-50 bg-surface transition-[border-color] duration-200 ease-mk',
-        solid ? 'border-b border-border' : 'border-b border-transparent',
-      )}
-      onBlur={(event) => {
-        // Tabbing out of the nav closes the menu.
-        if (!navRef.current?.contains(event.relatedTarget)) setOpen(null);
-      }}
-    >
-      <div className="container-mk flex h-16 items-center gap-6">
-        <Link
-          href="/"
-          className="shrink-0 rounded focus-visible:outline-2 focus-visible:outline-offset-4"
-          aria-label="Algoryq Learn — home"
-        >
-          <Wordmark />
-        </Link>
-
-        {/*
-          The desktop nav appears at `xl` (1280), not `lg` (1024) — measured, not preferred.
-
-          The bar wants 1212px: a 175px wordmark, a 583px six-item nav and 226px of controls,
-          plus 48px of gaps. `.container-mk`'s gutter is fluid, so the content box is 964px at
-          1024 and 1212px at 1280. At `lg` the row is therefore ~248px over budget, and because
-          `globals.css` sets `min-width: 0` on flex children inside the container, nothing
-          announces that: the `flex-1` nav simply shrinks and its links slide under the CTAs.
-          A collision that renders is worse than a hamburger that works, so below 1280 the nav
-          goes in the sheet. docs/06 §3.1 records the number.
-        */}
-        <div ref={navRef} className="hidden flex-1 items-center gap-1 xl:flex">
-          {headerNav.map((item) =>
-            item.menu !== undefined ? (
-              <MenuTrigger
-                key={item.label}
-                label={item.label}
-                menuKey={item.menu}
-                open={open === item.menu}
-                onToggle={() => setOpen(open === item.menu ? null : menuKeyOf(item))}
-                onEnter={() => openWithIntent(menuKeyOf(item))}
-                onLeave={closeWithIntent}
-              />
-            ) : (
-              <Link
-                key={item.label}
-                href={item.href as Route}
-                className="rounded px-3 py-2 text-mk-body-sm text-fg-muted transition-colors duration-fast hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2"
-              >
-                {item.label}
-              </Link>
-            ),
-          )}
-        </div>
-
-        <div className="ms-auto flex items-center gap-2">
-          <ThemeToggle />
-          {/*
-            "Sandbox", not "Open the sandbox" — this is the one place on the site that abbreviates
-            it. The full label is 173px against this one's 102px, and those 71px are the whole
-            difference between the nav clearing the CTAs at 1280 and colliding with them. The
-            verb survives everywhere it has room to: the hero, the Product mega-menu and the
-            mobile sheet all still say "Open the sandbox". The accessible name is not abbreviated
-            either — `external` appends "(opens in a new tab)".
-
-            Both CTAs wait for `md` rather than `sm`: at 640 the wordmark, the controls and the
-            Menu button come to 612px inside a 592px box, which is the same overflow one
-            breakpoint down.
-          */}
-          <CTA href={site.sandboxUrl} variant="secondary" external className="hidden md:inline-flex">
-            Sandbox
-          </CTA>
-          <CTA href="/demo" className="hidden md:inline-flex">
-            Book a walkthrough
-          </CTA>
-
-          <button
-            type="button"
-            aria-expanded={sheet}
-            aria-controls="mobile-nav"
-            onClick={() => setSheet(!sheet)}
-            className="inline-flex h-11 min-w-[44px] items-center justify-center rounded-[--radius] border border-border px-3 text-mk-body-sm xl:hidden"
+    // A fragment, not a single `<header>` root: `backdrop-filter` (both branches below,
+    // `backdrop-blur-md`) establishes a new containing block for `position: fixed`
+    // descendants, per spec. `MobileSheet` is `fixed inset-x-0 bottom-0 top-16` and needs
+    // that measured against the *viewport* — nested inside the header it was instead
+    // measured against the header's own 64px box, and `top-16` plus `bottom-0` inside a
+    // 64px-tall containing block resolves to zero height. The sheet was rendering, entirely
+    // present in the DOM, at a height of exactly nothing — which is why this surfaced as a
+    // Playwright "hidden" failure and not a visual bug anyone would have spotted by eye up
+    // to the exact pixel. Rendering it as a sibling instead keeps the header's own glass
+    // treatment and gives the sheet back the real viewport as its containing block.
+    <>
+      <header
+        className={cn(
+          // No `background-color` in this transition, on purpose: `color` (below, on every
+          // child) has none, so it snaps to its final value the instant `isBlended` flips,
+          // while a smoothly-EASING background would still be mid-fade at that exact moment —
+          // on-ink text, already fully light, sitting over a background only partway to dark.
+          // Axe caught that window directly: a real, if sub-200ms, contrast failure. Snapping
+          // both together removes the window instead of narrowing it.
+          'sticky top-0 z-50 transition-[border-color,box-shadow] duration-200 ease-mk',
+          isBlended
+            ? [
+                // An explicit arbitrary value, not a `bg-ink-900/NN` opacity modifier:
+                // `ink.900` resolves to a bare `var(--mk-ink-900)` reference, which Tailwind
+                // cannot parse at build time to inject alpha into — the modifier is silently
+                // dropped and the header renders fully opaque. Writing the rgba by hand
+                // sidesteps that.
+                //
+                // Translucent, not fully transparent, for the same reason as the transition
+                // above: axe's `color-contrast` walks the DOM ancestor chain for a declared
+                // background and cannot see the hero's own scrim, which is a sibling of the
+                // header, not an ancestor of it. `rgb(7 12 24 / 0.75)` is a real background
+                // in the text's own ancestor chain, and it clears AAA on its own even
+                // composited against a worst-case white behind it — see the contrast note in
+                // `docs/09-VISUAL-LANGUAGE-AND-ASSETS.md` §10 for the numbers.
+                'bg-[rgb(7_12_24_/_0.75)] backdrop-blur-md border-b border-transparent',
+                'hero-on-video',
+              ]
+            : [
+                'bg-surface/95 backdrop-blur-md',
+                solid ? 'border-b border-border shadow-xs' : 'border-b border-transparent',
+              ],
+        )}
+        onBlur={(event) => {
+          // Tabbing out of the nav closes the menu.
+          if (!navRef.current?.contains(event.relatedTarget)) setOpen(null);
+        }}
+      >
+        <div className="container-mk flex h-16 items-center gap-6">
+          <Link
+            href="/"
+            className="shrink-0 rounded focus-visible:outline-2 focus-visible:outline-offset-4"
+            aria-label="Algoryq Learn — home"
           >
-            {sheet ? 'Close' : 'Menu'}
-          </button>
-        </div>
-      </div>
+            <Wordmark surface={isBlended ? 'ink' : 'paper'} />
+          </Link>
 
-      {open && (
-        <div
-          onMouseEnter={() => closeTimer.current && clearTimeout(closeTimer.current)}
-          onMouseLeave={closeWithIntent}
-          className="hidden border-t border-border bg-surface xl:block"
-        >
-          <MegaMenu menuKey={open} />
-        </div>
-      )}
+          {/*
+            The desktop nav appears at `xl` (1280), not `lg` (1024) — measured, not preferred.
 
+            The bar wants 1212px: a 175px wordmark, a 583px six-item nav and 226px of
+            controls, plus 48px of gaps. `.container-mk`'s gutter is fluid, so the content box
+            is 964px at 1024 and 1212px at 1280. At `lg` the row is therefore ~248px over
+            budget, and because `globals.css` sets `min-width: 0` on flex children inside the
+            container, nothing announces that: the `flex-1` nav simply shrinks and its links
+            slide under the CTAs. A collision that renders is worse than a hamburger that
+            works, so below 1280 the nav goes in the sheet. docs/06 §3.1 records the number.
+          */}
+          <div ref={navRef} className="hidden flex-1 items-center gap-1 xl:flex">
+            {headerNav.map((item) =>
+              item.menu !== undefined ? (
+                <MenuTrigger
+                  key={item.label}
+                  label={item.label}
+                  menuKey={item.menu}
+                  open={open === item.menu}
+                  onInk={isBlended}
+                  onToggle={() => setOpen(open === item.menu ? null : menuKeyOf(item))}
+                  onEnter={() => openWithIntent(menuKeyOf(item))}
+                  onLeave={closeWithIntent}
+                />
+              ) : (
+                <Link
+                  key={item.label}
+                  href={item.href as Route}
+                  className={cn(
+                    'rounded px-3 py-2 text-mk-body-sm transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2',
+                    isBlended ? 'text-on-ink-muted hover:text-on-ink' : 'text-fg-muted hover:text-fg',
+                  )}
+                >
+                  {item.label}
+                </Link>
+              ),
+            )}
+          </div>
+
+          <div className="ms-auto flex items-center gap-2">
+            <ThemeToggle surface={isBlended ? 'ink' : 'paper'} />
+            {/*
+              "Sandbox", not "Open the sandbox" — this is the one place on the site that
+              abbreviates it. The full label is 173px against this one's 102px, and those 71px
+              are the whole difference between the nav clearing the CTAs at 1280 and colliding
+              with them. The verb survives everywhere it has room to: the hero, the Product
+              mega-menu and the mobile sheet all still say "Open the sandbox". The accessible
+              name is not abbreviated either — `external` appends "(opens in a new tab)".
+
+              Both CTAs wait for `md` rather than `sm`: at 640 the wordmark, the controls and
+              the Menu button come to 612px inside a 592px box, which is the same overflow one
+              breakpoint down.
+            */}
+            <CTA
+              href={site.sandboxUrl}
+              variant="secondary"
+              surface={isBlended ? 'ink' : 'paper'}
+              external
+              className="hidden md:inline-flex"
+            >
+              Sandbox
+            </CTA>
+            <CTA href="/demo" surface={isBlended ? 'ink' : 'paper'} className="hidden md:inline-flex">
+              Book a walkthrough
+            </CTA>
+
+            <button
+              type="button"
+              aria-expanded={sheet}
+              aria-controls="mobile-nav"
+              onClick={() => setSheet(!sheet)}
+              className={cn(
+                'inline-flex h-11 min-w-[44px] items-center justify-center rounded-[--radius] border px-3 text-mk-body-sm xl:hidden',
+                isBlended ? 'border-ink-border-strong text-on-ink' : 'border-border text-fg',
+              )}
+            >
+              {sheet ? 'Close' : 'Menu'}
+            </button>
+          </div>
+        </div>
+
+        {open && (
+          <div
+            onMouseEnter={() => closeTimer.current && clearTimeout(closeTimer.current)}
+            onMouseLeave={closeWithIntent}
+            className="hidden border-t border-border bg-surface xl:block"
+          >
+            <MegaMenu menuKey={open} />
+          </div>
+        )}
+      </header>
       {sheet && <MobileSheet onClose={() => setSheet(false)} />}
-    </header>
+    </>
   );
 }
 
@@ -198,6 +272,7 @@ function MenuTrigger({
   label,
   menuKey,
   open,
+  onInk,
   onToggle,
   onEnter,
   onLeave,
@@ -205,6 +280,8 @@ function MenuTrigger({
   label: string;
   menuKey: MenuKey;
   open: boolean;
+  /** True while the header is blended over the video hero — see `SiteHeader`'s `overHero`. */
+  onInk: boolean;
   onToggle: () => void;
   onEnter: () => void;
   onLeave: () => void;
@@ -219,7 +296,13 @@ function MenuTrigger({
       onMouseLeave={onLeave}
       className={cn(
         'rounded px-3 py-2 text-mk-body-sm transition-colors duration-fast focus-visible:outline-2 focus-visible:outline-offset-2',
-        open ? 'text-fg' : 'text-fg-muted hover:text-fg',
+        onInk
+          ? open
+            ? 'text-on-ink'
+            : 'text-on-ink-muted hover:text-on-ink'
+          : open
+            ? 'text-fg'
+            : 'text-fg-muted hover:text-fg',
       )}
     >
       {label}

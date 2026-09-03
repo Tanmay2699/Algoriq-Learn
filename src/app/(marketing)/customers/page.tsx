@@ -28,7 +28,7 @@ export default function CustomersPage() {
       <PageHero
         eyebrow="Customers"
         title="We have none yet."
-        lead="Algoryq Learn is feature-complete against its roadmap and has not shipped to a paying customer. This page will fill in when there is something real to put on it — and not before."
+        lead="Algoryq Learn is feature-complete against its roadmap and has not shipped to a paying customer. This page fills in when there is something real to put on it, and not before."
         trail={TRAIL}
       />
 
@@ -61,9 +61,9 @@ export default function CustomersPage() {
             In the meantime, here is what you can check
           </Heading>
           <p className="mt-6 text-mk-body text-fg-muted">
-            A case study is somebody else&apos;s account of software you have not used. It is
-            useful, and it is not the only kind of evidence. Until we have one, these are things
-            you can verify yourself in about ninety seconds, without asking us anything.
+            A case study is somebody else&apos;s account of software you have not used. Useful,
+            but not the only evidence. Until we have one, here is what you can verify yourself in
+            ninety seconds without asking us anything.
           </p>
           <ul className="mt-6 space-y-2 text-mk-body text-fg-muted">
             <li>
@@ -76,7 +76,7 @@ export default function CustomersPage() {
               <Link href="/security" className="text-link underline underline-offset-4">
                 The security model
               </Link>
-              , with the file each control lives in — and the list of what we have not built.
+              , with the file each control lives in, and what we have not built.
             </li>
             <li>
               <Link href="/accessibility" className="text-link underline underline-offset-4">

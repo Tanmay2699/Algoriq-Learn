@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { clusters, footer, header, solutions } from '../config/navigation';
-import { seoEntries } from '../config/seo';
+import {
+  MAX_DESCRIPTION_LENGTH,
+  MAX_TITLE_LENGTH,
+  TITLE_TEMPLATE_SUFFIX,
+  seoEntries,
+} from '../config/seo';
 import { modules } from '../content/modules';
 import { buildStatus, notBuiltAtAll } from '../content/build-status';
 import { articles } from '../content/articles';
@@ -183,12 +188,92 @@ describe('navigation and metadata', () => {
     expect(noindex).toEqual(['/demo']);
   });
 
-  it('writes a description of a usable length for every page', () => {
+  /**
+   * The budgets are the search-result ones, not generous ones. A title that renders past 60
+   * characters, or a description past 158, is truncated mid-sentence — so the sentence that
+   * reaches a reader is not the sentence anybody wrote. The homepage title is absolute; every
+   * other one carries the ` · Algoryq Learn` template, which counts.
+   */
+  it('writes a title and a description that survive a search result intact', () => {
     for (const [path, entry] of Object.entries(seoEntries)) {
-      expect(entry.title.length, `${path} title`).toBeLessThanOrEqual(70);
-      expect(entry.description.length, `${path} description`).toBeGreaterThan(80);
-      expect(entry.description.length, `${path} description`).toBeLessThanOrEqual(230);
+      const rendered = entry.title.length + (path === '/' ? 0 : TITLE_TEMPLATE_SUFFIX.length);
+      expect(rendered, `${path} title renders at ${rendered} characters`).toBeLessThanOrEqual(
+        MAX_TITLE_LENGTH,
+      );
+      expect(entry.description.length, `${path} description`).toBeGreaterThan(110);
+      expect(entry.description.length, `${path} description`).toBeLessThanOrEqual(
+        MAX_DESCRIPTION_LENGTH,
+      );
     }
+  });
+
+  /**
+   * Two pages chasing the same query is two pages splitting the same ranking. Titles are the
+   * cheapest place for that to happen by accident, so they are required to be distinct.
+   */
+  it('gives every page its own title and its own description', () => {
+    const titles = Object.values(seoEntries).map((entry) => entry.title);
+    const descriptions = Object.values(seoEntries).map((entry) => entry.description);
+    expect(new Set(titles).size).toBe(titles.length);
+    expect(new Set(descriptions).size).toBe(descriptions.length);
+  });
+
+  /**
+   * The dynamic routes are the easy ones to miss: their metadata is composed from content
+   * fields rather than written in seo.ts, so nobody sees the rendered length. Twenty-four of
+   * the thirty-four were past the budget when this was written — every solution and most module
+   * pages, because `name — h1` is prose and a <title> is not. They carry their own `seoTitle`
+   * and `seoDescription` now, and this walks the same tuples `generateMetadata` does.
+   */
+  it('keeps every dynamic page inside the same budgets', () => {
+    const pages: { path: string; title: string; description: string }[] = [
+      ...comparisons.map((c) => ({
+        path: `/compare/${c.slug}`,
+        title: c.seoTitle,
+        description: c.seoDescription,
+      })),
+      ...solutionPages.map((s) => ({
+        path: `/solutions/${s.slug}`,
+        title: s.seoTitle,
+        description: s.seoDescription,
+      })),
+      ...modules.map((m) => ({
+        path: `/product/modules/${m.slug}`,
+        title: m.seoTitle,
+        description: m.seoDescription,
+      })),
+      ...articles.map((a) => ({
+        path: `/resources/${a.slug}`,
+        title: a.seoTitle ?? a.title,
+        description: a.description,
+      })),
+      ...legalDocs.map((d) => ({
+        path: `/legal/${d.slug}`,
+        title: d.title,
+        description: d.description,
+      })),
+    ];
+
+    for (const page of pages) {
+      const rendered = page.title.length + TITLE_TEMPLATE_SUFFIX.length;
+      expect(rendered, `${page.path} title renders at ${rendered}`).toBeLessThanOrEqual(
+        MAX_TITLE_LENGTH,
+      );
+      expect(page.description.length, `${page.path} description`).toBeLessThanOrEqual(
+        MAX_DESCRIPTION_LENGTH,
+      );
+      expect(page.description.length, `${page.path} description`).toBeGreaterThan(80);
+    }
+  });
+
+  it('does not let a dynamic page reuse another page’s title', () => {
+    const titles = [
+      ...comparisons.map((c) => c.seoTitle),
+      ...solutionPages.map((s) => s.seoTitle),
+      ...modules.map((m) => m.seoTitle),
+      ...Object.values(seoEntries).map((e) => e.title),
+    ];
+    expect(new Set(titles).size).toBe(titles.length);
   });
 });
 

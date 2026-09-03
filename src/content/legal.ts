@@ -21,29 +21,29 @@ export const legalDocs: LegalDoc[] = [
     slug: 'cookies',
     title: 'Cookies',
     description:
-      'This site sets no cookies, so there is no consent banner. What we store instead, why there are no third-party requests, and what the product does differently.',
+      'This site sets no cookies, so there is no consent banner. What we store instead, why there are no third-party requests, and what the product does.',
     updatedAt: '2026-07-31',
     body: [
       { kind: 'p', text: 'This website sets no cookies. There is no consent banner because there is nothing to consent to.' },
       { kind: 'h2', text: 'The one thing we do store', id: 'theme' },
       {
         kind: 'p',
-        text: 'If you use the light/dark toggle in the header, your choice is saved in your browser’s local storage under the key algoryq-learn-theme. It never leaves your device, it is not a cookie, it is not sent with any request, and clearing your browser data removes it. If you never touch the toggle, nothing is stored at all.',
+        text: 'If you use the light/dark toggle in the header, your choice is saved in your browser’s local storage under the key algoryq-learn-theme. It never leaves your device, is not a cookie, is not sent with any request, and clearing your browser data removes it. Never touch the toggle and nothing is stored at all.',
       },
       { kind: 'h2', text: 'No third parties', id: 'third-parties' },
       {
         kind: 'p',
-        text: 'This page makes no request to any host other than this one. No font CDN, no tag manager, no analytics vendor, no chat widget, no CAPTCHA, no embedded video. Our content-security policy is default-src ‘self’ — the only relaxation is inline script and style, which the framework needs for its own bootstrap — and a browser test fails our build if it is widened any further.',
+        text: 'This page makes no request to any host but this one. No font CDN, no tag manager, no analytics vendor, no chat widget, no CAPTCHA, no embedded video. Our content-security policy is default-src ‘self’, relaxed only for the inline script and style the framework needs to boot, and a browser test fails our build if it widens.',
       },
       { kind: 'h2', text: 'Analytics', id: 'analytics' },
       {
         kind: 'p',
-        text: 'When analytics are enabled they are self-hosted, cookieless and aggregate: page views, referrers, and a small set of named events such as “a call to action was clicked”. No identifier persists across sessions or across sites, IP addresses are truncated at collection, and no individual profile exists. The site works identically with analytics blocked.',
+        text: 'When analytics are enabled they are self-hosted, cookieless and aggregate: page views, referrers, and a few named events such as “a call to action was clicked”. No identifier persists across sessions or sites, IP addresses are truncated at collection, and no individual profile exists. The site works identically with analytics blocked.',
       },
       { kind: 'h2', text: 'The product', id: 'product' },
       {
         kind: 'p',
-        text: 'The product at app.learn.algoryq.com does set a session cookie, because it has to: it is an httpOnly cookie that keeps you signed in and is never readable by JavaScript in your browser. That is a different application from this website.',
+        text: 'The product at app.learn.algoryq.com does set a session cookie, because it has to: an httpOnly cookie that keeps you signed in and is never readable by JavaScript in your browser. That is a different application from this website.',
       },
     ],
   },
@@ -51,7 +51,7 @@ export const legalDocs: LegalDoc[] = [
     slug: 'privacy',
     title: 'Privacy',
     description:
-      'What this website collects (almost nothing), what happens to a demo request, what rights you have over it, and who the controller is when an institute runs Algoryq Learn.',
+      'What this website collects (almost nothing), what happens to a demo request, what rights you have over it, and who the controller is in the product.',
     updatedAt: '2026-07-31',
     body: [
       { kind: 'h2', text: 'This website', id: 'website' },
@@ -85,7 +85,7 @@ export const legalDocs: LegalDoc[] = [
     slug: 'terms',
     title: 'Terms',
     description:
-      'The terms on which this website and the free tier are provided: what the free plan includes, how paid plans start, what happens to your data, and trademark notices.',
+      'The terms this website and the free tier are provided on: what the free plan includes, how paid plans start, what happens to your data, and trademarks.',
     updatedAt: '2026-07-31',
     body: [
       { kind: 'h2', text: 'This website', id: 'website' },
@@ -96,7 +96,7 @@ export const legalDocs: LegalDoc[] = [
       { kind: 'h2', text: 'The free tier', id: 'free' },
       {
         kind: 'p',
-        text: 'The Starter plan is free, limited to 100 seats, 25 courses and 5 GiB of storage. It is a real plan rather than a trial: there is no expiry and no card. We may change the limits with notice; we will not silently reduce them under an existing institute.',
+        text: 'The Starter plan is free, limited to 100 seats, 25 courses and 5 GiB of storage. A real plan rather than a trial: no expiry, no card. We may change the limits with notice; we will not silently reduce them under an existing institute.',
       },
       { kind: 'h2', text: 'Paid plans', id: 'paid' },
       {
@@ -130,7 +130,7 @@ export const legalDocs: LegalDoc[] = [
           'Do not use it to harass, surveil or discriminate against learners or staff.',
           'Do not attempt to reach another institute’s data. If you find a way to, tell us — the responsible-disclosure page explains how, and we will thank you properly.',
           'Do not resell access as your own product without an agreement.',
-          'Do not use the public enquiry endpoint to send unsolicited messages, or to test whether an address is on file. It is built so you cannot, and trying is a breach of these terms as well as a waste of an afternoon.',
+          'Do not use the public enquiry endpoint to send unsolicited messages, or to test whether an address is on file. It is built so you cannot, and trying breaches these terms as well as wasting an afternoon.',
         ],
       },
     ],
@@ -139,7 +139,7 @@ export const legalDocs: LegalDoc[] = [
     slug: 'security-policy',
     title: 'Security policy',
     description:
-      'The controls we operate, the ones we do not have yet, and what we commit to if you report a security problem: an acknowledgement in two working days and no lawyers.',
+      'The controls we operate, the ones we do not have yet, and what we commit to on a report: acknowledgement in two working days, and no lawyers.',
     updatedAt: '2026-07-31',
     body: [
       { kind: 'h2', text: 'What we do', id: 'we' },

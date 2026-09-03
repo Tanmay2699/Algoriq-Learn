@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Route } from 'next';
+import { Act } from '../components/layout/act';
 import { SiteFooter } from '../components/layout/footer';
 import { SiteHeader } from '../components/layout/header';
 import { spine } from '../content/lifecycle';
@@ -25,7 +26,7 @@ export default function NotFound() {
       </a>
       <SiteHeader />
       <main id="main">
-        <section aria-labelledby="nf-title" className="bg-surface-bg py-act">
+        <Act labelledBy="nf-title">
           <div className="container-mk">
             <p className="text-mk-eyebrow font-medium uppercase text-fg-muted">404</p>
             <h1 id="nf-title" className="mt-4 font-display text-display-2 font-normal text-fg">
@@ -66,7 +67,7 @@ export default function NotFound() {
               </li>
             </ol>
           </div>
-        </section>
+        </Act>
       </main>
       <SiteFooter />
     </>

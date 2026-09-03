@@ -52,6 +52,9 @@ export default async function LegalPage({ params }: { params: Promise<{ doc: str
           <h2 id="other-legal" className="text-mk-title font-semibold text-fg">
             The other documents
           </h2>
+          <p className="mt-2 max-w-measure text-mk-body-sm text-fg-muted">
+            All of them short, dated, and written to be read rather than survived.
+          </p>
           <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
             {legalDocs
               .filter((other) => other.slug !== doc.slug)

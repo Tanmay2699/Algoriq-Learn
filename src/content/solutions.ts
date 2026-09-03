@@ -11,6 +11,9 @@ export interface Solution {
   name: string;
   h1: string;
   lead: string;
+  /** The search title. `name — h1` overran 60 characters on every one of these. */
+  seoTitle: string;
+  seoDescription: string;
   /** The one thing this segment is measured on. */
   judgedOn: string;
   /** Their words, which the page then uses throughout. */
@@ -24,6 +27,9 @@ export const solutionPages: Solution[] = [
     slug: 'coaching-institutes',
     name: 'Coaching institutes',
     h1: 'Admissions volume and assessment depth, in one place',
+    seoTitle: 'LMS for Coaching Institutes',
+    seoDescription:
+      'Admissions, batches, mock tests with item analysis, fee instalments and parent access — one LMS for a coaching institute judged on conversion and results.',
     lead:
       'A coaching institute lives on two numbers: how many enquiries convert, and how well the mock tests predict the real thing. Both are modules here, not spreadsheets.',
     judgedOn: 'Conversion, and results',
@@ -32,25 +38,25 @@ export const solutionPages: Solution[] = [
       {
         title: 'Every enquiry, with an owner and a follow-up',
         body:
-          'A board with stages you name, round-robin assignment that cannot collide, duplicate suggestions that never swallow the second enquiry, and a reason recorded on every loss.',
+          'Stages you name, round-robin assignment that cannot collide, duplicate suggestions that never swallow the second enquiry, and a reason on every loss.',
         href: '/product/modules/admissions-crm',
       },
       {
         title: 'Mock tests that tell you which question was wrong',
         body:
-          'Question banks reused across terms, papers with sections, attempts, an anonymised marking queue, and item analysis showing which questions actually separated the cohort.',
+          'Question banks reused across terms, papers with sections, an anonymised marking queue, and item analysis showing which questions separated the cohort.',
         href: '/product/modules/assessments',
       },
       {
         title: 'Batches, timetables and a waitlist that moves',
         body:
-          'Seat limits that refuse out loud, a waitlist that promotes somebody when a seat opens, and transfers that keep a learner’s progress.',
+          'Seat limits that refuse out loud, a waitlist that promotes when a seat opens, and transfers that keep a learner’s progress.',
         href: '/product/modules/batches-and-enrollment',
       },
       {
         title: 'Fee instalments, and who has not paid',
         body:
-          'Fee plans, invoices, discounts, scholarships, payments and an aging report. Money is integer minor units with a currency, never a float.',
+          'Fee plans, invoices, discounts, scholarships, payments and an aging report. Money is integer minor units, never a float.',
         href: '/product/modules/fees-and-finance',
       },
       {
@@ -61,7 +67,7 @@ export const solutionPages: Solution[] = [
       {
         title: 'Who is about to drop out',
         body:
-          'A risk score per learner with the signals that produced it — attendance, progress, missed submissions — and a record of the intervention.',
+          'A risk score per learner with its signals — attendance, progress, missed submissions — and a record of the intervention.',
         href: '/product/intelligence',
       },
     ],
@@ -72,15 +78,18 @@ export const solutionPages: Solution[] = [
     slug: 'schools',
     name: 'Schools',
     h1: 'The register, the marks and the fees — where parents can see them',
+    seoTitle: 'School Management and Learning Software',
+    seoDescription:
+      'An attendance register that reconciles, a read-only parent portal, fees with an aging report, and a gradebook whose scale belongs to the school.',
     lead:
-      'A school’s software problem is rarely the coursework. It is that attendance lives in one book, marks in a spreadsheet, fees in a payment link, and parents in a group chat.',
+      'A school’s software problem is rarely the coursework. It is that attendance lives in a book, marks in a spreadsheet, fees in a payment link and parents in a group chat.',
     judgedOn: 'Parent confidence, and collections',
     vocabulary: ['class', 'section', 'register', 'guardian', 'term'],
     sections: [
       {
         title: 'A register that reconciles to the class',
         body:
-          'Sessions on a timetable, an attendance register with rules the school defines, and a regularisation request for the day the register was wrong.',
+          'Sessions on a timetable, an attendance register with rules the school defines, and a regularisation request for the day it was wrong.',
         href: '/product/modules/live-classes-and-attendance',
       },
       {
@@ -97,7 +106,7 @@ export const solutionPages: Solution[] = [
       {
         title: 'A gradebook whose scale belongs to the school',
         body:
-          'Grade categories, scales and bands are the school’s statement of what an A means — so they sit behind a permission teachers deliberately do not hold.',
+          'Grade categories, scales and bands state what an A means here, so they sit behind a permission teachers deliberately do not hold.',
         href: '/product/modules/assignments-and-grading',
       },
       {
@@ -118,33 +127,36 @@ export const solutionPages: Solution[] = [
     slug: 'universities',
     name: 'Universities',
     h1: 'Programme structure, and a conformance statement you can hand to procurement',
+    seoTitle: 'LMS for Universities and Colleges',
+    seoDescription:
+      'Versioned curriculum with approval, assessment integrity without a camera, a published WCAG 2.2 AA statement, and data governance you can inspect.',
     lead:
-      'A university evaluation is two evaluations: does it fit the academic structure, and does it survive the security and accessibility review. We publish enough to let you answer the second one without a call.',
+      'A university evaluation is two: does the LMS fit the academic structure, and does it survive the security and accessibility review. We publish enough to answer the second without a call.',
     judgedOn: 'Procurement, and academic governance',
     vocabulary: ['programme', 'semester', 'credit', 'transcript'],
     sections: [
       {
         title: 'Curriculum that cannot ship without approval',
         body:
-          'Courses are versioned, submitted, reviewed and published. Restoring a version rebuilds from the snapshot and shows you the diff first.',
+          'Courses are versioned, submitted, reviewed and published. Restoring rebuilds from the snapshot and shows the diff first.',
         href: '/product/modules/courses-and-curriculum',
       },
       {
         title: 'Assessment integrity without a camera',
         body:
-          'Signals from a cooperating browser, shown to a human marker with the caveat on the screen, disclosed to the candidate while it happens. No automatic verdicts, ever.',
+          'Signals from a cooperating browser, shown to a human marker with the caveat on screen and disclosed to the candidate while it happens. No automatic verdicts.',
         href: '/product/modules/assessments',
       },
       {
         title: 'An accessibility conformance statement with its open items listed',
         body:
-          'WCAG 2.2 AA, automated checks that fail the build, and a published list of what still does not pass. Procurement teams have read a hundred statements claiming full conformance.',
+          'WCAG 2.2 AA, automated checks that fail the build, and a published list of what still does not pass. Procurement has read a hundred statements claiming full conformance.',
         href: '/accessibility',
       },
       {
         title: 'Roles and scopes that match a faculty structure',
         body:
-          'Eleven templates, cloneable, scoped to a branch, a department, a course or a single record, with per-user overrides and out-of-office delegation.',
+          'Eleven cloneable templates, scoped to a branch, department, course or single record, with per-user overrides and out-of-office delegation.',
         href: '/security',
       },
       {
@@ -166,14 +178,17 @@ export const solutionPages: Solution[] = [
     slug: 'skilling-academies',
     name: 'Skilling academies',
     h1: 'Placement is the product, so it is a module',
+    seoTitle: 'LMS for Skilling Academies and Bootcamps',
+    seoDescription:
+      'Drives, openings, interview panels and scorecards, verifiable certificates and cohort management — for an academy judged on its placement rate.',
     lead:
-      'A bootcamp is judged on offers, not on lesson completion. The placement cell, the interview panel and the practice loop are part of the platform rather than a spreadsheet next to it.',
+      'A bootcamp is judged on offers, not lesson completion. The placement cell, the interview panel and the practice loop are part of the LMS rather than a spreadsheet beside it.',
     judgedOn: 'Placement rate',
     vocabulary: ['cohort', 'capstone', 'drive', 'offer'],
     sections: [
       {
         title: 'Drives, openings and candidates',
-        body: 'Job posts, applications from your own learners, and a pipeline that shows you where the funnel narrows.',
+        body: 'Job posts, applications from your own learners, and a pipeline showing where the funnel narrows.',
         href: '/product/modules/placement-and-interviews',
       },
       {
@@ -209,6 +224,9 @@ export const solutionPages: Solution[] = [
     slug: 'corporate-l-and-d',
     name: 'Corporate L&D',
     h1: 'Compliance training, and a certificate anyone can verify',
+    seoTitle: 'Corporate L&D and Compliance Training LMS',
+    seoDescription:
+      'Verifiable certificates, a hash-chained audit trail, roles that match an org chart, and assessments with item analysis — proof two years later.',
     lead:
       'For an L&D team the question is rarely whether people can watch a video. It is whether you can prove, two years later, who completed what and when.',
     judgedOn: 'Audit, and completion evidence',
@@ -237,7 +255,7 @@ export const solutionPages: Solution[] = [
       },
       {
         title: 'Assessments with item analysis',
-        body: 'Not just a pass mark — which question was ambiguous, and which one separated people who knew it from people who did not.',
+        body: 'Not just a pass mark — which question was ambiguous, and which separated the people who knew it from the people who did not.',
         href: '/product/modules/assessments',
       },
       {

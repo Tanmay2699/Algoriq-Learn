@@ -3,7 +3,7 @@ import Link from 'next/link';
 import type { Route } from 'next';
 import { Act } from '../../../components/layout/act';
 import { ClosingCTA, PageHero } from '../../../components/layout/page-parts';
-import { Badge, Card, Heading, Lead, StatBlock } from '../../../components/primitives';
+import { Badge, Card, Counter, Heading, Lead, StatBlock } from '../../../components/primitives';
 import { Stagger } from '../../../components/primitives/motion';
 import { clusters } from '../../../config/navigation';
 import { pageMeta } from '../../../config/seo';
@@ -29,8 +29,8 @@ export default function ProductPage() {
 
       <PageHero
         eyebrow="The product"
-        title="Thirty-one modules. One tenant. One audit trail."
-        lead="Algoryq Learn is a single backend, a single PostgreSQL database and a single frontend. What follows is all of it, grouped by the job it does rather than by the team that built it."
+        title="Thirty-one LMS modules. One tenant. One audit trail."
+        lead="One backend, one PostgreSQL database, one frontend. What follows is all of it, grouped by the job it does rather than the team that built it."
         trail={TRAIL}
       />
 
@@ -63,20 +63,20 @@ export default function ProductPage() {
           <Heading level={2} id="clusters-heading" display="display-3">
             Seven clusters
           </Heading>
-          <Lead className="mt-4">Each one is a job an institute has to do, not a department we happen to have.</Lead>
+          <Lead className="mt-4">Each is a job an institute has to do, not a department we happen to have.</Lead>
 
           <Stagger className="mt-block grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {clusters.map((cluster) => (
               <Link
                 key={cluster.key}
                 href={cluster.href as Route}
-                className="block rounded-lg border border-border bg-surface p-6 transition-colors duration-fast hover:bg-surface-muted"
+                className="block h-full rounded-lg border border-border bg-surface p-6 mk-lift hover:bg-surface-muted"
               >
                 <p className="text-caption font-medium uppercase tracking-wide text-fg-muted">{cluster.job}</p>
                 <h3 className="mt-2 text-mk-title font-semibold text-fg">{cluster.label}</h3>
                 <p className="mt-2 text-mk-body-sm text-fg-muted">{cluster.blurb}</p>
                 <p className="mt-4 text-caption text-fg-muted">
-                  {cluster.modules} modules · {cluster.routes} API routes
+                  <Counter value={cluster.modules} /> modules · <Counter value={cluster.routes} /> API routes
                 </p>
               </Link>
             ))}
@@ -90,9 +90,9 @@ export default function ProductPage() {
             Every module with a page of its own
           </Heading>
           <p className="mt-4 max-w-measure text-mk-body text-fg-muted">
-            Fourteen of them. The other seventeen backend modules are the platform underneath —
-            identity, authorization, audit, tenancy, notifications, search and the rest — and
-            they are sold at cluster level, because nobody shops for an audit module.
+            Fourteen of them. The other seventeen are the platform underneath — identity,
+            authorization, audit, tenancy, notifications, search — and they are sold at cluster
+            level, because nobody shops for an audit module.
           </p>
 
           <ul className="mt-block grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -100,11 +100,15 @@ export default function ProductPage() {
               <li key={module.slug}>
                 <Link
                   href={`/product/modules/${module.slug}` as Route}
-                  className="block h-full rounded-lg border border-border bg-surface p-5 transition-colors duration-fast hover:bg-surface-muted"
+                  className="block h-full rounded-lg border border-border bg-surface p-5 mk-lift hover:bg-surface-muted"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <h3 className="text-mk-subtitle font-semibold text-fg">{module.title}</h3>
-                    {module.completeness < 65 && <Badge tone="progress">{module.completeness}%</Badge>}
+                    {module.completeness < 65 && (
+                      <Badge tone="progress">
+                        <Counter value={module.completeness} suffix="%" />
+                      </Badge>
+                    )}
                   </div>
                   <p className="mt-2 text-mk-body-sm text-fg-muted">{module.h1}</p>
                 </Link>
@@ -120,9 +124,9 @@ export default function ProductPage() {
             How complete is all this, really?
           </Heading>
           <p className="mt-4 max-w-measure text-mk-body text-fg-muted">
-            Twenty-four modules, averaging {averagePercent}% against our own written
-            specification. We publish every row, including the four below 60%. Nobody else in
-            this category does this, and it is the reason the rest of the site is worth reading.
+            Twenty-four modules, averaging <Counter value={averagePercent} suffix="%" /> against
+            our own written specification. We publish every row, including the four below 60% —
+            which is the reason the rest of this site is worth reading.
           </p>
 
           <Stagger className="mt-block grid gap-8 sm:grid-cols-3">
@@ -135,10 +139,22 @@ export default function ProductPage() {
             <Card className="max-w-prose">
               <h3 className="text-mk-title font-semibold text-fg">The four we would rather you knew about</h3>
               <ul className="mt-4 space-y-2 text-mk-body-sm text-fg-muted">
-                <li>AI services — 45%. Drafting works; tutoring, grading and transcription are not built.</li>
-                <li>The parent portal — 40%. Guardians see courses and marks; there are no digests.</li>
-                <li>Certificates — 55%. Issuing and public verification work; digital signatures do not.</li>
-                <li>HR — 55%. Records, leave and a register. No payroll, deliberately and permanently.</li>
+                <li>
+                  AI services — <Counter value={45} suffix="%" />. Drafting works; tutoring,
+                  grading and transcription are not built.
+                </li>
+                <li>
+                  The parent portal — <Counter value={40} suffix="%" />. Guardians see courses and
+                  marks; there are no digests.
+                </li>
+                <li>
+                  Certificates — <Counter value={55} suffix="%" />. Issuing and public
+                  verification work; digital signatures do not.
+                </li>
+                <li>
+                  HR — <Counter value={55} suffix="%" />. Records, leave and a register. No
+                  payroll, deliberately and permanently.
+                </li>
               </ul>
               <p className="mt-5">
                 <Link href="/trust/build-status" className="text-mk-body text-link underline underline-offset-4">

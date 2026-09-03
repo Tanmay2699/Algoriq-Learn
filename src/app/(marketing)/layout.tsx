@@ -17,7 +17,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
         Skip to content
       </a>
       {/* The header solidifies when this scrolls out of view — one observer, no scroll listener. */}
-      <div id="header-sentinel" aria-hidden="true" className="absolute top-0 h-px w-px" />
+      <div id="header-sentinel" aria-hidden="true" className="absolute top-0 h-10 w-px pointer-events-none" />
       <SiteHeader />
       <main id="main">{children}</main>
       <SiteFooter />

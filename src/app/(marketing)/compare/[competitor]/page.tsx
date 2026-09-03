@@ -4,7 +4,7 @@ import type { Route } from 'next';
 import { notFound } from 'next/navigation';
 import { Act } from '../../../../components/layout/act';
 import { ClosingCTA, PageHero } from '../../../../components/layout/page-parts';
-import { Heading } from '../../../../components/primitives';
+import { Counter, Heading } from '../../../../components/primitives';
 import { Table, Td, Tr } from '../../../../components/primitives/table';
 import { dynamicMeta } from '../../../../config/seo';
 import { site } from '../../../../config/site';
@@ -23,7 +23,7 @@ export async function generateMetadata({
   const { competitor } = await params;
   const comparison = comparisonBySlug(competitor);
   if (!comparison) return {};
-  return dynamicMeta(`/compare/${comparison.slug}`, comparison.h1, comparison.lead);
+  return dynamicMeta(`/compare/${comparison.slug}`, comparison.seoTitle, comparison.seoDescription);
 }
 
 export default async function ComparePage({ params }: { params: Promise<{ competitor: string }> }) {
@@ -47,14 +47,15 @@ export default async function ComparePage({ params }: { params: Promise<{ compet
 
       <PageHero eyebrow="Comparison" title={comparison.h1} lead={comparison.lead} trail={trail}>
         <p className="mt-6 text-mk-body-sm text-fg-muted">
-          {comparison.rows.length} rows: {wins} favour Algoryq Learn, {losses} favour {comparison.name},{' '}
-          {evens} are even. Every cell about {comparison.name} carries the source we read and the
-          date we read it.
+          <Counter value={comparison.rows.length} /> rows: <Counter value={wins} /> favour Algoryq
+          Learn, <Counter value={losses} /> favour {comparison.name}, <Counter value={evens} /> are
+          even. Every cell about {comparison.name} carries the source we read and the date we
+          read it.
         </p>
         {stalest > 180 && (
           <p className="mt-3 max-w-measure rounded-[--radius] border border-border bg-surface-muted p-3 text-mk-body-sm text-warning-text">
-            Some cells on this page were last verified more than 180 days ago. Treat them as
-            indicative and tell us if something has changed.
+            Some cells here were last verified more than 180 days ago. Treat them as indicative,
+            and tell us if something has changed.
           </p>
         )}
       </PageHero>
@@ -135,13 +136,12 @@ export default async function ComparePage({ params }: { params: Promise<{ compet
             Found something out of date?
           </Heading>
           <p className="mt-4 text-mk-body text-fg-muted">
-            Products change and this page will eventually be wrong about something. Email{' '}
+            Products change, and this page will eventually be wrong about something. Email{' '}
             <a href={`mailto:${site.contactEmail}`} className="text-link underline underline-offset-4">
               {site.contactEmail}
             </a>{' '}
-            and we will correct it within five working days. We re-verify every cell quarterly;
-            a cell older than 180 days shows a notice, and older than 270 days the page comes
-            down until it has been checked.
+            and we correct it within five working days. Every cell is re-verified quarterly: past
+            180 days it shows a notice, past 270 the page comes down until it is checked.
           </p>
           <p className="mt-6 text-mk-body-sm">
             Other comparisons:{' '}
@@ -161,7 +161,7 @@ export default async function ComparePage({ params }: { params: Promise<{ compet
 
       <ClosingCTA
         title="The honest way to decide is to open both."
-        lead="Ours is a sandbox with seeded data and no signup. Twenty minutes with somebody who knows it is the other option."
+        lead="Ours is a sandbox with seeded data and no signup. Or twenty minutes with somebody who knows it."
         primary={{ href: '/demo', label: 'Book a walkthrough' }}
         secondary={{ href: '/trust/build-status', label: 'See what we haven’t built' }}
       />

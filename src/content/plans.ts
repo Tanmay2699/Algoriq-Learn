@@ -106,11 +106,11 @@ export function formatLimit(value: number | null): string {
 /** What every plan includes. Tiering security is a dark pattern; we do not. */
 export const includedEverywhere: string[] = [
   'Row-level tenant isolation in the database',
-  'The full permission model — roles, scopes, per-user overrides, delegation',
+  'The full permission model — roles, scopes, per-user overrides and delegation',
   'The hash-chained audit log, with retention, legal holds and subject requests',
   'Your own branding and your own domain',
   'The API, webhooks and API keys',
   'CSV import and export of everything',
   'WCAG 2.2 AA, and the conformance statement behind it',
-  'The right to self-host — the compose file boots the whole stack',
+  'The right to self-host — one compose file boots the whole stack',
 ];

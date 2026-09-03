@@ -37,7 +37,7 @@ const ROWS = [
   {
     purpose: 'AI generation',
     who: 'Configured by you, or nobody',
-    note: 'OpenAI, Azure OpenAI or Anthropic. The default is disabled, and when it is disabled no text leaves your instance.',
+    note: 'OpenAI, Azure OpenAI or Anthropic. The default is disabled, and while it is, no text leaves your instance.',
   },
   {
     purpose: 'Website analytics',
@@ -78,15 +78,15 @@ export default function SubProcessorsPage() {
 
           <div className="mt-block max-w-prose space-y-4 text-mk-body text-fg-muted">
             <p>
-              This list is short for a structural reason rather than a marketing one: storage,
+              The list is short for a structural reason rather than a marketing one: storage,
               mail, search, AI and cache are <strong className="text-fg">ports with drivers</strong>,
-              selected by an environment variable, and no cloud-provider SDK is imported in
-              feature code. There is nothing in the product that assumes a particular vendor,
-              which is why there is nothing on this page that assumes one either.
+              selected by an environment variable, and no cloud-provider SDK is imported in feature
+              code. Nothing in the product assumes a particular vendor, which is why nothing on
+              this page does either.
             </p>
             <p>
-              We will update this page before adding a sub-processor, not afterwards. If you are
-              on a paid plan we will tell you directly.
+              We update this page before adding a sub-processor, not afterwards. On a paid plan
+              we tell you directly.
             </p>
           </div>
         </div>
@@ -98,12 +98,11 @@ export default function SubProcessorsPage() {
             And this website
           </Heading>
           <p className="mt-4 text-mk-body text-fg-muted">
-            Makes no request to any host other than itself. No font CDN, no tag manager, no chat
-            widget, no CAPTCHA, no embedded video. The content-security policy is{' '}
-            <code className="font-mono">default-src &apos;self&apos;</code>; the only relaxation
-            is inline script and style, which the framework needs for its own bootstrap. A
-            browser test fails our build if it widens any further. You can verify all of it in
-            your own network tab, which is rather the point.
+            Makes no request to any host but itself. No font CDN, no tag manager, no chat widget,
+            no CAPTCHA, no embedded video. The content-security policy is{' '}
+            <code className="font-mono">default-src &apos;self&apos;</code>, relaxed only for the
+            inline script and style the framework needs to boot, and a browser test fails the build
+            if it widens. Verify it in your own network tab — which is rather the point.
           </p>
         </div>
       </Act>

@@ -55,6 +55,7 @@ const config: Config = {
       },
       spacing: {
         act: 'var(--mk-space-act)',
+        'act-loose': 'var(--mk-space-act-loose)',
         block: 'var(--mk-space-block)',
         gutter: 'var(--mk-gutter)',
       },

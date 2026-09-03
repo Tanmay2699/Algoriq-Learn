@@ -21,7 +21,7 @@ const ROUTES = [
     title: 'Security',
     email: site.securityEmail,
     detail:
-      'Acknowledged within two working days. We will not threaten you — the disclosure policy says so in writing.',
+      'Acknowledged within two working days. We will not threaten you; the disclosure policy says so in writing.',
     href: '/trust/responsible-disclosure',
     hrefLabel: 'Responsible disclosure',
   },
@@ -29,7 +29,7 @@ const ROUTES = [
     title: 'Accessibility',
     email: site.accessibilityEmail,
     detail:
-      'Something not working with a keyboard or a screen reader? Five working days, and we will tell you what we are going to do about it.',
+      'Something not working with a keyboard or a screen reader? Five working days, and we tell you what we will do about it.',
     href: '/accessibility',
     hrefLabel: 'Conformance statement',
   },
@@ -43,7 +43,7 @@ export default function ContactPage() {
       <PageHero
         eyebrow="Contact"
         title="Three addresses, and a real person behind each"
-        lead="There is no contact form on this page. The one form on the site is the demo request, and a second one would split the trail for no gain."
+        lead="No contact form on this page. The site has one form — the demo request — and a second would split the trail for no gain."
         trail={TRAIL}
       />
 
@@ -89,21 +89,15 @@ export default function ContactPage() {
           <ul className="mt-6 space-y-3 text-mk-body text-fg-muted">
             <li>A reply from a person, not a sequence.</li>
             <li>No call unless you ask for one. No call within a minute of a form, ever.</li>
-            <li>
-              If we cannot do the thing you need, we will say so — and where possible, say who
-              can.
-            </li>
-            <li>
-              If you send us a correction about something on this site, we fix it within five
-              working days and note it.
-            </li>
+            <li>If we cannot do what you need, we say so — and where possible, who can.</li>
+            <li>Send a correction about anything on this site and we fix it within five working days, and note it.</li>
           </ul>
         </div>
       </Act>
 
       <ClosingCTA
         title="Or just book the twenty minutes."
-        lead="A real person, your questions, and the parts of the product you actually care about."
+        lead="A real person, your questions, and the parts of the product you care about."
         primary={{ href: '/demo', label: 'Book a walkthrough' }}
         secondary={{ href: '/trust', label: 'What we can prove today' }}
       />

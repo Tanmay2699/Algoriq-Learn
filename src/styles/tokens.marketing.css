@@ -100,8 +100,19 @@
   --mk-viz-4: #b45309;
   --mk-viz-5: #52606d;
 
-  /* Rhythm */
+  /*
+   * Rhythm. Three tokens, all fluid, and they are the whole vertical system: `act` is the gap
+   * between two sections, `block` the gap inside one, `gutter` the page's own inline padding.
+   * There is deliberately no fixed 4/8/16/24 ladder next to them — Tailwind's default scale
+   * already is that ladder, and a second set of names for the same numbers means every file
+   * is spelled one of two ways forever.
+   *
+   * `act-loose` is the one act that wants more air than the ramp gives it at desktop (the
+   * homepage close). It is flat rather than fluid because it only ever applies above `lg`,
+   * where `--mk-space-act` has nearly reached its own ceiling anyway.
+   */
   --mk-space-act: clamp(4.5rem, 3rem + 7vw, 10rem);
+  --mk-space-act-loose: 10rem;
   --mk-space-block: clamp(2rem, 1.5rem + 2.5vw, 4rem);
   --mk-gutter: clamp(1.25rem, 0.9rem + 1.6vw, 2.5rem);
 
@@ -121,6 +132,98 @@
   --mk-shift-sm: 8px;
   --mk-shift: 14px;
   --mk-stagger: 60ms;
+
+  /*
+   * The entrance layer (docs/07 §1).
+   *
+   * `Reveal` deliberately refuses to animate anything already on screen at load — fading in
+   * text somebody has started reading is a contrast bug wearing an animation's clothes. That
+   * left the one element that most deserves an entrance, the hero, with none. These tokens
+   * drive a CSS-only page-load entrance instead: no JavaScript, so it runs before hydration
+   * and costs nothing in the bundle.
+   *
+   * Slower and further than a scroll reveal, because it plays once and sets the tone; the
+   * scroll reveals stay short so they never delay reading.
+   */
+  --mk-dur-entrance: 720ms;
+  --mk-enter-shift: 24px;
+  --mk-enter-step: 90ms;
+
+  /* Ambient drift on the hero aurora. One element, one very slow loop. */
+  --mk-drift-dur: 32s;
+
+  /*
+   * The second aurora layer drifts on its own clock and in the opposite direction. One
+   * duration for both reads as a single sheet sliding about; two coprime durations never
+   * repeat the same arrangement inside a visit, which is what makes the background read as
+   * depth rather than as a looping asset.
+   */
+  --mk-drift-dur-b: 41s;
+
+  /* Scroll-linked travel, where the browser supports a view timeline. */
+  --mk-parallax: 20px;
+
+  /*
+   * The line ladder (docs/07 §1).
+   *
+   * A display headline arrives one line at a time rather than as a block. The unit of the
+   * gesture is the line, because that is the unit the eye reads — a four-line headline that
+   * fades in as one rectangle reads as an image appearing, and one that arrives line by line
+   * reads as a sentence being said.
+   *
+   * The step is deliberately shorter than `--mk-enter-step`: these are parts of one sentence,
+   * not separate elements, and anything slower puts a beat between "From the first enquiry"
+   * and "to the final certificate" that the copy does not have.
+   */
+  --mk-line-step: 110ms;
+  --mk-line-dur: 760ms;
+  --mk-line-shift: 0.36em;
+
+  /*
+   * Panel crossfade. When a switcher swaps what a product frame is showing, the outgoing
+   * surface is gone before the incoming one starts — a true crossfade double-exposes two
+   * dashboards for 150ms and looks like a rendering bug.
+   */
+  --mk-swap-dur: 380ms;
+  --mk-swap-shift: 10px;
+
+  /*
+   * The settle a large visual makes on entry: a scale rather than a travel, so a product
+   * frame arrives by coming into focus instead of sliding in from somewhere it never was.
+   */
+  --mk-zoom-from: 1.055;
+
+  /*
+   * A card moving between board columns. Long, because it is the one piece of motion on this
+   * site that is *making an argument* — that a record moves through stages and the system
+   * writes the timeline — and it has to be legible rather than quick.
+   */
+  --mk-travel-dur: 720ms;
+  --mk-travel-hold: 2.4s;
+  --mk-ease-travel: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /*
+   * How long a self-advancing switcher rests on each item before moving on.
+   *
+   * This and `--mk-nav-cycle` below are deliberately the same number. A product frame that
+   * sits inside a switcher gets remounted on every swap, which restarts the walking selection
+   * in its sidebar — so if the two run at different speeds the sidebar is cut off mid-list at
+   * an arbitrary row, every time, and the box reads as two animations interrupting each other.
+   * Matched, the selection completes exactly one trip down the nav per role and the swap lands
+   * on the beat. One choreography instead of two.
+   */
+  --mk-cycle: 4800ms;
+
+  /*
+   * The walking selection in a product frame's sidebar. One full trip down the list,
+   * however long the list is — so an eight-item nav rests 600ms on each and a five-item
+   * one rests ~1s. Brisk, but these are one- and two-word labels, and the point being
+   * made is "the product has these pages", not "read this menu".
+   *
+   * Kept equal to `--mk-cycle` on purpose — see the note there.
+   */
+  --mk-nav-cycle: 4800ms;
+  --mk-nav-gap: 2px;
 }
 
 /*

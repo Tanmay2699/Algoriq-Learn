@@ -10,7 +10,7 @@ import {
   seededTenant,
   verifyExample,
 } from '../../content/demo-data';
-import { FramePanel, FrameSidebar, ProductFrame } from './frame';
+import { FramePanel, FrameSidebar, ProductFrame, walkingList } from './frame';
 
 /* ------------------------------------------------------------- Dashboards */
 
@@ -102,7 +102,7 @@ export function AdmissionsBoard() {
       caption="Your stage names. Our stage meaning."
     >
       <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5">
-        {pipelineStages.map((stage) => {
+        {pipelineStages.map((stage, stageIndex) => {
           const cards = boardCards.filter((card) => card.stage === stage);
           return (
             <div key={stage} className="rounded-[--radius] border border-border bg-surface-muted p-2">
@@ -111,19 +111,52 @@ export function AdmissionsBoard() {
                 <span className="tabular-nums">{cards.length}</span>
               </p>
               <ul className="space-y-2">
-                {cards.map((card) => (
-                  <li key={card.name} className="rounded-sm border border-border bg-surface p-2">
-                    <p className="truncate text-caption font-medium text-fg">{card.name}</p>
-                    <p className="mt-0.5 truncate text-caption text-fg-muted">
-                      {card.source} · {card.owner}
-                    </p>
-                    {card.note && (
-                      <p className="mt-1 inline-flex rounded-sm bg-warning/10 px-1.5 py-0.5 text-caption text-warning-text">
-                        {card.note}
+                {cards.map((card, cardIndex) => {
+                  /*
+                   * One card on this board moves, on a loop, from the first stage to the
+                   * second and back. It is the only looping motion on the site that argues
+                   * rather than decorates: the whole section claims that a record travels
+                   * the pipeline and the system writes the timeline, and a still board
+                   * asserts that where a moving one shows it.
+                   *
+                   * It is the *real* card that moves, not a decorative copy floated over the
+                   * top. A copy would be a second "Ananya Deshmukh" in the accessibility
+                   * tree, and `transform` changes nothing about layout, reading order or
+                   * where a screen reader finds her — under reduced motion the animation is
+                   * `none` and she has simply never moved.
+                   *
+                   * The distance is one column plus one gutter. `100%` resolves against the
+                   * card's own width, which is the column width, so this stays correct at
+                   * two, three and five columns without a breakpoint of its own.
+                   */
+                  const travels = stageIndex === 0 && cardIndex === 0;
+                  return (
+                    <li
+                      key={card.name}
+                      style={
+                        travels
+                          ? ({ '--mk-travel-x': 'calc(100% + 0.625rem)' } as React.CSSProperties)
+                          : undefined
+                      }
+                      className={cn(
+                        'rounded-sm border border-border bg-surface p-2',
+                        // Raised only while it is between columns, so it passes over the
+                        // destination stack instead of disappearing behind it.
+                        travels && 'relative z-10 mk-travel shadow-e2',
+                      )}
+                    >
+                      <p className="truncate text-caption font-medium text-fg">{card.name}</p>
+                      <p className="mt-0.5 truncate text-caption text-fg-muted">
+                        {card.source} · {card.owner}
                       </p>
-                    )}
-                  </li>
-                ))}
+                      {card.note && (
+                        <p className="mt-1 inline-flex rounded-sm bg-warning/10 px-1.5 py-0.5 text-caption text-warning-text">
+                          {card.note}
+                        </p>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           );
@@ -197,9 +230,24 @@ export function RolesMatrix() {
       provenance="catalog"
       caption="Eleven templates you can clone and reshape. Nothing in the code reads a role’s name."
     >
-      <ul className="divide-y divide-border">
+      {/*
+        Eleven rows, and the highlight walks all eleven — which is the point the surface is
+        making. A still screenshot of a roles table proves there is a roles table; a list
+        stepping through every template proves there are eleven of them.
+      */}
+      <ul className="mk-rows divide-y divide-border" style={walkingList(rows.length, {
+          // The lit row brightens rather than turning link-blue: the default tone is for the
+          // sidebar, where blue *is* the product's selected state. On a data row it would
+          // read as "this row is a link", which it is not.
+          fg: 'var(--text-muted)',
+          litFg: 'var(--text-primary)',
+          dwell: 900,
+        })}>
         {rows.map((row) => (
-          <li key={row.role} className="flex flex-wrap items-baseline gap-x-3 gap-y-1 py-2">
+          <li
+            key={row.role}
+            className="flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-sm px-2 py-2"
+          >
             <span className="w-44 shrink-0 text-caption font-medium text-fg">{row.role}</span>
             <span className="rounded-sm bg-surface-muted px-1.5 py-0.5 font-mono text-caption text-fg-muted">
               {row.scope}
@@ -238,7 +286,14 @@ export function ItemAnalysis() {
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="mk-rows" style={walkingList(itemAnalysis.length, {
+          // The lit row brightens rather than turning link-blue: the default tone is for the
+          // sidebar, where blue *is* the product's selected state. On a data row it would
+          // read as "this row is a link", which it is not.
+          fg: 'var(--text-muted)',
+          litFg: 'var(--text-primary)',
+          dwell: 900,
+        })}>
           {itemAnalysis.map((item) => (
             <tr key={item.q} className="border-b border-border last:border-0">
               <th scope="row" className="py-2 text-start font-medium text-fg">
@@ -281,9 +336,29 @@ export function RiskList() {
       provenance="illustrative"
       caption="A score is useless without the signals that produced it, so it never appears without them."
     >
-      <ul className="space-y-2.5">
+      {/*
+        These cards are not the same height — one carries three signal chips and another
+        carries one. Rows lighting themselves handle that without knowing it; the overlay
+        bar this replaced could not, which is what sent it to the bin.
+
+        The lit background is the surface tint rather than the brand one: these rows already
+        carry red and amber risk bands, and a blue wash behind them would read as a fourth
+        status rather than as a cursor.
+      */}
+      <ul
+        className="mk-rows space-y-2.5"
+        style={walkingList(riskSignals.length, {
+          fg: 'var(--text-muted)',
+          litFg: 'var(--text-muted)',
+          litBg: 'var(--surface-muted)',
+          dwell: 1100,
+        })}
+      >
         {riskSignals.map((row) => (
-          <li key={row.learner} className="rounded-[--radius] border border-border bg-surface p-3">
+          <li
+            key={row.learner}
+            className="rounded-[--radius] border border-border bg-surface p-3"
+          >
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-caption font-medium text-fg">{row.learner}</span>
               <span
@@ -359,9 +434,19 @@ export function PeopleList() {
       provenance="seed"
       caption="People are added by invitation only. There is no route where an administrator sets somebody else’s password."
     >
-      <ul className="divide-y divide-border">
+      <ul className="mk-rows divide-y divide-border" style={walkingList(seededPeople.length, {
+          // The lit row brightens rather than turning link-blue: the default tone is for the
+          // sidebar, where blue *is* the product's selected state. On a data row it would
+          // read as "this row is a link", which it is not.
+          fg: 'var(--text-muted)',
+          litFg: 'var(--text-primary)',
+          dwell: 900,
+        })}>
         {seededPeople.map((person) => (
-          <li key={person.name} className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2.5">
+          <li
+            key={person.name}
+            className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-sm px-2 py-2.5"
+          >
             <span
               aria-hidden="true"
               className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-brand-soft text-caption font-medium text-brand-600"

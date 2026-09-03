@@ -24,7 +24,7 @@ const GLYPHS: Record<ThemeMode, string> = {
  * the actual applied theme is set before first paint by the no-flash script, so the *page*
  * never flashes even though the button label settles a frame later.
  */
-export function ThemeToggle() {
+export function ThemeToggle({ surface = 'paper' }: { surface?: 'paper' | 'ink' }) {
   const [mode, setMode] = useState<ThemeMode>('system');
   const [mounted, setMounted] = useState(false);
 
@@ -52,7 +52,11 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={cycle}
-      className="inline-flex h-11 min-w-[44px] items-center justify-center gap-1.5 rounded-[--radius] px-2.5 text-mk-body-sm text-fg-muted transition-colors duration-fast hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2"
+      className={
+        surface === 'ink'
+          ? 'inline-flex h-11 min-w-[44px] items-center justify-center gap-1.5 rounded-[--radius] px-2.5 text-mk-body-sm text-on-ink-muted transition-colors duration-fast hover:text-on-ink focus-visible:outline-2 focus-visible:outline-offset-2'
+          : 'inline-flex h-11 min-w-[44px] items-center justify-center gap-1.5 rounded-[--radius] px-2.5 text-mk-body-sm text-fg-muted transition-colors duration-fast hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2'
+      }
     >
       <span aria-hidden="true">{GLYPHS[mode]}</span>
       <span className="sr-only">

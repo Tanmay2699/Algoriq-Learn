@@ -5,6 +5,10 @@
  * from the working tree — not from the product's design docs, which describe it as intended.
  * `completeness` is the product's own honest figure against its SRS; a module under 65 renders
  * its gap above the fold, and copy may never describe a module as more complete than its number.
+ *
+ * Copy length is a constraint, not an accident. A `lead` is one sentence, a `does` body is one
+ * or two, and a `mechanism` body is the one place a paragraph is allowed — because it is the
+ * section that separates this from a feature list. Anything longer belongs in a guide.
  */
 
 export interface ModuleDoc {
@@ -13,6 +17,9 @@ export interface ModuleDoc {
   title: string;
   h1: string;
   lead: string;
+  /** The search title. `title — h1` overran 60 characters on ten of the fourteen. */
+  seoTitle: string;
+  seoDescription: string;
   apiModule: string;
   routes: number;
   completeness: number;
@@ -34,7 +41,10 @@ export const modules: ModuleDoc[] = [
     title: 'Admissions CRM',
     h1: 'Every enquiry, on one board',
     lead:
-      'An enquiry arrives from your website, a phone call or a walk-in and lands on a board with an owner, a timeline and a follow-up date. Nothing goes cold because nobody remembered.',
+      'Enquiries from your website, a phone call or a walk-in land on one admissions board with an owner, a timeline and a follow-up date.',
+    seoTitle: 'Admissions CRM for Institutes',
+    seoDescription:
+      'An enquiry board with owners, follow-ups and a timeline the system writes: pipelines you name, duplicate suggestions, and collision-free assignment.',
     apiModule: 'crm',
     routes: 32,
     completeness: 72,
@@ -42,38 +52,38 @@ export const modules: ModuleDoc[] = [
       {
         title: 'A pipeline whose names are yours',
         body:
-          'Call the first column Enquiry, or Qualified, or anything else. Nothing in the code reads the label — open, won and lost are the facts every funnel counts, so your conversion rate survives your vocabulary.',
+          'Call the first column Enquiry or Qualified. Nothing in the code reads the label — open, won and lost are the facts every funnel counts, so your conversion rate survives your vocabulary.',
       },
       {
         title: 'Duplicates suggested, never swallowed',
         body:
-          'The same person really does enquire twice — a form on Monday, a call on Thursday. Matching is deliberately loose (email or phone, phone reduced to its last ten digits) and its only output is a suggestion to merge.',
+          'The same person really does enquire twice — a form on Monday, a call on Thursday. Matching is deliberately loose, and its only output is a suggestion to merge.',
       },
       {
         title: 'Assignment that cannot collide',
         body:
-          'Round-robin runs off a cursor stored on the rule and incremented in the database, so two enquiries a second apart cannot land on the same counsellor. A rule naming somebody who has left leaves the enquiry unassigned.',
+          'Round-robin runs off a cursor incremented in the database, so two enquiries a second apart cannot land on the same counsellor. A rule naming someone who has left leaves the enquiry unassigned.',
       },
       {
         title: 'A timeline written by the system',
         body:
-          'Stage moves, assignments and calls are appended by the software, not typed from memory. A history assembled only from what somebody remembered to record is not a history.',
+          'Stage moves, assignments and calls are appended by the software. A history assembled from what somebody remembered is not a history.',
       },
       {
-        title: 'Applications, and the two honest outcomes of accepting one',
+        title: 'Applications, and two honest outcomes',
         body:
-          'Already a member? Enrolled. Not yet? Invited — and the application says so until they accept. Press it twice and nothing doubles. A seat limit refuses out loud rather than pretending.',
+          'Already a member? Enrolled. Not yet? Invited, and the application says so until they accept. Press it twice and nothing doubles.',
       },
       {
         title: 'Web-to-lead, hardened',
         body:
-          'A public endpoint your own site can post to. It forces the source, has no field for stage or owner, returns a fixed acknowledgement so it cannot be asked whether an email is on file, and answers identically for an unknown institute so it cannot enumerate them.',
+          'A public endpoint your own site posts to. It forces the source, has no field for stage or owner, returns a fixed acknowledgement, and answers identically for an unknown institute so it cannot enumerate them.',
       },
     ],
     mechanism: {
       title: 'Why a lost enquiry needs a reason and a won one refuses to have one',
       body:
-        '“Why did we not get this?” is the most useful field in an admissions system, and a reason recorded against a win means nothing. The close date is stamped on the way into a closed stage and cleared on the way back out, because a reopened enquiry that still reports a close date lies to every cycle-time report. And the conversion rate is won ÷ closed, never won ÷ everything — otherwise it falls every time marketing does its job — and it is null with nothing closed, because a rate over zero decisions is not nought per cent.',
+        '“Why did we not get this?” is the most useful field in an admissions system, and a reason recorded against a win means nothing. The close date is stamped entering a closed stage and cleared on the way out — a reopened enquiry still reporting one lies to every cycle-time report. Conversion is won ÷ closed, never won ÷ everything, or it falls every time marketing does its job.',
     },
     keys: ['crm.lead.view', 'crm.lead.assign', 'crm.lead.merge', 'crm.application.decide', 'crm.pipeline.manage'],
     notBuilt: ['Campaign attribution', 'Email sequences', 'SMS and WhatsApp channels', 'Lead scoring'],
@@ -87,22 +97,25 @@ export const modules: ModuleDoc[] = [
     h1: 'A website that knows what you teach',
     lead:
       'Pages, posts, events and a gallery on your own domain, authored by the people who run the institute rather than by whoever has the FTP password.',
+    seoTitle: 'Institute Website Builder',
+    seoDescription:
+      'Pages, posts, events and a gallery on your own domain, authored in Markdown that can never become script — with enquiries landing in the CRM.',
     apiModule: 'cms',
     routes: 24,
     completeness: 60,
     does: [
       { title: 'Pages and posts', body: 'Markdown source, published on your slug or your own domain.' },
       { title: 'Events and a gallery', body: 'What is on, and photographs with the caption the upload required.' },
-      { title: 'A sitemap that is generated', body: 'Not maintained by hand, and therefore not wrong.' },
+      { title: 'A generated sitemap', body: 'Not maintained by hand, and therefore not wrong.' },
       {
         title: 'Enquiries that land in the CRM',
-        body: 'Your site posts to the same public capture endpoint this site uses. One enquiry, one board.',
+        body: 'Your site posts to the same capture endpoint this one does. One enquiry, one board.',
       },
     ],
     mechanism: {
       title: 'Author text never becomes markup',
       body:
-        'The renderer takes Markdown source and emits React elements. It does not emit HTML at any point, which means nothing an author types — deliberately or by pasting from somewhere else — can become script in a visitor’s browser. That is a stronger guarantee than sanitising, because there is no sanitiser to have a gap in.',
+        'The renderer takes Markdown and emits React elements. It never emits HTML, so nothing an author types can become script in a visitor’s browser. That is stronger than sanitising, because there is no sanitiser to have a gap in.',
     },
     keys: ['cms.site.view', 'cms.page.publish', 'cms.post.publish'],
     notBuilt: ['A forms builder', 'An SEO editor', 'Themes beyond your branding'],
@@ -116,6 +129,9 @@ export const modules: ModuleDoc[] = [
     h1: 'Nothing ships until somebody says so',
     lead:
       'Programme, course, module, unit, lesson — versioned, approved before publishing, and restorable with a diff you can read.',
+    seoTitle: 'Course and Curriculum Management',
+    seoDescription:
+      'Programme, course, module, unit and lesson — versioned, approved before publishing, and restorable with a diff you can actually read.',
     apiModule: 'course',
     routes: 38,
     completeness: 72,
@@ -130,7 +146,7 @@ export const modules: ModuleDoc[] = [
     mechanism: {
       title: 'Restore rebuilds from the snapshot, which is why the snapshot must be complete',
       body:
-        'Restoring a version does not patch the live course — it rebuilds its lessons from the stored snapshot. That is the right behaviour, and it has a sharp edge: any field the snapshot omits is erased on restore. When written lesson bodies were added, carrying them through publish → restore → diff was the work, not adding the column.',
+        'Restoring a version rebuilds a course’s lessons from the stored snapshot rather than patching the live one. That is right, and it has a sharp edge: any field the snapshot omits is erased on restore. When written lesson bodies were added, carrying them through publish → restore → diff was the work, not adding the column.',
     },
     keys: ['course.course.view', 'course.course.publish', 'course.version.restore', 'course.category.manage'],
     notBuilt: ['SCORM and xAPI packages', 'Prerequisite graphs'],
@@ -143,19 +159,22 @@ export const modules: ModuleDoc[] = [
     title: 'Media & content',
     h1: 'Video that is yours, wherever it lives',
     lead:
-      'Upload, chapters, captions and signed-URL playback, over a storage port that speaks local disk, S3-compatible or Azure Blob.',
+      'Upload, chapters, captions and signed-URL playback over a storage port that speaks local disk, S3-compatible or Azure Blob.',
+    seoTitle: 'Course Video Hosting and Media',
+    seoDescription:
+      'Upload, chapters, captions and signed-URL playback over a storage port that speaks local disk, S3-compatible object storage or Azure Blob.',
     apiModule: 'media',
     routes: 14,
     completeness: 70,
     does: [
       { title: 'Upload and playback', body: 'Signed URLs, so a link that leaks stops working.' },
       { title: 'Chapters and captions', body: 'Authored per asset; captions are a first-class record, not a sidecar file.' },
-      { title: 'Three storage drivers', body: 'local-disk, s3 (which covers MinIO and R2) and azure-blob, chosen by an environment variable.' },
+      { title: 'Three storage drivers', body: 'local-disk, s3 (covering MinIO and R2) and azure-blob, chosen by an environment variable.' },
     ],
     mechanism: {
       title: 'The port is the point',
       body:
-        'No feature module imports a cloud SDK. Storage is an interface with three implementations, selected at boot. That is what makes “move your data” a connection-string change rather than a project, and it is the same shape used for mail, search, AI and cache.',
+        'No feature module imports a cloud SDK. Storage is an interface with three implementations, selected at boot — which makes “move your data” a connection-string change rather than a project. Mail, search, AI and cache have the same shape.',
     },
     keys: ['content.media.upload', 'content.media.view', 'content.caption.manage'],
     notBuilt: [
@@ -172,7 +191,10 @@ export const modules: ModuleDoc[] = [
     title: 'AI assistance',
     h1: 'Drafts, never decisions',
     lead:
-      'Paste an outline, get a course structure. Ask for a lesson, get Markdown you can edit. Nothing an AI produces reaches a course until a human presses apply.',
+      'Paste an outline, get a course structure. Ask for a lesson, get Markdown you can edit. Nothing reaches a course until a human presses apply.',
+    seoTitle: 'AI Course and Lesson Drafting',
+    seoDescription:
+      'Draft a course outline or a lesson in Markdown, then edit it. Nothing an AI produces reaches a course until a human presses apply. Off by default.',
     apiModule: 'ai',
     routes: 5,
     completeness: 45,
@@ -185,7 +207,7 @@ export const modules: ModuleDoc[] = [
     mechanism: {
       title: 'The provider is a port, and its default is off',
       body:
-        'OpenAI, Azure OpenAI, Anthropic or disabled, chosen by an environment variable. When it is disabled the feature is hidden rather than broken — a greyed-out button that cannot work is a support ticket. Token budgets are per tenant and generations are cached, so an institute cannot be surprised by a bill it did not authorise.',
+        'OpenAI, Azure OpenAI, Anthropic or disabled, chosen by an environment variable. When disabled the feature is hidden rather than broken — a greyed-out button that cannot work is a support ticket. Token budgets are per tenant and generations cached, so no institute meets a bill it did not authorise.',
     },
     keys: ['ai.generate.course', 'ai.generate.lesson', 'ai.interview.practice'],
     notBuilt: ['AI tutoring chat', 'AI grading', 'Transcription', 'Text to speech'],
@@ -198,21 +220,24 @@ export const modules: ModuleDoc[] = [
     title: 'Learning delivery',
     h1: 'Built for a bad connection',
     lead:
-      'The player, progress, notes, questions — and progress captured with no signal at all, replayed in order when it comes back.',
+      'The player, progress, notes and questions — including progress captured with no signal and replayed in order when it returns.',
+    seoTitle: 'Learning Delivery and Offline Progress',
+    seoDescription:
+      'The player, progress, resume, notes and questions — with progress captured on no signal at all and replayed in order, idempotently, when it returns.',
     apiModule: 'learn',
     routes: 50,
     completeness: 80,
     does: [
-      { title: 'Resume where they left off', body: 'The single most-used feature in any LMS, and it works on a phone.' },
+      { title: 'Resume where they left off', body: 'The most-used feature in any LMS, and it works on a phone.' },
       { title: 'Notes and questions', body: 'Against the lesson, with a moderation queue for staff.' },
       { title: 'A catalogue that respects permissions', body: 'A learner sees what they may enrol in, not everything.' },
       { title: 'Offline progress', body: 'Queued on the device, replayed in order, idempotently, last write wins.' },
       { title: 'Installable', body: 'A PWA: it goes on a home screen without an app store.' },
     ],
     mechanism: {
-      title: 'Why the offline queue replays in order and why that matters',
+      title: 'Why the offline queue replays in order',
       body:
-        'Progress events are queued in IndexedDB with their original sequence and replayed through one endpoint that is idempotent. Out-of-order replay would let a stale “25% watched” overwrite a later “complete”; a non-idempotent one would double-count a retry. Neither is theoretical on a train journey through a tunnel, which is where a lot of this product’s learning happens.',
+        'Progress events are queued in IndexedDB in their original sequence and replayed through one idempotent endpoint. Out-of-order replay would let a stale “25% watched” overwrite a later “complete”; a non-idempotent one would double-count a retry. Neither is theoretical on a train through a tunnel.',
     },
     keys: ['learn.course.access', 'learn.progress.view', 'learn.qa.moderate', 'learn.enrollment.manage'],
     notBuilt: ['Downloadable offline media', 'A native app — deliberately'],
@@ -225,7 +250,10 @@ export const modules: ModuleDoc[] = [
     title: 'Live classes & attendance',
     h1: 'The class, and the register that reconciles to it',
     lead:
-      'Sessions on your schedule, joined from the course, with an attendance register and a regularisation request for the day the register was wrong.',
+      'Live sessions on your timetable, joined from the course, with an attendance register and a regularisation request for the day it was wrong.',
+    seoTitle: 'Live Classes and Attendance',
+    seoDescription:
+      'Live sessions on your timetable, joined from the course, with an attendance register whose rules you define and a regularisation request behind it.',
     apiModule: 'live',
     routes: 20,
     completeness: 72,
@@ -254,7 +282,10 @@ export const modules: ModuleDoc[] = [
     title: 'Batches & enrolment',
     h1: 'Cohorts, timetables and a waitlist that moves',
     lead:
-      'A batch is a time-boxed group moving through a course together. It has members, a timetable, a seat limit and a waitlist that promotes somebody when a seat opens.',
+      'A time-boxed group moving through a course together: members, a timetable, a seat limit, and a waitlist that promotes somebody when a seat opens.',
+    seoTitle: 'Batches, Timetables and Enrolment',
+    seoDescription:
+      'Cohorts moving through a course together: members, timetables, seat limits that refuse out loud, a waitlist that promotes, and a guardian view.',
     apiModule: 'learn',
     routes: 50,
     completeness: 72,
@@ -268,7 +299,7 @@ export const modules: ModuleDoc[] = [
     mechanism: {
       title: 'A seat limit that refuses out loud',
       body:
-        'Enrolling past a plan’s seat quota fails with a message naming the limit, rather than silently succeeding and reconciling later. The same refusal reaches the admissions counsellor converting an application — which is why converting is two acts, and why nothing is caught around the invitation step.',
+        'Enrolling past a plan’s seat quota fails with a message naming the limit, rather than succeeding quietly and reconciling later. The same refusal reaches the counsellor converting an application — which is why converting is two acts.',
     },
     keys: ['learn.batch.view', 'learn.enrollment.manage', 'learn.invite.create', 'identity.guardian.manage'],
     notBuilt: ['Prerequisite enforcement', 'Self-service transfer'],
@@ -281,7 +312,10 @@ export const modules: ModuleDoc[] = [
     title: 'Assessments',
     h1: 'Marks that stand up',
     lead:
-      'Question banks, papers with sections, attempts, an anonymised marking queue, and item analysis that tells you which question was the problem.',
+      'Online exams from a question bank: papers with sections, attempts, an anonymised marking queue, and item analysis that names the problem question.',
+    seoTitle: 'Online Exams and Assessments',
+    seoDescription:
+      'Question banks, papers with sections, attempts, an anonymised marking queue, and item analysis that names the question that was the problem.',
     apiModule: 'assess',
     routes: 42,
     completeness: 76,
@@ -296,7 +330,7 @@ export const modules: ModuleDoc[] = [
     mechanism: {
       title: 'Signals, not proctoring',
       body:
-        'There is no camera, no automatic verdict and nothing that acts on its own. The browser reports what it can — focus changes, that sort of thing — the candidate is told while it is happening, and a human marker sees the signals with the caveat printed on the same screen. An automated cheating verdict from a browser event is a false accusation waiting for a lawyer, and we would rather ship the honest version.',
+        'No camera, no automatic verdict, nothing that acts on its own. The browser reports what it can, the candidate is told while it happens, and a human marker sees the signals with the caveat on the same screen. An automated cheating verdict from a browser event is a false accusation waiting for a lawyer.',
     },
     keys: ['assess.question.view', 'assess.assessment.publish', 'assess.attempt.evaluate', 'assess.result.view'],
     notBuilt: ['Third-party proctoring integration', 'Every one of the eleven designed question types'],
@@ -310,19 +344,22 @@ export const modules: ModuleDoc[] = [
     h1: 'A rubric, so two markers agree',
     lead:
       'Assignments with criteria and levels, submissions, per-criterion marks, and a gradebook with scales, bands and overrides that carry a reason.',
+    seoTitle: 'Assignments, Rubrics and Grading',
+    seoDescription:
+      'Rubrics with criteria and levels, per-criterion marks, and a gradebook with scales, bands and overrides that each carry a reason and an audit entry.',
     apiModule: 'assign',
     routes: 16,
     completeness: 68,
     does: [
       { title: 'Rubrics', body: 'Criteria and levels, defined once, applied per submission.' },
-      { title: 'Submissions', body: 'With the marks recorded against the criterion, not just a total.' },
+      { title: 'Submissions', body: 'With marks recorded against the criterion, not just a total.' },
       { title: 'Grade categories and scales', body: 'What an A means is the institute’s statement, so it is the institute’s setting.' },
-      { title: 'Overrides with a reason', body: 'And an audit entry, because a changed grade is the one thing somebody will ask about.' },
+      { title: 'Overrides with a reason', body: 'With an audit entry, because a changed grade is the thing somebody will ask about.' },
     ],
     mechanism: {
       title: 'A grade scale belongs to the institute, not to the teacher',
       body:
-        'Grade scales sit behind a permission that teachers and academic heads deliberately do not hold. A scale applies to courses they do not teach, so letting one teacher redefine an A would silently re-grade another department. It is a small decision that only shows up in the second year of use.',
+        'Grade scales sit behind a permission teachers and academic heads deliberately do not hold. A scale applies to courses they do not teach, so letting one redefine an A would silently re-grade another department — a small decision that only shows up in the second year.',
     },
     keys: ['assign.assignment.view', 'assign.submission.grade', 'grade.grade.update', 'grade.grade.manage'],
     notBuilt: ['Plagiarism detection', 'Transcripts'],
@@ -336,6 +373,9 @@ export const modules: ModuleDoc[] = [
     h1: 'Verifiable by a stranger',
     lead:
       'Issued from a template, revocable, and checkable by anyone holding the code at a public URL with no account at all.',
+    seoTitle: 'Verifiable Digital Certificates',
+    seoDescription:
+      'Issued from a template, revocable, and checkable by anyone holding the code at a public URL with no account — with different words for unknown and revoked.',
     apiModule: 'cert',
     routes: 9,
     completeness: 55,
@@ -347,7 +387,7 @@ export const modules: ModuleDoc[] = [
     mechanism: {
       title: 'Not found and withdrawn are different words on purpose',
       body:
-        'An employer checking a code needs to know which one they are looking at. A single “invalid” for both would let a real, revoked credential read as a typo — and would let a forged one read the same as a withdrawn one. The page renders exactly what the API returns, and deliberately nothing else.',
+        'An employer checking a code needs to know which one they have. A single “invalid” would let a revoked credential read as a typo, and a forged one read as withdrawn. The page renders exactly what the API returns, and nothing else.',
     },
     keys: ['cert.template.manage', 'cert.certificate.issue', 'cert.certificate.own'],
     notBuilt: ['Digital signatures', 'Bulk issuance from the interface'],
@@ -360,7 +400,10 @@ export const modules: ModuleDoc[] = [
     title: 'Fees & finance',
     h1: 'Today’s collections, not last month’s',
     lead:
-      'Fee plans, invoices, tax, coupons, scholarships, payments and credit notes — every amount an integer in minor units with an explicit currency.',
+      'Fee management for an institute: plans, invoices, tax, coupons, scholarships, payments and credit notes — every amount an integer in minor units.',
+    seoTitle: 'Fee Management and Invoicing',
+    seoDescription:
+      'Fee plans, invoices, tax, coupons, scholarships, payments and credit notes, with an aging report — every amount an integer in minor units.',
     apiModule: 'finance',
     routes: 25,
     completeness: 62,
@@ -374,7 +417,7 @@ export const modules: ModuleDoc[] = [
     mechanism: {
       title: 'An invoice line copies its description at issue',
       body:
-        'It does not read through to the course. Rename a course next term and last year’s invoice still says what was actually sold. The same rule governs certificate wording and application details: a document that re-renders from live data is a document that quietly rewrites history.',
+        'It does not read through to the course. Rename a course next term and last year’s invoice still says what was sold. Certificate wording and application details follow the same rule: a document that re-renders from live data quietly rewrites history.',
     },
     keys: ['finance.invoice.issue', 'finance.invoice.refund', 'finance.payment.record', 'finance.pricing.manage'],
     notBuilt: [
@@ -391,6 +434,9 @@ export const modules: ModuleDoc[] = [
     title: 'Staff & HR',
     h1: 'The people who run the institute',
     lead: 'Staff profiles, leave types and balances, requests and approvals, the staff register, and holidays.',
+    seoTitle: 'Staff Records and Leave Management',
+    seoDescription:
+      'Staff profiles, leave types and balances, requests and approvals, a staff register and holiday calendars. Records, not payroll — deliberately.',
     apiModule: 'hr',
     routes: 24,
     completeness: 55,
@@ -403,7 +449,7 @@ export const modules: ModuleDoc[] = [
     mechanism: {
       title: 'Everybody’s leave screen is the same screen',
       body:
-        'It is gated on holding your own leave, not on being able to approve one. The approval queue on it is simply empty for anybody who cannot decide. A separate manager screen would mean two places for the same fact to disagree.',
+        'It is gated on holding your own leave, not on being able to approve one; the approval queue is simply empty for anybody who cannot decide. A separate manager screen would mean two places for the same fact to disagree.',
     },
     keys: ['hr.staff.view', 'hr.leave.own', 'hr.leave.decide', 'hr.attendance.view'],
     notBuilt: ['Payroll processing', 'Statutory filing — deliberately, and permanently'],
@@ -416,7 +462,10 @@ export const modules: ModuleDoc[] = [
     title: 'Placement & interviews',
     h1: 'The outcome you are actually judged on',
     lead:
-      'Drives, openings, applications, interview panels and scorecards — with a practice interview the learner can run on their own first.',
+      'Placement drives, openings, applications, interview panels and scorecards — with a practice interview the learner runs on their own first.',
+    seoTitle: 'Placement and Interview Management',
+    seoDescription:
+      'Drives, openings, applications, interview panels and scorecards — with a practice interview the learner runs privately before any of it counts.',
     apiModule: 'placement',
     routes: 21,
     completeness: 60,
@@ -429,7 +478,7 @@ export const modules: ModuleDoc[] = [
     mechanism: {
       title: 'A learner sees the openings they can apply for',
       body:
-        'Not every opening. A list of roles you are not eligible for is not an opportunity, it is a rejection with extra steps — so eligibility is applied at the query, the same way search results are permission-trimmed.',
+        'Not every opening. A list of roles you cannot apply for is a rejection with extra steps, so eligibility is applied at the query — the same way search results are permission-trimmed.',
     },
     keys: ['placement.job.view', 'placement.drive.manage', 'interview.interview.view', 'interview.scorecard.submit'],
     notBuilt: ['A recruiter portal', 'Offer letters'],

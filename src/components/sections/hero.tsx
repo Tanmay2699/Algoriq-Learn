@@ -22,10 +22,16 @@ const ROLES = [
  * not a coincidence.
  *
  * Activation is manual, so arrowing along the switcher does not render four dashboards.
+ *
+ * It also advances on its own, roughly every three seconds, until the visitor touches it.
+ * That is the whole reason the claim lands: a still of the owner dashboard is a screenshot,
+ * and four dashboards arriving in turn is the architecture. The first click stops it for
+ * good — see `useAutoCycle` — and reduced motion never starts it.
  */
 export function RoleSwitcher() {
   return (
     <Tabs
+      autoCycle={4800}
       label="Choose a role to preview"
       items={ROLES.map((role) => ({
         id: role.id,

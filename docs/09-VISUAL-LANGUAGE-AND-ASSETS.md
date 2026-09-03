@@ -278,10 +278,109 @@ Fonts for Satori are the same self-hosted woff2 files, read from disk at build.
 
 ## 10. Video
 
-**None at launch.** A 40-second product film is the highest-leverage asset we do not yet have, and
-a bad one is worse than none. When it happens (v1.1): self-hosted, no YouTube embed (third-party
-origin, banned), `<video>` with `preload="none"` behind a poster frame, captions **required**,
-transcript on the page, no autoplay, no background video behind text.
+**The homepage hero, shipped 2026-09-01.** This section originally read "none at launch," with
+the rule for whenever it happened: self-hosted, `preload="none"` behind a poster, captions
+required, transcript on the page, **no autoplay, no background video behind text**. The hero that
+shipped breaks the last two of those on purpose, and this entry exists to say exactly what
+replaced them and why, rather than leave the old rule standing next to a page that no longer
+follows it.
+
+**Why the exception.** The brief asked for a looping background video behind the header text,
+specifically. "No autoplay, no background video behind text" was written as a blanket rule
+because both are usually accessibility and performance liabilities with no real payoff — this is
+the one page on the site where a stakeholder decision took that trade-off deliberately, and the
+mitigations below are what earned it rather than what excused it.
+
+**The footage.** `people-entering-coaching-institute` (stock), trimmed to five unbroken shots —
+arrival, the reception desk, a class, an exam, a certificate handed over — 18.29s total, looped.
+
+  - **Re-cut 2026-09-03** from the 3840×2160 / 26.5s master, replacing an earlier encode taken
+    from a 1080p / 25s copy of the same source. Same shots, same cut policy, more resolution to
+    downscale from; the source timestamps below are the master's and are ~0.3s later than the
+    ones this entry carried before, because the two copies do not share a zero.
+  - Cut list (source timestamps): `0.00–7.60` · `12.30–16.80` · `19.40–25.60`.
+  - What was cut, and why it had to be: three segments of the source (`7.60–12.30`,
+    `16.80–19.40`, and `25.60–26.50`) show a tablet, a laptop, and a phone each running a
+    fabricated "SCHOOL PORTAL" interface — a screenshot of software that does not exist, styled
+    as an admissions/enquiry flow with invented data ("Kavya, Grade 5", enquiry timestamps). That
+    is exactly what rule 7 (product renderings are real) and rule 1 (no fabricated data) exist
+    to prevent, and it would have shipped on the single most prominent pixel on the site,
+    autoplaying, on loop, had it not been caught and cut before encoding. **Re-derive these
+    boundaries against the file in hand before any future re-encode** — they are properties of
+    one copy of the footage, not of the footage.
+  - Encodes: `hero-desktop.{mp4,webm}` (1600×900, 3.30 / 2.96 MB) and `hero-mobile.{mp4,webm}`
+    (960×540, 1.52 / 1.59 MB), no audio track, served via `<source media>`. Poster:
+    `hero-poster.jpg` (960w, ~46 KB), the clip's own first frame — no pop-in between poster and
+    playback.
+  - **The supplier's four-point sparkle watermark is removed**, low-right, and the frame is
+    otherwise untouched — no crop, no zoom, no reframing; the encodes are the same 1600×900
+    and 960×540 they were. It is not painted over. The mark is a static alpha composite, so
+    for each pixel under it the relationship `observed = slope × background + intercept` was
+    fitted by least squares across the frames whose local background is flat, then inverted
+    to recover the original pixels. Fitted off-mark as a control, slope came out 1.002 and
+    intercept 0.83 — i.e. the estimator leaves untouched background untouched — and the
+    overlay resolves to ~24% covered at the widest point in a colour of ~242, not pure white,
+    which is why a white-alpha assumption over-subtracts. Residual after inversion is
+    2–4/255 against a 2.6/255 measurement floor. A faint outline is still findable on a
+    paused still if you know where to look; in motion, behind the scrim, it is gone. `delogo`
+    was tried first and rejected: it interpolates from the box edge, which smears the desk
+    edge and the skirting line straight through two of the five shots.
+  - Nobody is Sunrise Academy in this footage and nothing on screen is captured from the running
+    product; it is atmosphere, not a claim, and carries no entry in `claims.ts` for the same
+    reason the aurora gradient does not.
+
+**No captions, no transcript.** Both are required for footage that carries information —
+speech, on-screen text that matters, anything a viewer would lose by not watching. This clip is
+silent (no audio track at all) and decorative (`aria-hidden="true"`); there is nothing in it for
+a transcript to transcribe. The rule was written for the 40-second product film this section
+used to describe, which would have had both.
+
+**Autoplay, made as safe as an autoplaying background video can be made:**
+
+  - `preload="none"` in the server HTML, unconditionally — nobody fetches ~3 MB of video who
+    is not actually going to see it move.
+  - `prefers-reduced-motion: reduce` never calls `.play()`. The video sits on its poster frame,
+    a perfectly ordinary static hero image, and a visible control still offers to start it —
+    the setting is "don't start this on me," not "never let me choose to."
+  - A visible pause control (WCAG 2.2.2): `aria-pressed`, a name for the action about to
+    happen ("Pause the background video," not "Playing"), keyboard-reachable, 44×44 target.
+    Icon-only since 2026-09-03 — a pause/play glyph in a translucent disc, no caption. The
+    name moved to `aria-label` rather than being dropped along with the caption: an unnamed
+    icon button is the commonest way a control like this becomes unusable without sight, and
+    it is what `video-hero.spec.ts` locates the control by.
+  - It hangs off the `<section>`, not off `container-mk`, inset by `--mk-gutter` on both axes.
+    The container is capped at 80rem and centred, so a control positioned against it drifts
+    inward from the footage's own corner as the viewport grows — about 344px short of the
+    edge at 1920. Anchored to the section it holds a symmetric corner inset at every width:
+    20px at 360, 35px at 1280, 40px at 1920.
+  - Self-hosted, muted, `playsInline`, `loop` — no third-party origin, ADR 0007 intact.
+
+**The header, over this one section only.** `SiteHeader` blends to a translucent ink tint
+(`rgb(7 12 24 / 0.75)`, not full transparency) while the hero is on screen, and reverts to its
+normal solid background the instant a second, independent `IntersectionObserver` reports the
+reader has scrolled past it — see the long comment on `overHero` in `header.tsx`. Two things
+about that number are load-bearing, not decorative:
+
+  - It is **translucent, not transparent**, specifically because axe's `color-contrast` check
+    walks the DOM ancestor chain for a declared background and cannot see the hero's own scrim
+    — a sibling of the header, not an ancestor of it. A fully transparent header left on-ink
+    text with nothing in its own ancestor chain to check contrast against, and axe correctly
+    failed it even though a human looking at the page would have seen the (visually correct)
+    video-plus-scrim behind it. `rgb(7 12 24 / 0.75)` is a real background in the text's own
+    ancestor chain: composited against a worst-case pure-white backdrop it still clears ~8.5:1
+    (AAA, not just the AA floor).
+  - `background-color` is deliberately **not** in the header's CSS transition list. `color` has
+    no transition and snaps to its final value the instant the state flips; a smoothly-easing
+    background would still be mid-fade at that same instant, meaning on-ink text — already
+    fully light — sitting over a background only part-way to dark. Axe caught that exact window
+    directly, as a real (if sub-200ms) contrast failure. Both now switch atomically.
+
+**Performance, honestly.** `docs/13-PERFORMANCE.md` states the homepage LCP as a text node and a
+900 KB total-page-weight budget. A 1.4–3.6 MB looping video is a deliberate breach of the second
+number, not an oversight — see the note added there. First-load *JS* barely moves (+4 KB, for
+the autoplay/pause/sentinel logic); the cost is entirely in the video bytes, which do not count
+against the JS budget but do count against total page weight and are very unlikely to leave LCP
+as a text node on this one route.
 
 ---
 

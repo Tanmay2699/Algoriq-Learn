@@ -56,10 +56,25 @@ export function Mark({ className }: { className?: string }) {
  * only and never the sole carrier of meaning (WCAG 1.4.1): the words are also separated by a
  * space, and the accessible name of the link this sits inside is the full product name.
  */
-export function Wordmark({ className }: { className?: string }) {
+export function Wordmark({
+  className,
+  surface = 'paper',
+}: {
+  className?: string;
+  /** The header renders this over the video hero on `surface="ink"` — see its own comment. */
+  surface?: 'paper' | 'ink';
+}) {
   return (
-    <span className={cn('inline-flex items-center gap-2 text-fg', className)}>
-      <Mark className="text-fg" />
+    <span
+      className={cn(
+        'inline-flex items-center gap-2',
+        surface === 'ink' ? 'text-on-ink' : 'text-fg',
+        className,
+      )}
+    >
+      {/* No colour class of its own: it takes `currentColor` from the span above, so one
+          `surface` switch moves the mark and the wordmark together. */}
+      <Mark />
       <span className="font-display text-[1.375rem] font-semibold leading-none tracking-[-0.02em]">
         Algoryq <span className="text-brand">Learn</span>
       </span>

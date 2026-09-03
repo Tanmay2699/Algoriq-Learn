@@ -1,4 +1,5 @@
 import { cn } from '../../lib/cn';
+import { walkingList } from '../product/frame';
 
 /**
  * A marketing table.
@@ -14,6 +15,7 @@ export function Table({
   head,
   children,
   surface = 'paper',
+  walkRows,
   className,
 }: {
   caption: string;
@@ -21,6 +23,16 @@ export function Table({
   head: React.ReactNode[];
   children: React.ReactNode;
   surface?: 'paper' | 'ink';
+  /**
+   * Walk a highlight down the rows, the way every product surface on the site does.
+   *
+   * Opt-in, and it should stay opt-in. A product frame is a picture of software and motion
+   * inside one reads as the software being alive. Most tables here are not that — they are
+   * prose in columns, and a highlight crawling past a sentence somebody is halfway through
+   * reading is the kind of movement people turn reduced motion on to escape. Pass the row
+   * count where the table is showing a *system*, not where it is making an argument.
+   */
+  walkRows?: number;
   className?: string;
 }) {
   const ink = surface === 'ink';
@@ -61,7 +73,25 @@ export function Table({
             ))}
           </tr>
         </thead>
-        <tbody>{children}</tbody>
+        <tbody
+          className={cn(walkRows && 'mk-rows')}
+          style={
+            walkRows
+              ? walkingList(walkRows, {
+                  // A reading cursor, not a selection: these rows carry their own meaning
+                  // and a brand-blue wash behind one would read as marking it out.
+                  fg: ink ? 'var(--mk-on-ink-muted)' : 'var(--text-muted)',
+                  litFg: ink ? 'var(--mk-on-ink)' : 'var(--text-primary)',
+                  litBg: ink ? 'var(--mk-ink-800)' : 'var(--surface-muted)',
+                  // Slower than a product list: these rows are sentences, and a cursor that
+                  // outruns the reading is the thing that makes this gesture irritating.
+                  dwell: 1200,
+                })
+              : undefined
+          }
+        >
+          {children}
+        </tbody>
       </table>
     </div>
   );

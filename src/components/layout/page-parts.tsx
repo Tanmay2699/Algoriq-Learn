@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Route } from 'next';
 import { cn } from '../../lib/cn';
+import { Reveal } from '../primitives/motion';
 import { site } from '../../config/site';
 import { CTA, Eyebrow, Heading, Lead } from '../primitives';
 import { Act } from './act';
@@ -58,22 +59,31 @@ export function PageHero({
     <Act labelledBy="page-title" surface={surface} spacing="tight" className="pt-10">
       <div className="container-mk">
         {trail && <Breadcrumbs trail={trail} />}
-        {eyebrow && <Eyebrow surface={ink ? 'ink' : 'paper'}>{eyebrow}</Eyebrow>}
+        {eyebrow && (
+          <Eyebrow surface={ink ? 'ink' : 'paper'} className="mk-enter">
+            {eyebrow}
+          </Eyebrow>
+        )}
         <Heading
           level={1}
           display="display-3"
           id="page-title"
           surface={ink ? 'ink' : 'paper'}
-          className={cn(eyebrow && 'mt-3', 'max-w-[22ch]')}
+          /*
+           * `mk-wipe`, not `mk-enter`: a page title is the one line on the page that should
+           * arrive at full opacity throughout, and a clip-path wipe does that where a fade
+           * cannot. Same ladder position, same delay token — only the gesture differs.
+           */
+          className={cn('mk-wipe mk-enter-2', eyebrow && 'mt-3', 'max-w-[22ch]')}
         >
           {title}
         </Heading>
         {lead && (
-          <Lead surface={ink ? 'ink' : 'paper'} className="mt-5">
+          <Lead surface={ink ? 'ink' : 'paper'} className="mk-enter mk-enter-3 mt-5">
             {lead}
           </Lead>
         )}
-        {children}
+        {children && <div className="mk-enter mk-enter-4">{children}</div>}
       </div>
     </Act>
   );
@@ -95,35 +105,47 @@ export function ClosingCTA({
   secondary?: { href: string; label: string };
 }) {
   return (
-    <Act labelledBy="closing-cta-title" surface="ink" spacing="normal">
+    <Act labelledBy="closing-cta-title" surface="ink" spacing="normal" aurora>
       <div className="container-mk">
-        <Heading level={2} id="closing-cta-title" surface="ink" className="max-w-[18ch]">
-          {title}
-        </Heading>
-        <Lead surface="ink" className="mt-5">
-          {lead}
-        </Lead>
-        <div className="mt-8 flex flex-wrap gap-3">
+        {/*
+          The same ladder as the hero, built from `Reveal` rather than `mk-enter` because this
+          band is below the fold on every page it appears on. The rungs are the reading order
+          — the ask, the terms, the buttons, the escape hatch — and the delays are short
+          enough that somebody who scrolls straight here is not kept waiting for a button.
+        */}
+        <Reveal variant="lines">
+          <Heading level={2} id="closing-cta-title" surface="ink" className="max-w-[18ch]">
+            {title}
+          </Heading>
+        </Reveal>
+        <Reveal delay={120}>
+          <Lead surface="ink" className="mt-5">
+            {lead}
+          </Lead>
+        </Reveal>
+        <Reveal delay={220} className="mt-8 flex flex-wrap gap-3">
           <CTA href={primary.href} size="lg" surface="ink">
             {primary.label}
           </CTA>
           <CTA href={secondary.href} variant="secondary" size="lg" surface="ink">
             {secondary.label}
           </CTA>
-        </div>
-        <p className="mt-4 text-mk-body-sm text-on-ink-muted">
-          Or{' '}
-          <a
-            href={site.sandboxUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline underline-offset-4"
-          >
-            open the sandbox
-            <span className="sr-only"> (opens in a new tab)</span>
-          </a>{' '}
-          and click around first. No form.
-        </p>
+        </Reveal>
+        <Reveal delay={300}>
+          <p className="mt-4 text-mk-body-sm text-on-ink-muted">
+            Or{' '}
+            <a
+              href={site.sandboxUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4"
+            >
+              open the sandbox
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>{' '}
+            and click around first. No form.
+          </p>
+        </Reveal>
       </div>
     </Act>
   );

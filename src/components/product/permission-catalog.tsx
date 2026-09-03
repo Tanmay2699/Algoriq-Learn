@@ -4,6 +4,7 @@
 
 import { useMemo, useState } from 'react';
 import { cn } from '../../lib/cn';
+import { Counter } from '../primitives';
 import catalog from '../../content/permission-catalog.json';
 
 /**
@@ -67,8 +68,19 @@ export function PermissionCatalog() {
         </div>
       </div>
 
-      <p aria-live="polite" className="mt-4 text-mk-body-sm text-on-ink-muted">
+      {/*
+        The animated digits are aria-hidden and the live region carries a plain-text twin
+        instead — an AT that watches this paragraph mutate 60 times a second while the count
+        ticks up is not being told anything, it is being spammed. See VPAT 4.1.3: the result
+        count is announced, the counters are not.
+      */}
+      <p aria-live="polite" className="sr-only">
         {results.length} of {catalog.count} keys
+        {module !== 'all' && ` in ${module}`}
+        {query && ` matching "${query}"`}
+      </p>
+      <p aria-hidden="true" className="mt-4 text-mk-body-sm text-on-ink-muted">
+        <Counter value={results.length} /> of <Counter value={catalog.count} /> keys
         {module !== 'all' && ` in ${module}`}
         {query && ` matching “${query}”`}
       </p>

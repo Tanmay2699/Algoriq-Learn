@@ -20,6 +20,8 @@ export interface Article {
   slug: string;
   title: string;
   description: string;
+  /** Only where the on-page title is too long to be a search title. */
+  seoTitle?: string;
   tags: string[];
   publishedAt: string;
   readingMinutes: number;
@@ -30,9 +32,9 @@ export interface Article {
 export const articles: Article[] = [
   {
     slug: 'migrating-from-spreadsheets',
-    title: 'Migrating an institute off spreadsheets',
+    title: 'How to migrate an institute off spreadsheets',
     description:
-      'What to move first, what to leave behind, and why the order matters more than the tooling.',
+      'An LMS migration plan in four steps: what to move first, what to leave behind, and why the order matters more than the tooling.',
     tags: ['migration', 'operations'],
     publishedAt: '2026-07-31',
     readingMinutes: 7,
@@ -40,16 +42,16 @@ export const articles: Article[] = [
     body: [
       {
         kind: 'p',
-        text: 'Most migrations fail for the same reason: somebody tries to move everything at once, discovers that the spreadsheet has four columns nobody can explain, and stops. The way through is to move the things that are already structured, and to leave the archaeology for later — or forever.',
+        text: 'Most migrations fail the same way: somebody moves everything at once, finds four columns nobody can explain, and stops. Move what is already structured, and leave the archaeology for later — or forever.',
       },
       { kind: 'h2', text: 'Move people first, and only people', id: 'people' },
       {
         kind: 'p',
-        text: 'People are the only thing everything else references. Import them before courses, before fees, before anything. Algoryq Learn imports people from CSV with a per-row error report rather than an all-or-nothing failure, so a bad phone number in row 400 does not lose you the other 399.',
+        text: 'People are the only thing everything else references, so import them before courses, before fees, before anything. Algoryq Learn imports people from CSV with a per-row error report rather than an all-or-nothing failure, so a bad phone number in row 400 does not cost you the other 399.',
       },
       {
         kind: 'p',
-        text: 'One decision to make before you start: people are added by invitation. There is no route in the product where an administrator sets somebody else’s password — deliberately — so an import creates invitations, and the accounts come into existence when people accept them.',
+        text: 'One decision before you start: people are added by invitation. No route lets an administrator set somebody else’s password, deliberately — so an import creates invitations, and accounts exist once people accept them.',
       },
       { kind: 'h2', text: 'Then courses, then the current term', id: 'courses' },
       {
@@ -64,24 +66,25 @@ export const articles: Article[] = [
       { kind: 'h2', text: 'What to leave behind', id: 'leave' },
       {
         kind: 'p',
-        text: 'Historic attendance, closed enquiries from two years ago, and the fee ledger from before your current pricing. Keep the spreadsheet, read-only, in a folder. The cost of importing data nobody will query again is not the import — it is that every report afterwards has to explain a discontinuity.',
+        text: 'Historic attendance, closed enquiries from two years ago, the fee ledger from before your current pricing. Keep the spreadsheet read-only in a folder. The cost of importing data nobody will query again is not the import — it is that every report afterwards has to explain a discontinuity.',
       },
       { kind: 'h2', text: 'The fees exception', id: 'fees' },
       {
         kind: 'p',
-        text: 'Outstanding invoices are the one historic thing worth carrying, because somebody is going to chase them. Import them as issued invoices with their real dates, not as new ones — an invoice line copies its description at issue precisely so that last year’s invoice still says what was sold.',
+        text: 'Outstanding invoices are the one historic thing worth carrying, because somebody will chase them. Import them as issued invoices with their real dates, not as new ones — an invoice line copies its description at issue precisely so last year’s invoice still says what was sold.',
       },
       {
         kind: 'note',
-        text: 'There is no payment-gateway adapter yet, so an imported outstanding invoice is something you chase and then record a payment against. If your plan depended on learners paying online during migration, that is not available today.',
+        text: 'There is no payment-gateway adapter yet, so an imported outstanding invoice is one you chase and then record a payment against. If your plan depended on learners paying online during migration, that is not available today.',
       },
     ],
   },
   {
     slug: 'rbac-for-schools',
-    title: 'RBAC for schools: what a permission actually is',
+    title: 'RBAC for schools: roles, permissions and scopes',
+    seoTitle: 'RBAC for Schools, Explained',
     description:
-      'Roles, permissions and scopes explained without jargon — and why a role name should never appear in code.',
+      'Role-based access control for an institute, explained without jargon — and why a role name should never appear anywhere in the code.',
     tags: ['security', 'operations'],
     publishedAt: '2026-07-31',
     readingMinutes: 9,
@@ -89,21 +92,21 @@ export const articles: Article[] = [
     body: [
       {
         kind: 'p',
-        text: 'Most software gives you three roles and hopes your institute is shaped like the one the developers imagined. It never is. The fix is not more roles — it is separating the two things that get conflated.',
+        text: 'Most software gives you three roles and hopes your institute is shaped like the one the developers imagined. It never is. The fix is not more roles; it is separating the two things that get conflated.',
       },
       { kind: 'h2', text: 'A permission is an act, not a person', id: 'permission' },
       {
         kind: 'p',
-        text: 'In Algoryq Learn a permission is a key like course.course.publish or finance.invoice.refund: module, resource, action. There are 272 of them, and each one has a description written for a school administrator rather than for an engineer, because the person choosing them is not a developer.',
+        text: 'A permission is a key like course.course.publish or finance.invoice.refund: module, resource, action. There are 272, each described for a school administrator rather than an engineer, because the person choosing them is not a developer.',
       },
       { kind: 'h2', text: 'A role is a named bundle of keys', id: 'role' },
       {
         kind: 'p',
-        text: 'Teacher, Academic Head, Finance Officer. Eleven templates ship, every one of them editable, and each institute gets its own copies rather than sharing ours. The important part: nothing in the code reads a role’s name. A guard asks "does this person hold finance.invoice.refund?", never "is this person a Finance Officer?".',
+        text: 'Teacher, Academic Head, Finance Officer. Eleven editable templates ship, and each institute gets its own copies rather than sharing ours. The important part: nothing in the code reads a role’s name. A guard asks "does this person hold finance.invoice.refund?", never "is this person a Finance Officer?".',
       },
       {
         kind: 'p',
-        text: 'That is what lets you invent a role we never thought of — a Vice Principal who approves courses but not fees, a part-time counsellor who can add enquiries but not spend a seat — without waiting for us to build it.',
+        text: 'That is what lets you invent a role we never thought of — a Vice Principal who approves courses but not fees, a part-time counsellor who can add enquiries but not spend a seat — without waiting for us.',
       },
       { kind: 'h2', text: 'A scope is how far it reaches', id: 'scope' },
       {
@@ -119,7 +122,7 @@ export const articles: Article[] = [
       { kind: 'h2', text: 'Why the frontend gating is not the security', id: 'gating' },
       {
         kind: 'p',
-        text: 'Hiding a button is a courtesy, not a boundary. Every route on the server carries its own permission check or an explicit public marker, and a coverage check fails the build if one does not. If the interface hid a button and the server did not check, anybody with a browser console would find it in an afternoon.',
+        text: 'Hiding a button is a courtesy, not a boundary. Every server route carries its own permission check or an explicit public marker, and a coverage check fails the build otherwise. If the interface hid a button and the server did not check, anybody with a browser console would find it in an afternoon.',
       },
       {
         kind: 'note',
@@ -131,7 +134,7 @@ export const articles: Article[] = [
     slug: 'assessment-integrity-without-a-camera',
     title: 'Assessment integrity without a camera',
     description:
-      'Why we ship signals rather than proctoring, what the browser can honestly tell you, and what it cannot.',
+      'Online exam integrity without proctoring software: what a browser can honestly report, what it cannot, and what actually reduces cheating.',
     tags: ['assessment', 'ethics'],
     publishedAt: '2026-07-31',
     readingMinutes: 8,
@@ -139,12 +142,12 @@ export const articles: Article[] = [
     body: [
       {
         kind: 'p',
-        text: 'The obvious answer is a camera and an algorithm. We think the obvious answer is wrong, and this is the argument.',
+        text: 'The obvious answer is a camera and an algorithm. We think it is the wrong answer, and this is the argument.',
       },
       { kind: 'h2', text: 'What a browser can honestly report', id: 'signals' },
       {
         kind: 'p',
-        text: 'A cooperating browser can tell you that a tab lost focus, that a window was resized, that a paste happened. Every one of those has an innocent explanation — a notification, a screen reader, a phone call — and none of them is evidence of anything on its own.',
+        text: 'A cooperating browser can report that a tab lost focus, a window was resized, a paste happened. Each has an innocent explanation — a notification, a screen reader, a phone call — and none is evidence of anything alone.',
       },
       { kind: 'h2', text: 'What we do with them', id: 'what' },
       {
@@ -158,7 +161,7 @@ export const articles: Article[] = [
       { kind: 'h2', text: 'Why not a camera', id: 'camera' },
       {
         kind: 'p',
-        text: 'Camera proctoring asks a learner to install surveillance on a device they own, in a room they live in, and to accept a false-accusation rate produced by a model that has never met them. The literature on differential false-positive rates by skin tone and by disability is not comforting. Meanwhile the actual cheating it catches is the naive kind — the kind item analysis catches anyway.',
+        text: 'Camera proctoring asks a learner to install surveillance on a device they own, in a room they live in, and to accept a false-accusation rate from a model that has never met them. The literature on differential false-positive rates by skin tone and disability is not comforting. Meanwhile the cheating it catches is the naive kind, which item analysis catches anyway.',
       },
       { kind: 'h2', text: 'What actually raises integrity', id: 'better' },
       {
@@ -173,15 +176,16 @@ export const articles: Article[] = [
       },
       {
         kind: 'note',
-        text: 'If your accreditation requires camera proctoring, we do not have it and we are not planning it. That is a real disqualifier and we would rather you knew now.',
+        text: 'If your accreditation requires camera proctoring, we do not have it and are not planning it. That is a real disqualifier, and better known now.',
       },
     ],
   },
   {
     slug: 'buying-accessible-software',
-    title: 'Buying accessible software: what to ask a vendor',
+    title: 'Buying accessible software: 9 questions to ask',
+    seoTitle: 'Accessible Software: 9 Questions to Ask',
     description:
-      'Nine questions that separate a real accessibility programme from a paragraph in a sales deck.',
+      'Nine WCAG procurement questions that separate a real accessibility programme from a paragraph in a sales deck — with our own answers.',
     tags: ['accessibility', 'procurement'],
     publishedAt: '2026-07-31',
     readingMinutes: 6,
@@ -189,7 +193,7 @@ export const articles: Article[] = [
     body: [
       {
         kind: 'p',
-        text: 'Every vendor says their product is accessible. Here are the questions that tell you whether it is, in an order that gets you to the answer quickly.',
+        text: 'Every vendor says their product is accessible. These questions tell you whether it is, in the order that gets you there quickest.',
       },
       { kind: 'h2', text: 'The nine questions', id: 'questions' },
       {
@@ -209,11 +213,11 @@ export const articles: Article[] = [
       { kind: 'h2', text: 'Our answers', id: 'ours' },
       {
         kind: 'p',
-        text: 'WCAG 2.2 level AA, partial conformance with the exceptions listed. Automated checks fail the build, in the component library and in the browser suite, at 360 pixels among other widths. Manual keyboard and screen-reader passes before a release. No drag-and-drop anywhere without a keyboard and a touch path — the admissions board uses a select and arrow buttons for exactly that reason. Reduced motion is a designed rendering, not a stripped one.',
+        text: 'WCAG 2.2 level AA, partial conformance with the exceptions listed. Automated checks fail the build, in the component library and the browser suite, at 360 pixels among other widths. Manual keyboard and screen-reader passes before a release. No drag-and-drop without a keyboard and a touch path — the admissions board uses a select and arrow buttons for that reason. Reduced motion is a designed rendering, not a stripped one.',
       },
       {
         kind: 'note',
-        text: 'The full statement, including what still fails, is on the accessibility page. A statement with four dated open items is more useful to you than one that claims perfection.',
+        text: 'The full statement, including what still fails, is on the accessibility page. Four dated open items are more useful to you than a claim of perfection.',
       },
     ],
   },
@@ -221,7 +225,7 @@ export const articles: Article[] = [
     slug: 'self-hosting-algoryq-learn',
     title: 'Self-hosting Algoryq Learn in an afternoon',
     description:
-      'One compose file, three commands, no cloud account — and what you take on when you run it yourself.',
+      'Self-host the whole LMS with one Docker compose file and three commands, no cloud account — and what you take on by running it yourself.',
     tags: ['operations', 'security'],
     publishedAt: '2026-07-31',
     readingMinutes: 6,
@@ -229,7 +233,7 @@ export const articles: Article[] = [
     body: [
       {
         kind: 'p',
-        text: 'The whole platform boots from one compose file: the API, the worker, PostgreSQL, Redis, object storage, search and a mail catcher. No cloud account, no licence key, no phone-home.',
+        text: 'The whole platform boots from one compose file: API, worker, PostgreSQL, Redis, object storage, search and a mail catcher. No cloud account, no licence key, no phone-home.',
       },
       { kind: 'h2', text: 'The three commands', id: 'commands' },
       {
@@ -240,12 +244,12 @@ pnpm --filter @akechi/api worker:dev`,
       },
       {
         kind: 'p',
-        text: 'The second line is three steps for a reason. Migrations create the schema. Row-level security is applied separately, from the database catalogue, so that a table added later is covered automatically — it is not part of a migration because a policy that lives in one migration is a policy somebody forgets on the next table. The seed creates the permission catalogue, the role templates and, optionally, a demo institute.',
+        text: 'The second line is three steps for a reason. Migrations create the schema. Row-level security is applied separately, from the database catalogue, so a table added later is covered automatically — a policy living in one migration is a policy somebody forgets on the next table. The seed creates the permission catalogue, the role templates and, optionally, a demo institute.',
       },
       { kind: 'h2', text: 'The third line matters more than it looks', id: 'worker' },
       {
         kind: 'p',
-        text: 'Email is written to a transactional outbox in the same transaction as the thing that caused it, and drained by a worker. If you do not run the worker, nothing is lost — but nothing is sent either. Run exactly one copy: its jobs claim no rows, so a second would double-send.',
+        text: 'Email is written to a transactional outbox in the same transaction as the thing that caused it, then drained by a worker. Without the worker nothing is lost, but nothing is sent either. Run exactly one copy: its jobs claim no rows, so a second double-sends.',
       },
       { kind: 'h2', text: 'What you take on', id: 'responsibility' },
       {
@@ -253,21 +257,22 @@ pnpm --filter @akechi/api worker:dev`,
         items: [
           'Backups, and — more importantly — a restore you have actually tested.',
           'TLS, and keeping it renewed.',
-          'The database role split: the application connects as a role that is not the owner and holds no BYPASSRLS. Do not run the app as the owner to make a problem go away; that is the problem.',
+          'The database role split: the application connects as a role that is not the owner and holds no BYPASSRLS. Do not run it as the owner to make a problem go away; that is the problem.',
           'Upgrades, which are migrations you run.',
         ],
       },
       {
         kind: 'note',
-        text: 'Every external dependency is a port with drivers: storage is local disk, S3-compatible or Azure Blob; mail is SMTP; search is Postgres or Meilisearch; AI is one of three providers or off. Nothing in the feature code imports a cloud SDK, which is what makes "move it" a connection-string change.',
+        text: 'Every external dependency is a port with drivers: storage is local disk, S3-compatible or Azure Blob; mail is SMTP; search is Postgres or Meilisearch; AI is one of three providers, or off. No feature code imports a cloud SDK, which is what makes "move it" a connection-string change.',
       },
     ],
   },
   {
     slug: 'why-a-pwa',
-    title: 'Why we built a PWA instead of two native apps',
+    title: 'PWA vs native app for an LMS: the honest trade',
+    seoTitle: 'PWA vs Native App for an LMS',
     description:
-      'The trade honestly stated: what you lose, what you gain, and why the connection matters more than the app store.',
+      'Why the LMS is an installable PWA rather than two native apps: what you lose, what you gain, and why the connection beats the app store.',
     tags: ['mobile', 'engineering'],
     publishedAt: '2026-07-31',
     readingMinutes: 5,
@@ -275,7 +280,7 @@ pnpm --filter @akechi/api worker:dev`,
     body: [
       {
         kind: 'p',
-        text: 'No — Algoryq Learn installs to a home screen as a progressive web app. That is a trade, and here is both sides of it.',
+        text: 'No — Algoryq Learn installs to a home screen as a progressive web app. That is a trade, and here are both sides of it.',
       },
       { kind: 'h2', text: 'What we give up', id: 'lose' },
       {
@@ -300,11 +305,11 @@ pnpm --filter @akechi/api worker:dev`,
       { kind: 'h2', text: 'The argument that decided it', id: 'decision' },
       {
         kind: 'p',
-        text: 'For learners in this market the binding constraint is the connection, not the app store. A native app on a bad connection is a native app that spins. The engineering that actually improves their experience is the offline queue and the weight of the first paint, and both of those are the same work whether or not there is an app-store listing.',
+        text: 'For learners in this market the binding constraint is the connection, not the app store. A native app on a bad connection is a native app that spins. What actually improves their experience is the offline queue and the weight of the first paint — the same work either way.',
       },
       {
         kind: 'note',
-        text: 'The service worker caches the offline page and nothing else. An API response is scoped to one person in one institute, and a cache is shared by the device — caching one would be a data leak wearing a performance improvement’s clothes.',
+        text: 'The service worker caches the offline page and nothing else. An API response is scoped to one person in one institute and a cache is shared by the device, so caching one would be a data leak wearing a performance improvement’s clothes.',
       },
     ],
   },

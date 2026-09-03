@@ -43,8 +43,8 @@ export default async function DemoPage({
             <h2 className="text-mk-subtitle font-semibold text-fg">What happens next</h2>
             <ol className="mt-3 space-y-2 text-mk-body-sm text-fg-muted">
               <li>1. Your enquiry lands on our own admissions board, in our own product.</li>
-              <li>2. A person reads it — within one working day.</li>
-              <li>3. They reply with a time, or with an answer if that is all you needed.</li>
+              <li>2. A person reads it, within one working day.</li>
+              <li>3. They reply with a time, or an answer if that is all you needed.</li>
             </ol>
             <p className="mt-4 text-mk-body-sm text-fg-muted">
               No sequence, no drip, no call you did not ask for.
@@ -55,7 +55,7 @@ export default async function DemoPage({
             <h2 className="text-mk-subtitle font-semibold text-fg">Would rather not talk yet?</h2>
             <p className="mt-2 text-mk-body-sm text-fg-muted">
               Entirely reasonable. The sandbox is a real institute with seeded data, read-only,
-              and you can look at every role in it without giving us anything.
+              and every role is visible without giving us anything.
             </p>
             <p className="mt-4">
               <a

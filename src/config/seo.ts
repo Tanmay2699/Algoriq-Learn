@@ -6,6 +6,12 @@ import { site } from './site';
  *
  * `pageMeta()` throws on an unregistered path, so a page cannot ship without a title, a
  * description and a canonical. Metadata is not something to remember at the end.
+ *
+ * Two length budgets, checked by `src/test/content.spec.ts` rather than by good intentions: a
+ * rendered title — the page title plus the ` · Algoryq Learn` template, except on `/`, whose
+ * title is absolute — stays under 60 characters, and a description stays under 158. Past
+ * either, a search engine truncates mid-sentence and the sentence we wrote is not the one
+ * anybody reads. Each entry also owns one primary query, so no two pages compete for it.
  */
 
 export interface SeoEntry {
@@ -15,108 +21,116 @@ export interface SeoEntry {
   noindex?: boolean;
 }
 
+/** The template appended to every title except the homepage's. */
+export const TITLE_TEMPLATE_SUFFIX = ' · Algoryq Learn';
+export const MAX_TITLE_LENGTH = 60;
+export const MAX_DESCRIPTION_LENGTH = 158;
+
 const entries: Record<string, SeoEntry> = {
   '/': {
-    title: 'Algoryq Learn — the multi-tenant LMS for institutes',
+    title: 'Algoryq Learn — Multi-Tenant LMS for Institutes',
     description:
-      'One system of record for schools, colleges and coaching institutes: admissions, courses, live classes, assessments, fees, staff and outcomes. Free for 100 seats.',
+      'One LMS for admissions, courses, live classes, exams, fees and certificates. Built for schools, colleges and coaching institutes. Free for 100 seats.',
   },
   '/product': {
-    title: 'The product — 31 modules, one database',
+    title: 'Features — 31 LMS Modules, One Database',
     description:
-      'Seven clusters, thirty-one modules and one tenant boundary: admissions, courses, delivery, assessment, money, intelligence and the platform underneath.',
+      'Seven clusters and 31 LMS modules on one tenant boundary: admissions, courses, delivery, assessment, fees, analytics and the platform beneath them.',
   },
   '/solutions': {
-    title: 'Solutions — five kinds of institute, one product',
+    title: 'LMS for Schools, Coaching and Universities',
     description:
-      'Coaching institutes, schools, universities, skilling academies and corporate L&D. Same product, different vocabulary, different order — and an honest disqualifier for each.',
+      'Coaching institutes, schools, universities, skilling academies and corporate L&D — one LMS, five vocabularies, and an honest disqualifier for each.',
   },
   '/compare': {
-    title: 'Comparisons — Algoryq Learn against the alternatives',
+    title: 'Moodle and Google Classroom Alternatives',
     description:
-      'Algoryq Learn compared with Moodle, Google Classroom, Canvas and the spreadsheet-and-WhatsApp stack. Every cell sourced and dated, including the rows they win.',
+      'Algoryq Learn compared with Moodle, Canvas, Google Classroom and the spreadsheet stack. Every cell sourced and dated, including the rows they win.',
   },
   '/pricing': {
-    title: 'Pricing — free for one campus',
+    title: 'LMS Pricing — Free for One Campus',
     description:
-      'Starter is free for 100 seats. Growth is ₹14,999 a month for 1,000. Security, permissions, audit, the API and the right to self-host are on every plan.',
+      'Starter is free for 100 seats. Growth is ₹14,999 a month for 1,000. Security, permissions, audit, the API and self-hosting are on every plan.',
   },
   '/security': {
-    title: 'Security — isolation you can inspect',
+    title: 'LMS Security — Isolation You Can Inspect',
     description:
-      'Row-level security forced on 114 tables, deny-by-default authorization across 272 permission keys, a hash-chained audit log, and the list of what we have not built.',
+      'Row-level security forced on 114 tables, deny-by-default authorization across 272 permission keys, a hash-chained audit log, and what we have not built.',
   },
   '/trust': {
-    title: 'What we can prove today',
+    title: 'Trust — What We Can Prove Today',
     description:
-      'We have no customer logos. Here is what you can check instead: a sandbox, the API, a certificate verifier, the compose file, the accessibility statement and our real build status.',
+      'No customer logos yet. Check these instead: a live sandbox, the API, a certificate verifier, the compose file, and our real build status.',
   },
   '/trust/build-status': {
-    title: 'Build status — what is finished and what is not',
+    title: 'Build Status — Finished and Unfinished',
     description:
       'The real module completion matrix, all twenty-four rows, including the modules at 45 per cent. Published unedited from our own tracker.',
   },
   '/trust/sub-processors': {
-    title: 'Sub-processors',
+    title: 'Sub-Processors',
     description:
-      'Who processes data on our behalf. The list is short, and if you self-host it is empty.',
+      'Every third party that processes data on our behalf. The list is short because storage, mail, search and AI are ports — and if you self-host, it is empty.',
   },
   '/trust/dpa': {
-    title: 'Data processing',
-    description: 'How Algoryq Learn processes personal data, what we are responsible for, and what you are.',
+    title: 'Data Processing Agreement (DPA)',
+    description:
+      'How Algoryq Learn processes personal data, who is controller and who is processor, and what happens to subject requests, retention and legal holds.',
   },
   '/trust/responsible-disclosure': {
-    title: 'Responsible disclosure',
+    title: 'Responsible Disclosure Policy',
     description:
-      'How to report a security issue, what is in scope, and what we commit to: an acknowledgement in two working days, updates while we fix it, and no lawyers.',
+      'How to report a security vulnerability, what is in scope, and what we commit to: acknowledgement in two working days, updates while we fix, no lawyers.',
   },
   '/accessibility': {
-    title: 'Accessibility conformance statement',
+    title: 'Accessibility Statement — WCAG 2.2 AA',
     description:
-      'WCAG 2.2 level AA, partially conformant, with the exceptions listed. How we test, what still fails, and how to tell us about something we missed.',
+      'A WCAG 2.2 level AA conformance statement with the exceptions listed: how we test, what still fails, and how to report anything we missed.',
   },
   '/developers': {
-    title: 'Developers — the API, webhooks and self-hosting',
+    title: 'LMS API, Webhooks and Self-Hosting',
     description:
-      'A versioned REST API where every route carries a permission key, HMAC-signed webhooks with a delivery log, API keys hashed at rest, and a compose file that boots the lot.',
+      'A versioned REST API where every route carries a permission key, HMAC-signed webhooks with a delivery log, API keys hashed at rest, and a compose file.',
   },
   '/developers/webhooks': {
-    title: 'Webhooks',
-    description: 'Endpoints, HMAC signatures, retries and a delivery log you can inspect and replay.',
+    title: 'Webhooks — Signatures and Retries',
+    description:
+      'Endpoints, HMAC-SHA256 signatures, retries with backoff, and a delivery log you can inspect and replay — plus every event Algoryq Learn emits today.',
   },
   '/integrations': {
-    title: 'Integrations — what is built, and what is a port with no driver',
+    title: 'Integrations — 11 Built, 9 Not Built',
     description:
-      'Nine real integrations and eight honest gaps. We would rather list what works than show sixty logos we have a screenshot of.',
+      'Eleven working integrations and nine honest gaps. We would rather list what actually connects than show sixty logos we only have a screenshot of.',
   },
   '/why-algoryq-learn': {
-    title: 'Why Algoryq Learn',
+    title: 'Why an All-in-One LMS Beats Five Tools',
     description:
-      'The five-tool stack, what its seams cost, and the arithmetic on your own numbers. Plus the design-partner offer.',
+      'The five-tool institute stack, what its seams cost, and the arithmetic on your own numbers — plus the case against us and the design-partner offer.',
   },
   '/customers': {
-    title: 'Customers',
+    title: 'Customers and the Design-Partner Offer',
     description:
-      'We have no case studies yet, because we have no customers yet. Here is the design-partner offer instead.',
+      'No case studies yet, because no paying customers yet. Here is the design-partner offer instead, and four things you can verify without asking us.',
   },
   '/resources': {
-    title: 'Guides',
+    title: 'Guides for Choosing an LMS',
     description:
-      'Migration, permissions, assessment integrity, accessible procurement, self-hosting, and why we built a PWA. No gating, no email wall.',
+      'Migration, permissions, assessment integrity, accessible procurement, self-hosting, and why we built a PWA. No gating and no email wall.',
   },
   '/about': {
-    title: 'About',
+    title: 'About — Built for the Institute',
     description:
-      'What Algoryq Learn is, who it is for, why it was built as one system rather than another course platform, and the five things it deliberately will never do.',
+      'What Algoryq Learn is, who it is for, why it was built as one system rather than another course platform, and the five things it will never do.',
   },
   '/contact': {
-    title: 'Contact',
+    title: 'Contact Algoryq Learn',
     description:
-      'Three addresses — product, security and accessibility — a real person behind each, and a written commitment about how quickly we reply to which.',
+      'Three addresses — product, security and accessibility — a real person behind each, and a written commitment on how quickly we reply to which.',
   },
   '/demo': {
-    title: 'Book a walkthrough',
-    description: 'Twenty minutes, a real person, and your own questions. Or open the sandbox instead.',
+    title: 'Book an LMS Demo — 20 Minutes',
+    description:
+      'Twenty minutes, a real person, and your own questions. Or skip the call and open the read-only sandbox: seeded data, every role, no signup.',
     noindex: true,
   },
 };
