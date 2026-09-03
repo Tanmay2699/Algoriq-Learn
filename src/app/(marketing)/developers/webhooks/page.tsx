@@ -36,6 +36,11 @@ export default function WebhooksPage() {
         title="Webhooks"
         lead="Signed, retried, logged and replayable from the interface — because a webhook you cannot inspect is one you cannot debug."
         trail={TRAIL}
+        photo={{
+          src: '/images/pages/developers-webhooks.jpg',
+          alt: 'A developer coding at a desk with dual monitors, warm evening light.',
+          caption: 'Representative photography.',
+        }}
       />
 
       <Act labelledBy="verify-heading" surface="paper" spacing="normal">

@@ -23,6 +23,11 @@ export default function BuildStatusPage() {
       <PageHero
         eyebrow="Build status"
         title="What is finished, and what is not."
+        photo={{
+          src: '/images/pages/trust-build-status.jpg',
+          alt: 'A person standing at a curved monitor showing a dashboard of bar charts and a heatmap grid.',
+          caption: 'Representative photography.',
+        }}
         lead={
           <>
             Twenty-four modules, averaging <Counter value={averagePercent} suffix="%" /> against

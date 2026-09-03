@@ -82,6 +82,11 @@ export default function SecurityPage() {
         title="Isolation you can inspect."
         lead="Not “enterprise-grade”. For every control in this LMS: the mechanism, the file it lives in, and the list of what we have not built."
         trail={TRAIL}
+        photo={{
+          src: '/images/pages/security.jpg',
+          alt: 'A server rack in a utility room, its network cabling visible through the open frame.',
+          caption: 'Representative photography.',
+        }}
       />
 
       <Act labelledBy="summary-heading" surface="paper" spacing="normal">

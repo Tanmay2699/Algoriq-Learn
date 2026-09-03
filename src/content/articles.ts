@@ -27,6 +27,8 @@ export interface Article {
   readingMinutes: number;
   objection: string;
   body: Block[];
+  /** Representative photography for the page hero (ADR 0012). Atmosphere, not a claim. */
+  photo?: { src: string; alt: string; caption?: string };
 }
 
 export const articles: Article[] = [
@@ -39,6 +41,11 @@ export const articles: Article[] = [
     publishedAt: '2026-07-31',
     readingMinutes: 7,
     objection: 'Can I migrate?',
+    photo: {
+      src: '/images/pages/resource-migrating-from-spreadsheets.jpg',
+      alt: 'Hands sorting printed spreadsheet pages beside a laptop showing a data table, a calculator and a coffee cup nearby.',
+      caption: 'Representative photography.',
+    },
     body: [
       {
         kind: 'p',
@@ -89,6 +96,11 @@ export const articles: Article[] = [
     publishedAt: '2026-07-31',
     readingMinutes: 9,
     objection: 'Can I control who sees what?',
+    photo: {
+      src: '/images/pages/resource-rbac-for-schools.jpg',
+      alt: 'A school administrator at a desk reviewing a dashboard, binders and files organised on shelves behind her.',
+      caption: 'Representative photography.',
+    },
     body: [
       {
         kind: 'p',
@@ -139,6 +151,11 @@ export const articles: Article[] = [
     publishedAt: '2026-07-31',
     readingMinutes: 8,
     objection: 'How do you stop cheating?',
+    photo: {
+      src: '/images/pages/resource-assessment-integrity-without-a-camera.jpg',
+      alt: 'Rows of students writing at desks in a formal exam hall, an invigilator walking between rows.',
+      caption: 'Representative photography.',
+    },
     body: [
       {
         kind: 'p',
@@ -190,6 +207,11 @@ export const articles: Article[] = [
     publishedAt: '2026-07-31',
     readingMinutes: 6,
     objection: 'Will this pass our procurement review?',
+    photo: {
+      src: '/images/pages/resource-buying-accessible-software.jpg',
+      alt: 'A wheelchair ramp with metal railings leading up to a building entrance.',
+      caption: 'Representative photography.',
+    },
     body: [
       {
         kind: 'p',
@@ -230,6 +252,11 @@ export const articles: Article[] = [
     publishedAt: '2026-07-31',
     readingMinutes: 6,
     objection: 'Where is my data?',
+    photo: {
+      src: '/images/pages/resource-self-hosting-algoryq-learn.jpg',
+      alt: 'A technician adjusting a cable in a rack of servers.',
+      caption: 'Representative photography.',
+    },
     body: [
       {
         kind: 'p',
@@ -277,6 +304,11 @@ pnpm --filter @akechi/api worker:dev`,
     publishedAt: '2026-07-31',
     readingMinutes: 5,
     objection: 'Do you have a mobile app?',
+    photo: {
+      src: '/images/pages/resource-why-a-pwa.jpg',
+      alt: 'A commuter checking her phone on a train.',
+      caption: 'Representative photography.',
+    },
     body: [
       {
         kind: 'p',

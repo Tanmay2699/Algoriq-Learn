@@ -20,6 +20,11 @@ export default function AboutPage() {
         title="Built for the institute, not for the course"
         lead="Algoryq Learn exists because the software an institute runs on is five products that have never met each other, and nobody was building the sixth — the one that joins them."
         trail={TRAIL}
+        photo={{
+          src: '/images/pages/about.jpg',
+          alt: 'Five colleagues gathered around a laptop in a bright office, a city view behind them.',
+          caption: 'Representative photography.',
+        }}
       />
 
       <Act labelledBy="why-heading" surface="paper" spacing="normal">

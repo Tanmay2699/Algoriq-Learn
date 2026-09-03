@@ -32,6 +32,13 @@ export interface ModuleDoc {
   notBuilt: string[];
   roles: string[];
   related: string[];
+  /**
+   * Representative photography for the page hero (ADR 0012, extending ADR 0011 from the five
+   * solution pages to a defensible subset of the site). Atmosphere, not a claim — never wired
+   * through `claims.ts`. Present on the eight modules where a real-world activity connects to
+   * what the module does; absent on the rest rather than forced.
+   */
+  photo?: { src: string; alt: string; caption?: string };
 }
 
 export const modules: ModuleDoc[] = [
@@ -89,6 +96,11 @@ export const modules: ModuleDoc[] = [
     notBuilt: ['Campaign attribution', 'Email sequences', 'SMS and WhatsApp channels', 'Lead scoring'],
     roles: ['Admissions Counsellor', 'Institute Admin'],
     related: ['institute-website', 'batches-and-enrollment'],
+    photo: {
+      src: '/images/pages/module-admissions-crm.jpg',
+      alt: 'A prospective student reading an enquiry notice board while a staff member works at the reception desk behind it.',
+      caption: 'Representative photography.',
+    },
   },
   {
     slug: 'institute-website',
@@ -121,6 +133,11 @@ export const modules: ModuleDoc[] = [
     notBuilt: ['A forms builder', 'An SEO editor', 'Themes beyond your branding'],
     roles: ['Institute Admin'],
     related: ['admissions-crm', 'courses-and-curriculum'],
+    photo: {
+      src: '/images/pages/module-institute-website.jpg',
+      alt: 'A person building a website in a page-builder interface on a laptop, in a cafe.',
+      caption: 'Representative photography.',
+    },
   },
   {
     slug: 'courses-and-curriculum',
@@ -152,6 +169,11 @@ export const modules: ModuleDoc[] = [
     notBuilt: ['SCORM and xAPI packages', 'Prerequisite graphs'],
     roles: ['Academic Head', 'Content Author', 'Teacher'],
     related: ['media-and-content', 'ai-assistance'],
+    photo: {
+      src: '/images/pages/module-courses-and-curriculum.jpg',
+      alt: 'A student working through notes at a university library table lined with bookshelves.',
+      caption: 'Representative photography.',
+    },
   },
   {
     slug: 'media-and-content',
@@ -184,6 +206,11 @@ export const modules: ModuleDoc[] = [
     ],
     roles: ['Content Author', 'Teacher'],
     related: ['courses-and-curriculum', 'learning-delivery'],
+    photo: {
+      src: '/images/pages/module-media-and-content.jpg',
+      alt: 'A content creator with headphones and a microphone recording video on a laptop.',
+      caption: 'Representative photography.',
+    },
   },
   {
     slug: 'ai-assistance',
@@ -213,6 +240,11 @@ export const modules: ModuleDoc[] = [
     notBuilt: ['AI tutoring chat', 'AI grading', 'Transcription', 'Text to speech'],
     roles: ['Teacher', 'Academic Head', 'Content Author'],
     related: ['courses-and-curriculum', 'assessments'],
+    photo: {
+      src: '/images/pages/module-ai-assistance.jpg',
+      alt: 'A person using a chat-style AI tool on a laptop in a cafe.',
+      caption: 'Representative photography.',
+    },
   },
   {
     slug: 'learning-delivery',
@@ -243,6 +275,11 @@ export const modules: ModuleDoc[] = [
     notBuilt: ['Downloadable offline media', 'A native app — deliberately'],
     roles: ['Student', 'Teacher', 'Parent'],
     related: ['live-classes-and-attendance', 'batches-and-enrollment'],
+    photo: {
+      src: '/images/pages/module-learning-delivery.jpg',
+      alt: 'A student sitting on a campus bench checking her phone with earbuds in.',
+      caption: 'Representative photography.',
+    },
   },
   {
     slug: 'live-classes-and-attendance',
@@ -275,6 +312,11 @@ export const modules: ModuleDoc[] = [
     ],
     roles: ['Teacher', 'Student', 'Institute Admin'],
     related: ['learning-delivery', 'batches-and-enrollment'],
+    photo: {
+      src: '/images/pages/module-live-classes-and-attendance.jpg',
+      alt: 'Two staff members comparing a printed timetable pinned to a corridor notice board.',
+      caption: 'Representative photography.',
+    },
   },
   {
     slug: 'batches-and-enrollment',
@@ -336,6 +378,11 @@ export const modules: ModuleDoc[] = [
     notBuilt: ['Third-party proctoring integration', 'Every one of the eleven designed question types'],
     roles: ['Teacher', 'Academic Head', 'Student'],
     related: ['assignments-and-grading', 'certificates'],
+    photo: {
+      src: '/images/pages/module-assessments.jpg',
+      alt: 'Rows of empty exam desks, a single desk in the foreground holding an answer sheet and a pencil.',
+      caption: 'Representative photography.',
+    },
   },
   {
     slug: 'assignments-and-grading',
@@ -365,6 +412,11 @@ export const modules: ModuleDoc[] = [
     notBuilt: ['Plagiarism detection', 'Transcripts'],
     roles: ['Teacher', 'Academic Head'],
     related: ['assessments', 'certificates'],
+    photo: {
+      src: '/images/pages/module-assignments-and-grading.jpg',
+      alt: 'A student writing in a notebook at a wooden desk.',
+      caption: 'Representative photography.',
+    },
   },
   {
     slug: 'certificates',
@@ -393,6 +445,11 @@ export const modules: ModuleDoc[] = [
     notBuilt: ['Digital signatures', 'Bulk issuance from the interface'],
     roles: ['Institute Admin', 'Student'],
     related: ['assessments', 'placement-and-interviews'],
+    photo: {
+      src: '/images/pages/module-certificates.jpg',
+      alt: 'A staff member handing a certificate to a student at a small ceremony.',
+      caption: 'Representative photography.',
+    },
   },
   {
     slug: 'fees-and-finance',
@@ -427,6 +484,11 @@ export const modules: ModuleDoc[] = [
     ],
     roles: ['Finance Officer', 'Institute Admin', 'Student'],
     related: ['batches-and-enrollment', 'staff-and-hr'],
+    photo: {
+      src: '/images/pages/module-fees-and-finance.jpg',
+      alt: 'A ledger-style spreadsheet printout on a wooden desk beside a closed laptop.',
+      caption: 'Representative photography — not a captured screen, not a real institute’s data.',
+    },
   },
   {
     slug: 'staff-and-hr',
@@ -455,6 +517,11 @@ export const modules: ModuleDoc[] = [
     notBuilt: ['Payroll processing', 'Statutory filing — deliberately, and permanently'],
     roles: ['HR Manager', 'Institute Admin', 'Teacher'],
     related: ['fees-and-finance', 'placement-and-interviews'],
+    photo: {
+      src: '/images/pages/module-staff-and-hr.jpg',
+      alt: 'A facilitator leading a small group training session around a table.',
+      caption: 'Representative photography.',
+    },
   },
   {
     slug: 'placement-and-interviews',
@@ -484,6 +551,11 @@ export const modules: ModuleDoc[] = [
     notBuilt: ['A recruiter portal', 'Offer letters'],
     roles: ['Placement Officer', 'Student'],
     related: ['certificates', 'staff-and-hr'],
+    photo: {
+      src: '/images/pages/module-placement-and-interviews.jpg',
+      alt: 'Two young adults working through an exercise together at a shared desk.',
+      caption: 'Representative photography.',
+    },
   },
 ];
 

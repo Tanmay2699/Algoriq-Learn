@@ -15,6 +15,8 @@ otherwise re-litigate under launch pressure.
 | [0008](0008-dom-recreations-not-screenshots.md) | Product surfaces are DOM recreations, not screenshots | Accepted — supersedes `09` §2 |
 | [0009](0009-csp-allows-inline-script.md) | The CSP allows inline script, and says so | Accepted — amends 0007 |
 | [0010](0010-algoryq-learn-brand-alignment.md) | Algoryq Learn is a child brand of Algoryq Technologies: parent mark, Space Grotesk, navy ink | Accepted — supersedes 0003, amends 0002 |
+| [0011](0011-solutions-segment-photography.md) | Representative photography on the five `/solutions/[segment]` pages only | Accepted — amended by 0012 |
+| [0012](0012-site-wide-photography-rollout.md) | Photography extended to 14 more pages with a defensible fit; 37 pages remain text/diagram-only | Accepted — amends `09` §1, §4; amends 0011 |
 
 ## Writing a new one
 

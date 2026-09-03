@@ -38,7 +38,13 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
     <>
       {jsonLd([breadcrumbJsonLd(trail)])}
 
-      <PageHero eyebrow={cluster?.label ?? 'Product'} title={module.h1} lead={module.lead} trail={trail}>
+      <PageHero
+        eyebrow={cluster?.label ?? 'Product'}
+        title={module.h1}
+        lead={module.lead}
+        trail={trail}
+        photo={module.photo}
+      >
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <span className="text-mk-body-sm text-fg-muted">
             <Mono>{module.apiModule}</Mono> · <Counter value={module.routes} /> API routes

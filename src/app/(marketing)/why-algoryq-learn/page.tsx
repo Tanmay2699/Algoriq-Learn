@@ -32,6 +32,11 @@ export default function WhyPage() {
         title="Nothing reconciles. That is what an all-in-one LMS actually fixes."
         lead="Five tools that have never met each other, each working, and every seam between them leaking money, students or a month of reporting time."
         trail={TRAIL}
+        photo={{
+          src: '/images/pages/why-algoryq-learn.jpg',
+          alt: 'An administrator surrounded by three open laptops, sticky notes and papers, looking overwhelmed.',
+          caption: 'Representative photography.',
+        }}
       />
 
       <Act labelledBy="seams-heading" surface="paper" spacing="normal">

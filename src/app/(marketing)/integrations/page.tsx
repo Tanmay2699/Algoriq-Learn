@@ -56,6 +56,11 @@ export default function IntegrationsPage() {
 
       <PageHero
         eyebrow="Integrations"
+        photo={{
+          src: '/images/pages/integrations.jpg',
+          alt: 'Two people reviewing a system diagram on a whiteboard beside their laptop in an open workspace.',
+          caption: 'Representative photography.',
+        }}
         title={
           <>
             <Counter value={BUILT.length} /> that work, and <Counter value={NOT_BUILT.length} />{' '}

@@ -29,6 +29,11 @@ export default function SolutionsPage() {
         title="Five kinds of institute, one LMS"
         lead="The same thirty-one modules every time. What changes is the order you meet them in, the words we use, and the number you are judged on."
         trail={TRAIL}
+        photo={{
+          src: '/images/pages/solutions.jpg',
+          alt: 'Students walking across a campus courtyard between buildings.',
+          caption: 'Representative photography.',
+        }}
       />
 
       <Act labelledBy="list-heading" surface="paper" spacing="normal">

@@ -39,7 +39,13 @@ export default async function SolutionPage({ params }: { params: Promise<{ segme
     <>
       {jsonLd([breadcrumbJsonLd(trail)])}
 
-      <PageHero eyebrow={solution.name} title={solution.h1} lead={solution.lead} trail={trail}>
+      <PageHero
+        eyebrow={solution.name}
+        title={solution.h1}
+        lead={solution.lead}
+        trail={trail}
+        photo={solution.photo}
+      >
         <p className="mt-6 text-mk-body-sm text-fg-muted">
           Judged on: <span className="text-fg">{solution.judgedOn}</span>
         </p>

@@ -78,6 +78,11 @@ export default function AccessibilityPage() {
         title="Conformance statement"
         lead="WCAG 2.2 level AA, partially conformant, with the exceptions listed. We do not claim full conformance, because nobody honest does for a product this size."
         trail={TRAIL}
+        photo={{
+          src: '/images/pages/accessibility.jpg',
+          alt: 'A wheelchair ramp with handrails leading up to a building entrance.',
+          caption: 'Representative photography.',
+        }}
       >
         <p className="mt-6 text-mk-body-sm text-fg-muted">
           Scope: learn.algoryq.com and the Algoryq Learn product. Assessed 31 July 2026.

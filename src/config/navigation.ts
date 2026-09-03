@@ -21,7 +21,14 @@ export interface NavGroup {
 }
 
 /** The seven product clusters (docs/01 §3). Order is the lifecycle, not the alphabet. */
-export const clusters: (NavLink & { key: string; job: string; modules: number; routes: number })[] = [
+export const clusters: (NavLink & {
+  key: string;
+  job: string;
+  modules: number;
+  routes: number;
+  /** Representative photography for the cluster hero (ADR 0012). Atmosphere, not a claim. */
+  photo?: { src: string; alt: string; caption?: string };
+})[] = [
   {
     key: 'admissions-and-growth',
     href: '/product/admissions-and-growth',
@@ -30,6 +37,11 @@ export const clusters: (NavLink & { key: string; job: string; modules: number; r
     blurb: 'Enquiries, pipelines, applications, your public site.',
     modules: 3,
     routes: 61,
+    photo: {
+      src: '/images/pages/cluster-admissions-and-growth.jpg',
+      alt: 'A staff member at a reception desk helping a parent and a student.',
+      caption: 'Representative photography.',
+    },
   },
   {
     key: 'academics-and-content',
@@ -39,6 +51,11 @@ export const clusters: (NavLink & { key: string; job: string; modules: number; r
     blurb: 'Courses, versions, approval, media, AI drafting.',
     modules: 3,
     routes: 57,
+    photo: {
+      src: '/images/pages/cluster-academics-and-content.jpg',
+      alt: 'Students in a wood-panelled school library, one browsing shelves, another reading at a table.',
+      caption: 'Representative photography.',
+    },
   },
   {
     key: 'delivery-and-engagement',
@@ -48,6 +65,11 @@ export const clusters: (NavLink & { key: string; job: string; modules: number; r
     blurb: 'The player, batches, live classes, attendance, parents.',
     modules: 3,
     routes: 76,
+    photo: {
+      src: '/images/pages/cluster-delivery-and-engagement.jpg',
+      alt: 'A group of students collaborating around a table in a classroom, a whiteboard behind them.',
+      caption: 'Representative photography.',
+    },
   },
   {
     key: 'assessment-and-outcomes',
@@ -57,6 +79,11 @@ export const clusters: (NavLink & { key: string; job: string; modules: number; r
     blurb: 'Question banks, marking, grades, verifiable certificates.',
     modules: 4,
     routes: 77,
+    photo: {
+      src: '/images/pages/cluster-assessment-and-outcomes.jpg',
+      alt: 'A teacher grading papers at a desk, a blackboard visible behind her.',
+      caption: 'Representative photography.',
+    },
   },
   {
     key: 'money-and-people',
@@ -66,6 +93,11 @@ export const clusters: (NavLink & { key: string; job: string; modules: number; r
     blurb: 'Fees, invoices, staff, leave, placement, interviews.',
     modules: 4,
     routes: 77,
+    photo: {
+      src: '/images/pages/cluster-money-and-people.jpg',
+      alt: 'Two colleagues reviewing printed documents with a calculator in an office.',
+      caption: 'Representative photography.',
+    },
   },
   {
     key: 'intelligence',
@@ -75,6 +107,11 @@ export const clusters: (NavLink & { key: string; job: string; modules: number; r
     blurb: 'Dashboards, reports, exports, search, dropout risk.',
     modules: 4,
     routes: 30,
+    photo: {
+      src: '/images/pages/cluster-intelligence.jpg',
+      alt: 'A person studying analytics charts on a large monitor, colleagues meeting in the background.',
+      caption: 'Representative photography.',
+    },
   },
   {
     key: 'platform-and-trust',
@@ -84,6 +121,11 @@ export const clusters: (NavLink & { key: string; job: string; modules: number; r
     blurb: 'Identity, permissions, audit, tenancy, webhooks.',
     modules: 10,
     routes: 119,
+    photo: {
+      src: '/images/pages/cluster-platform-and-trust.jpg',
+      alt: 'A wide view down a data centre aisle of server racks with status lights.',
+      caption: 'Representative photography.',
+    },
   },
 ];
 

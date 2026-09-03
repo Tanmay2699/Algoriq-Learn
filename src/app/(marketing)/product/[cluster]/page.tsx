@@ -106,6 +106,7 @@ export default async function ClusterPage({ params }: { params: Promise<{ cluste
         title={cluster.label}
         lead={cluster.blurb}
         trail={trail}
+        photo={cluster.photo}
       >
         <p className="mt-6 text-mk-body-sm text-fg-muted">
           <Counter value={cluster.modules} /> modules · <Counter value={cluster.routes} /> API

@@ -28,6 +28,11 @@ export default function ResourcesPage() {
         title="Six guides to read before you choose an LMS"
         lead="Each is written from something we actually built, and answers a question people ask us. Nothing is gated, and there is no email wall."
         trail={TRAIL}
+        photo={{
+          src: '/images/pages/resources.jpg',
+          alt: 'A person reading on a tablet, relaxed on a couch at home.',
+          caption: 'Representative photography.',
+        }}
       />
 
       <Act labelledBy="list-heading" surface="paper" spacing="normal">

@@ -45,6 +45,11 @@ export default function ContactPage() {
         title="Three addresses, and a real person behind each"
         lead="No contact form on this page. The site has one form — the demo request — and a second would split the trail for no gain."
         trail={TRAIL}
+        photo={{
+          src: '/images/pages/contact.jpg',
+          alt: 'A staff member smiling on the phone at a reception desk.',
+          caption: 'Representative photography.',
+        }}
       />
 
       <Act labelledBy="routes-heading" surface="paper" spacing="normal">

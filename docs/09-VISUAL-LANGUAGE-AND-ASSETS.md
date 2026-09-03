@@ -22,6 +22,16 @@ with the same purple gradient and the same smiling student holding a laptop. The
 visual move available to us is to show the software. Nobody else does, because their software does
 not look good enough. Ours does.
 
+> **Photography is no longer "none," but it is still bounded, and the bound is written down.** The
+> homepage hero (§10), the five `/solutions/[segment]` pages ([ADR 0011](adr/0011-solutions-segment-photography.md))
+> and fourteen further pages ([ADR 0012](adr/0012-site-wide-photography-rollout.md)) carry
+> photography/footage under the same three conditions: real or representative rather than
+> fabricated, atmosphere rather than a claim, disclosed honestly. ADR 0012 also lists the pages
+> that do **not** get a photo, and why — a fabricated-looking match (`/customers`, whose own copy
+> says there are no customers yet) is rejected even when a leftover file exists, and a genuine
+> materials gap (no relevant still, no way to generate one in this environment) is stated rather
+> than papered over with a mismatched image.
+
 **Corollary:** the product's own screens must therefore be captured properly. §2 is the most
 operationally important section in this document.
 
@@ -175,8 +185,15 @@ No characters, no scenes, no isometric cities, no blobs, no gradients-with-a-lin
 is worth having, it is worth drawing.
 
 ### On photography
-None at launch. If it is ever added: real institutes, with a name and a date, with written consent,
-and never as a background for text.
+None at launch. Since then: the homepage hero video (§10, shipped 2026-09-01), the five
+`/solutions/[segment]` pages ([ADR 0011](adr/0011-solutions-segment-photography.md), shipped
+2026-09-03), and fourteen more pages judged individually against the same bar
+([ADR 0012](adr/0012-site-wide-photography-rollout.md), shipped the same day) — representative
+rather than a real named institute, disclosed as such in a caption, never a background for text.
+Forty-two pages still carry none, either because no photograph fits what the page is about or
+because the fit would contradict the page's own copy (`/customers`, most notably — see ADR 0012).
+A photograph proposed for any of those pages earns its own decision against that same bar; the
+existence of fourteen approved pages is not itself the argument for a fifteenth.
 
 ---
 

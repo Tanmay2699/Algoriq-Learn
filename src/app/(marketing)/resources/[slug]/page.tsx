@@ -48,7 +48,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         }),
       ])}
 
-      <PageHero eyebrow="Guide" title={article.title} lead={article.description} trail={trail}>
+      <PageHero
+        eyebrow="Guide"
+        title={article.title}
+        lead={article.description}
+        trail={trail}
+        photo={article.photo}
+      >
         <div className="mt-6 flex flex-wrap items-center gap-3">
           {article.tags.map((tag) => (
             <Badge key={tag}>{tag}</Badge>

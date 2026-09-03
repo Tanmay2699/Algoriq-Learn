@@ -44,6 +44,11 @@ export default function DevelopersPage() {
         title="A REST API where every route carries a permission key"
         lead="The LMS API this product's own frontend runs on — versioned, permission-checked and correlation-tagged. There is no privileged internal one."
         trail={TRAIL}
+        photo={{
+          src: '/images/pages/developers.jpg',
+          alt: 'Two people working through code together at a laptop, in an open brick-walled workspace.',
+          caption: 'Representative photography.',
+        }}
       />
 
       <Act labelledBy="numbers-heading" surface="paper" spacing="tight">

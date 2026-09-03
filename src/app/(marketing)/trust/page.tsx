@@ -31,6 +31,11 @@ export default function TrustPage() {
         title="What we can prove today."
         lead="No customer logos, no awards, no certifications — none of them earned yet. Here is what you can check instead, none of it requiring a word with us."
         trail={TRAIL}
+        photo={{
+          src: '/images/pages/trust.jpg',
+          alt: 'A set of brass keys resting on an old ledger, on a wooden desk.',
+          caption: 'Representative photography.',
+        }}
       />
 
       <Act labelledBy="verifiable-heading" surface="paper" spacing="normal">

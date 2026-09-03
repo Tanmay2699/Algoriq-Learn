@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import type { Route } from 'next';
 import { cn } from '../../lib/cn';
@@ -38,7 +39,17 @@ export function Breadcrumbs({ trail }: { trail: { href: string; label: string }[
   );
 }
 
-/** The standard page opening: breadcrumb, eyebrow, H1, lead. */
+/**
+ * Representative photography for a `PageHero`. Scoped to `/solutions/[segment]` — see
+ * ADR 0011 — atmosphere rather than a claim, so it carries a caption but no `claims.ts` entry.
+ */
+export interface PageHeroPhoto {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+/** The standard page opening: breadcrumb, eyebrow, H1, lead — with an optional photo. */
 export function PageHero({
   eyebrow,
   title,
@@ -46,6 +57,7 @@ export function PageHero({
   trail,
   children,
   surface = 'paper',
+  photo,
 }: {
   eyebrow?: string;
   title: React.ReactNode;
@@ -53,37 +65,75 @@ export function PageHero({
   trail?: { href: string; label: string }[];
   children?: React.ReactNode;
   surface?: 'paper' | 'muted' | 'ink';
+  photo?: PageHeroPhoto;
 }) {
   const ink = surface === 'ink';
+  const body = (
+    <>
+      {trail && <Breadcrumbs trail={trail} />}
+      {eyebrow && (
+        <Eyebrow surface={ink ? 'ink' : 'paper'} className="mk-enter">
+          {eyebrow}
+        </Eyebrow>
+      )}
+      <Heading
+        level={1}
+        display="display-3"
+        id="page-title"
+        surface={ink ? 'ink' : 'paper'}
+        /*
+         * `mk-wipe`, not `mk-enter`: a page title is the one line on the page that should
+         * arrive at full opacity throughout, and a clip-path wipe does that where a fade
+         * cannot. Same ladder position, same delay token — only the gesture differs.
+         */
+        className={cn('mk-wipe mk-enter-2', eyebrow && 'mt-3', 'max-w-[22ch]')}
+      >
+        {title}
+      </Heading>
+      {lead && (
+        <Lead surface={ink ? 'ink' : 'paper'} className="mk-enter mk-enter-3 mt-5">
+          {lead}
+        </Lead>
+      )}
+      {children && <div className="mk-enter mk-enter-4">{children}</div>}
+    </>
+  );
+
+  if (!photo) {
+    return (
+      <Act labelledBy="page-title" surface={surface} spacing="tight" className="pt-10">
+        <div className="container-mk">{body}</div>
+      </Act>
+    );
+  }
+
   return (
     <Act labelledBy="page-title" surface={surface} spacing="tight" className="pt-10">
-      <div className="container-mk">
-        {trail && <Breadcrumbs trail={trail} />}
-        {eyebrow && (
-          <Eyebrow surface={ink ? 'ink' : 'paper'} className="mk-enter">
-            {eyebrow}
-          </Eyebrow>
-        )}
-        <Heading
-          level={1}
-          display="display-3"
-          id="page-title"
-          surface={ink ? 'ink' : 'paper'}
-          /*
-           * `mk-wipe`, not `mk-enter`: a page title is the one line on the page that should
-           * arrive at full opacity throughout, and a clip-path wipe does that where a fade
-           * cannot. Same ladder position, same delay token — only the gesture differs.
-           */
-          className={cn('mk-wipe mk-enter-2', eyebrow && 'mt-3', 'max-w-[22ch]')}
-        >
-          {title}
-        </Heading>
-        {lead && (
-          <Lead surface={ink ? 'ink' : 'paper'} className="mk-enter mk-enter-3 mt-5">
-            {lead}
-          </Lead>
-        )}
-        {children && <div className="mk-enter mk-enter-4">{children}</div>}
+      <div className="container-mk grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-8">
+        <div className="lg:col-span-5">{body}</div>
+        {/*
+          The photo never carries text (rule 8 does not even apply — there is none to
+          contrast-check), so it needs none of the hero video's scrim treatment. `w-full h-auto`
+          rather than a fixed aspect-ratio or `object-fit: cover`: the card is sized to the
+          photo, not the photo cropped to a card shape the source was not composed for.
+        */}
+        <figure className="mk-enter mk-enter-4 lg:col-span-7">
+          <div className="overflow-hidden rounded-xl border border-border bg-surface shadow-e2">
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              width={1376}
+              height={768}
+              sizes="(min-width: 1024px) 700px, (min-width: 640px) 90vw, 100vw"
+              className="h-auto w-full"
+            />
+          </div>
+          {photo.caption && (
+            <figcaption className="mt-3 text-mk-body-sm text-fg-muted [.on-ink_&]:text-on-ink-muted">
+              {photo.caption}
+            </figcaption>
+          )}
+        </figure>
       </div>
     </Act>
   );

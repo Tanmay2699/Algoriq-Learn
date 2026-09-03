@@ -23,6 +23,11 @@ export default function DisclosurePage() {
         title="Responsible disclosure"
         lead="If you find something, tell us before you tell anybody else, and we will behave well about it."
         trail={TRAIL}
+        photo={{
+          src: '/images/pages/trust-responsible-disclosure.jpg',
+          alt: 'A person working alone on a laptop in a dim room at night, lit by the screen and a desk lamp.',
+          caption: 'Representative photography.',
+        }}
       />
 
       <Act labelledBy="policy-heading" surface="paper" spacing="normal">

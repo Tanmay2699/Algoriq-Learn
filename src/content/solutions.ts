@@ -20,6 +20,12 @@ export interface Solution {
   vocabulary: string[];
   sections: { title: string; body: string; href: string }[];
   disqualifier: string;
+  /**
+   * Representative photography for the page hero (ADR 0011). Atmosphere, not a claim — the
+   * caption says so, and unlike everything else this file feeds into a page, it is
+   * deliberately not evidenced in `claims.ts`.
+   */
+  photo?: { src: string; alt: string; caption?: string };
 }
 
 export const solutionPages: Solution[] = [
@@ -73,6 +79,11 @@ export const solutionPages: Solution[] = [
     ],
     disqualifier:
       'If you need to take fee payments by card inside the product today, we are not there — there is no payment-gateway adapter yet. You can raise, discount, track and reconcile invoices.',
+    photo: {
+      src: '/images/solutions/coaching-institutes.jpg',
+      alt: "A coaching institute's reception desk and enquiry notice board, late afternoon.",
+      caption: 'Representative photography — not a captured screen, not a real institute’s data.',
+    },
   },
   {
     slug: 'schools',
@@ -122,6 +133,11 @@ export const solutionPages: Solution[] = [
     ],
     disqualifier:
       'There is no transport, hostel or library module, and no biometric-device integration. If those are the reason you are switching, we are the wrong system today.',
+    photo: {
+      src: '/images/solutions/schools.jpg',
+      alt: 'Teachers reviewing a printed timetable in a school corridor between periods.',
+      caption: 'Representative photography.',
+    },
   },
   {
     slug: 'universities',
@@ -173,6 +189,11 @@ export const solutionPages: Solution[] = [
     ],
     disqualifier:
       'Multi-region data residency is designed and deliberately not built. If your requirement is that data stays in a named region enforced by the platform, we cannot honestly claim that yet. Nor do we have SAML, OIDC or SCIM.',
+    photo: {
+      src: '/images/solutions/universities.jpg',
+      alt: 'A student working through notes at a university library table.',
+      caption: 'Representative photography.',
+    },
   },
   {
     slug: 'skilling-academies',
@@ -219,6 +240,11 @@ export const solutionPages: Solution[] = [
     ],
     disqualifier:
       'There is no recruiter portal — companies cannot log in and browse your candidates. Placement is run by your team, from inside the product.',
+    photo: {
+      src: '/images/solutions/skilling-academies.jpg',
+      alt: 'Two trainees working through an exercise on a shared laptop in a bootcamp computer lab.',
+      caption: 'Representative photography.',
+    },
   },
   {
     slug: 'corporate-l-and-d',
@@ -266,6 +292,11 @@ export const solutionPages: Solution[] = [
     ],
     disqualifier:
       'There is no SAML, OIDC or SCIM yet. If your requirement is that people sign in with your corporate identity provider and are provisioned automatically, that is not built — Google, Microsoft and GitHub sign-in is.',
+    photo: {
+      src: '/images/solutions/corporate-l-and-d.jpg',
+      alt: 'A facilitator leading a training session around a conference table.',
+      caption: 'Representative photography.',
+    },
   },
 ];
 

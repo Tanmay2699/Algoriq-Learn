@@ -32,6 +32,11 @@ export default function ProductPage() {
         title="Thirty-one LMS modules. One tenant. One audit trail."
         lead="One backend, one PostgreSQL database, one frontend. What follows is all of it, grouped by the job it does rather than the team that built it."
         trail={TRAIL}
+        photo={{
+          src: '/images/pages/product.jpg',
+          alt: 'Two people reviewing a floor-plan style architecture diagram on paper, a laptop open beside them.',
+          caption: 'Representative photography.',
+        }}
       />
 
       <Act labelledBy="spine-heading" surface="paper" spacing="normal">
