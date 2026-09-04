@@ -51,6 +51,10 @@ export default function PricingPage() {
         title="Free for one campus. Priced for a group."
         lead="Three plans, real numbers, no asterisk. These limits are the rows in our own plans table, not a marketing simplification."
         trail={TRAIL}
+        photo={{
+          src: '/images/pages/pricing.jpg',
+          alt: 'A team reviewing pricing plans for Starter, Growth, and Enterprise on laptops.',
+        }}
       />
 
       <Act labelledBy="plans-heading" surface="paper" spacing="normal">

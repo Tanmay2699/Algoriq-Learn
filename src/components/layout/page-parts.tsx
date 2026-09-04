@@ -128,7 +128,7 @@ export function PageHero({
               className="h-auto w-full"
             />
           </div>
-          {photo.caption && (
+          {photo.caption && !photo.caption.toLowerCase().includes('representative photography') && (
             <figcaption className="mt-3 text-mk-body-sm text-fg-muted [.on-ink_&]:text-on-ink-muted">
               {photo.caption}
             </figcaption>

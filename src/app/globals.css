@@ -911,6 +911,19 @@
     }
   }
 
+  @keyframes mk-cursor-blink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .mk-code-cursor {
+    animation: mk-cursor-blink 0.9s steps(2, start) infinite;
+  }
+
   /* ── Reduced motion ─────────────────────────────────────────────────────────
    * Not a stripped rendering — the finished one, immediately. `animation: none`
    * rather than a clipped duration, so nothing is left in a running state.
@@ -931,7 +944,8 @@
     .mk-wipe,
     .mk-lines > *,
     .aurora-drift::before,
-    .aurora-drift::after {
+    .aurora-drift::after,
+    .mk-code-cursor {
       animation: none;
     }
 

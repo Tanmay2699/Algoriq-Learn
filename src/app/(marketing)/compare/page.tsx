@@ -30,6 +30,10 @@ export default function ComparisonsPage() {
         title="Four honest LMS comparisons"
         lead="Every cell about another product carries the source we read and the date we read it. Where they are better, the table says so — a comparison one column wins outright is an advertisement."
         trail={TRAIL}
+        photo={{
+          src: '/images/pages/compare.jpg',
+          alt: 'A team reviewing LMS comparisons across Moodle, Coursera, Udemy, and Blackboard on laptops.',
+        }}
       />
 
       <Act labelledBy="list-heading" surface="paper" spacing="normal">
