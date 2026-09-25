@@ -15,7 +15,10 @@ const LOCAL_URL = 'http://localhost:3001';
  * to localhost with a warning on stderr so it is visible without being fatal.
  */
 function resolveSiteUrl(): string {
-  const value = process.env.SITE_URL?.trim();
+  // Vercel sets VERCEL_PROJECT_PRODUCTION_URL (bare host, the custom domain once attached) on
+  // every build, so a Vercel deploy without SITE_URL still gets a real origin, not a failure.
+  const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  const value = process.env.SITE_URL?.trim() || (vercelHost ? `https://${vercelHost}` : undefined);
   const isProdDeploy =
     process.env.DEPLOY_ENV === 'production' || process.env.VERCEL_ENV === 'production';
 
